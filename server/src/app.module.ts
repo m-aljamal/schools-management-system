@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ProjectModule } from './project/project.module';
 import { ArchiveModule } from './archive/archive.module';
+import { LevelModule } from './level/level.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -37,6 +38,7 @@ import { ArchiveModule } from './archive/archive.module';
     }),
     ProjectModule,
     ArchiveModule,
+    LevelModule,
   ],
 })
 export class AppModule {}

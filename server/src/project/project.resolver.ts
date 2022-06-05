@@ -7,7 +7,7 @@ import { ProjectService } from './project.service';
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Query(() => [Project])
+  @Query(() => [Project], { name: 'findProjects' })
   async projects(): Promise<Project[]> {
     return this.projectService.findAll();
   }
