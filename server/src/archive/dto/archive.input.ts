@@ -4,4 +4,7 @@ import { Field, InputType } from '@nestjs/graphql';
 export class ArchiveInput {
   @Field()
   name: string;
+
+  @Field()
+  projectId: string;
 }

@@ -1,6 +1,7 @@
 import { ArchiveService } from './archive.service';
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Archive } from './entity/archive';
+import { ArchiveInput } from './dto/archive.input';
 
 @Resolver(() => Archive)
 export class ArchiveResolver {
@@ -9,5 +10,10 @@ export class ArchiveResolver {
   @Query(() => [Archive], { name: 'FindAllArchives' })
   async findAll(): Promise<Archive[]> {
     return this.archiveService.findAll();
+  }
+
+  @Mutation(() => Archive, { name: 'CreateArchive' })
+  async create(@Args('input') input: ArchiveInput): Promise<Archive> {
+    return this.archiveService.create(input);
   }
 }
