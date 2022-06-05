@@ -6,6 +6,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ProjectModule } from './project/project.module';
 import { ArchiveModule } from './archive/archive.module';
 import { LevelModule } from './level/level.module';
+import { DivisionModule } from './division/division.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -39,6 +40,7 @@ import { LevelModule } from './level/level.module';
     ProjectModule,
     ArchiveModule,
     LevelModule,
+    DivisionModule,
   ],
 })
 export class AppModule {}

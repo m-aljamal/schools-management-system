@@ -1,4 +1,5 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { LevelInput } from './dto/level.input';
 import { Level } from './entity/level';
 import { LevelService } from './level.service';
 
@@ -9,5 +10,10 @@ export class LevelResolver {
   @Query(() => [Level], { name: 'findLevels' })
   async findLevels(): Promise<Level[]> {
     return this.levelService.findAll();
+  }
+
+  @Mutation(()=> Level, {name: "createLevel"})
+  async createLevel(@Args('input')levelInput : LevelInput){
+    return this.levelService.create(levelInput)
   }
 }
