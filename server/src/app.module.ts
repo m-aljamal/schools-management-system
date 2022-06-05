@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ProjectModule } from './project/project.module';
+import { ArchiveModule } from './archive/archive.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +36,7 @@ import { ProjectModule } from './project/project.module';
       },
     }),
     ProjectModule,
+    ArchiveModule,
   ],
 })
 export class AppModule {}
