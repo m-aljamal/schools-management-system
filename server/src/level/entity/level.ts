@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Division } from 'src/division/entity/division';
+import { Student } from 'src/student/entity/student';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
@@ -16,4 +17,8 @@ export class Level {
   @OneToMany(() => Division, (division) => division.level)
   @Field(() => [Division], { nullable: true })
   divisions: Division[];
+
+  @OneToMany(() => Student, (student) => student.level)
+  @Field({ nullable: true })
+  students: Student[];
 }
