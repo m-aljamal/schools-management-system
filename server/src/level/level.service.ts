@@ -13,7 +13,7 @@ export class LevelService {
 
   async findAll(): Promise<Level[]> {
     return this.levelRepository.find({
-      relations: ['divisions'],
+      relations: ['divisions', 'students'],
     });
   }
 

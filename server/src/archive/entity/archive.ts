@@ -1,9 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Employee } from 'src/employee/entity/employee';
 import { Project } from 'src/project/entity/project';
+import { Student } from 'src/student/entity/student';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -35,4 +38,12 @@ export class Archive {
   @Field()
   @Column()
   projectId: string;
+
+  @ManyToMany(() => Employee, (employee) => employee.archives)
+  @Field(() => [Employee])
+  employees: Employee[];
+
+  @ManyToMany(() => Student, (student) => student.archives)
+  @Field(() => [Student])
+  students: Student[];
 }

@@ -7,12 +7,12 @@ import { ArchiveInput } from './dto/archive.input';
 export class ArchiveResolver {
   constructor(private readonly archiveService: ArchiveService) {}
 
-  @Query(() => [Archive], { name: 'FindAllArchives' })
+  @Query(() => [Archive], { name: 'findAllArchives' })
   async findAll(): Promise<Archive[]> {
     return this.archiveService.findAll();
   }
 
-  @Mutation(() => Archive, { name: 'CreateArchive' })
+  @Mutation(() => Archive, { name: 'createArchive' })
   async create(@Args('input') input: ArchiveInput): Promise<Archive> {
     return this.archiveService.create(input);
   }

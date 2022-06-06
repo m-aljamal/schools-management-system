@@ -12,10 +12,18 @@ export class ArchiveService {
   ) {}
 
   async findAll(): Promise<Archive[]> {
-    return this.archiveRepository.find();
+    return this.archiveRepository.find({
+       relations: ['employees', 'students'],
+    });
   }
 
   async create(input: ArchiveInput): Promise<Archive> {
     return this.archiveRepository.save(input);
+  }
+
+  async findOne(id: string): Promise<Archive> {
+    return this.archiveRepository.findOne({
+      where: { id },
+    });
   }
 }

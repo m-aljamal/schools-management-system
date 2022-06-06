@@ -8,7 +8,7 @@ import { ArchiveModule } from './archive/archive.module';
 import { LevelModule } from './level/level.module';
 import { DivisionModule } from './division/division.module';
 import { StudentModule } from './student/student.module';
-import { TeacherModule } from './teacher/teacher.module';
+import { TeacherModule } from './employee/employee.module';
 @Module({
   imports: [
     ConfigModule.forRoot({

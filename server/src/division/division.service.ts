@@ -12,7 +12,9 @@ export class DivisionService {
   ) {}
 
   async findAll(): Promise<Division[]> {
-    return this.divisionRepository.find();
+    return this.divisionRepository.find({
+      relations: ['students'],
+    });
   }
 
   async create(divisionInput: DivisionInput): Promise<Division> {

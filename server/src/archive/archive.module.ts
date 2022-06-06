@@ -7,5 +7,6 @@ import { Archive } from './entity/archive';
 @Module({
   imports: [TypeOrmModule.forFeature([Archive])],
   providers: [ArchiveResolver, ArchiveService],
+  exports: [ArchiveService],
 })
 export class ArchiveModule {}
