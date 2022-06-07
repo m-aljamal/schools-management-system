@@ -4,4 +4,7 @@ import { Field, InputType } from '@nestjs/graphql';
 export class LevelInput {
   @Field()
   name: string;
+
+  @Field(() => [String])
+  archives: string[];
 }

@@ -1,7 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Student } from 'src/student/entity/student';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -21,4 +29,11 @@ export class Level {
   @OneToMany(() => Student, (student) => student.level)
   @Field(() => [Student], { nullable: true })
   students: Student[];
+
+  @ManyToMany(() => Archive, (archive) => archive.levels, {
+    cascade: true,
+  })
+  @Field(() => [Archive])
+  @JoinTable()
+  archives: Archive[];
 }

@@ -31,7 +31,7 @@ export class Student {
   @Column()
   divisionId: string;
 
-  @ManyToMany(() => Archive, (archive) => archive.employees, {
+  @ManyToMany(() => Archive, (archive) => archive.students, {
     cascade: true,
   })
   @Field(() => [Archive])

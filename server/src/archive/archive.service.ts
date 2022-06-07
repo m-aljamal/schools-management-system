@@ -12,8 +12,8 @@ export class ArchiveService {
   ) {}
 
   async findAll(): Promise<Archive[]> {
-    return this.archiveRepository.find({
-       relations: ['employees', 'students'],
+    return await this.archiveRepository.find({
+      relations: ['employees', 'students', 'divisions', 'levels'],
     });
   }
 

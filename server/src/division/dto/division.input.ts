@@ -7,4 +7,7 @@ export class DivisionInput {
 
   @Field()
   levelId: string;
+
+  @Field(() => [String])
+  archives: string[];
 }
