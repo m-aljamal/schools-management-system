@@ -9,6 +9,7 @@ import { LevelModule } from './level/level.module';
 import { DivisionModule } from './division/division.module';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './employee/employee.module';
+import { SemesterModule } from './semester/semester.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -45,6 +46,7 @@ import { TeacherModule } from './employee/employee.module';
     DivisionModule,
     StudentModule,
     TeacherModule,
+    SemesterModule,
   ],
 })
 export class AppModule {}

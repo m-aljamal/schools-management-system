@@ -3,6 +3,7 @@ import { Division } from 'src/division/entity/division';
 import { Employee } from 'src/employee/entity/employee';
 import { Level } from 'src/level/entity/level';
 import { Project } from 'src/project/entity/project';
+import { Semester } from 'src/semester/entity/semester';
 import { Student } from 'src/student/entity/student';
 import {
   Column,
@@ -57,4 +58,8 @@ export class Archive {
   @ManyToMany(() => Level, (level) => level.archives)
   @Field(() => [Level])
   levels: Level[];
+
+  @ManyToMany(() => Semester, (semester) => semester.archives)
+  @Field(() => [Semester])
+  semesters: Semester[];
 }

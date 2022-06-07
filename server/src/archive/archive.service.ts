@@ -18,6 +18,7 @@ export class ArchiveService {
     query.leftJoinAndSelect('archive.divisions', 'division');
     query.leftJoinAndSelect('archive.levels', 'level');
     query.leftJoinAndSelect('division.students', 'student');
+    query.leftJoinAndSelect('archive.semesters', 'semester');
     return await query.getMany();
   }
 
