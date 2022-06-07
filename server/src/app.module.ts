@@ -10,6 +10,8 @@ import { DivisionModule } from './division/division.module';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './employee/employee.module';
 import { SemesterModule } from './semester/semester.module';
+import { AbsentEmployeeModule } from './absent-employee/absent-employee.module';
+import { AbsentStudentModule } from './absent-student/absent-student.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -47,6 +49,8 @@ import { SemesterModule } from './semester/semester.module';
     StudentModule,
     TeacherModule,
     SemesterModule,
+    AbsentEmployeeModule,
+    AbsentStudentModule,
   ],
 })
 export class AppModule {}
