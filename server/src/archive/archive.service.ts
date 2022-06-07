@@ -12,9 +12,13 @@ export class ArchiveService {
   ) {}
 
   async findAll(): Promise<Archive[]> {
-    return await this.archiveRepository.find({
-      relations: ['employees', 'students', 'divisions', 'levels'],
-    });
+    const query = this.archiveRepository.createQueryBuilder('archive');
+    query.leftJoinAndSelect('archive.employees', 'employee');
+    query.leftJoinAndSelect('archive.students', 'students');
+    query.leftJoinAndSelect('archive.divisions', 'division');
+    query.leftJoinAndSelect('archive.levels', 'level');
+    query.leftJoinAndSelect('division.students', 'student');
+    return await query.getMany();
   }
 
   async create(input: ArchiveInput): Promise<Archive> {
