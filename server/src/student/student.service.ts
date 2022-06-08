@@ -15,7 +15,7 @@ export class StudentService {
 
   async findAll() {
     return await this.studentRepo.find({
-      relations: ['archives'],
+      relations: ['archives', 'absentStudents'],
     });
   }
 

@@ -15,7 +15,7 @@ export class SemesterService {
 
   async findAll(): Promise<Semester[]> {
     return await this.semesterRepository.find({
-      relations: ['archives'],
+      relations: ['archives', 'absentStudents'],
     });
   }
 

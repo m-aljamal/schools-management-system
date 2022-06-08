@@ -1,10 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { AbsentStudent } from 'src/absent-student/entity/absent-student';
 import { Archive } from 'src/archive/entity/archive';
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,4 +27,8 @@ export class Semester {
   @Field(() => [Archive])
   @JoinTable()
   archives: Archive[];
+
+  @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.semester)
+  @Field(() => [AbsentStudent])
+  absentStudents: AbsentStudent[];
 }
