@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { AbsentEmployee } from 'src/absent-employee/entity/absent-employee';
 import { Archive } from 'src/archive/entity/archive';
 import {
   Column,
@@ -6,6 +7,7 @@ import {
   ManyToMany,
   JoinTable,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 
 @ObjectType()
@@ -25,4 +27,8 @@ export class Employee {
   @Field(() => [Archive])
   @JoinTable()
   archives: Archive[];
+
+  @OneToMany(() => AbsentEmployee, (absentEmployee) => absentEmployee.employee)
+  @Field(() => [AbsentEmployee])
+  absentEmployees: AbsentEmployee[];
 }
