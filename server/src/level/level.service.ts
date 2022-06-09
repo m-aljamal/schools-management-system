@@ -35,4 +35,10 @@ export class LevelService {
     });
     return await this.levelRepository.save(level);
   }
+
+  async findOne(id: string): Promise<Level> {
+    return await this.levelRepository.findOne({
+      where: { id },
+    });
+  }
 }

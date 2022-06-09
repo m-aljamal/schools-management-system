@@ -15,8 +15,9 @@ export class ArchiveService {
     const query = this.archiveRepository.createQueryBuilder('archive');
     query.leftJoinAndSelect('archive.employees', 'employee');
     query.leftJoinAndSelect('archive.students', 'students');
-    query.leftJoinAndSelect('archive.divisions', 'division');
+    query.leftJoinAndSelect('archive.divisions', 'divisions');
     query.leftJoinAndSelect('archive.levels', 'level');
+    query.leftJoinAndSelect('level.divisions', 'division');
     query.leftJoinAndSelect('division.students', 'student');
     query.leftJoinAndSelect('archive.semesters', 'semester');
     return await query.getMany();

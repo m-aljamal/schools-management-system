@@ -8,5 +8,6 @@ import { ArchiveModule } from 'src/archive/archive.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Level]), ArchiveModule],
   providers: [LevelService, LevelResolver],
+  exports: [LevelService],
 })
 export class LevelModule {}

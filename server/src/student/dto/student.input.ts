@@ -5,8 +5,8 @@ export class StudentInput {
   @Field()
   name: string;
 
-  @Field()
-  levelId: string;
+  @Field(() => [String])
+  levels: string[];
 
   @Field()
   divisionId: string;

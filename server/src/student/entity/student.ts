@@ -26,13 +26,12 @@ export class Student {
   @Column()
   name: string;
 
-  @ManyToOne(() => Level, (level) => level.students)
-  @Field(() => Level)
-  level: Level;
-
-  @Field()
-  @Column()
-  levelId: string;
+  @ManyToMany(() => Level, (level) => level.students, {
+    cascade: true,
+  })
+  @Field(() => [Level])
+  @JoinTable()
+  levels: Level[];
 
   @ManyToOne(() => Division, (division) => division.students)
   @Field(() => Division)

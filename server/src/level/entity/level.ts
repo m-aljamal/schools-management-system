@@ -26,7 +26,7 @@ export class Level {
   @Field(() => [Division], { nullable: true })
   divisions: Division[];
 
-  @OneToMany(() => Student, (student) => student.level)
+  @ManyToMany(() => Student, (student) => student.levels)
   @Field(() => [Student], { nullable: true })
   students: Student[];
 
