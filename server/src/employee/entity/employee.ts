@@ -1,6 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { AbsentEmployee } from 'src/absent-employee/entity/absent-employee';
 import { Archive } from 'src/archive/entity/archive';
+import { Division } from 'src/division/entity/division';
+import { Level } from 'src/level/entity/level';
 import {
   Column,
   Entity,
@@ -31,4 +33,18 @@ export class Employee {
   @OneToMany(() => AbsentEmployee, (absentEmployee) => absentEmployee.employee)
   @Field(() => [AbsentEmployee])
   absentEmployees: AbsentEmployee[];
+
+  @ManyToMany(() => Level, (level) => level.employees, {
+    cascade: true,
+  })
+  @Field(() => [Level])
+  @JoinTable()
+  levels: Level[];
+
+  @ManyToMany(() => Division, (division) => division.employees, {
+    cascade: true,
+  })
+  @Field(() => [Division])
+  @JoinTable()
+  divisions: Division[];
 }

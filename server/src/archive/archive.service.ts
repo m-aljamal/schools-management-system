@@ -13,12 +13,13 @@ export class ArchiveService {
 
   async findAll(): Promise<Archive[]> {
     const query = this.archiveRepository.createQueryBuilder('archive');
-    query.leftJoinAndSelect('archive.employees', 'employee');
+    query.leftJoinAndSelect('archive.employees', 'employees');
     query.leftJoinAndSelect('archive.students', 'students');
     query.leftJoinAndSelect('archive.divisions', 'divisions');
     query.leftJoinAndSelect('archive.levels', 'level');
     query.leftJoinAndSelect('level.divisions', 'division');
     query.leftJoinAndSelect('division.students', 'student');
+    query.leftJoinAndSelect('division.employees', 'employee');
     query.leftJoinAndSelect('archive.semesters', 'semester');
     return await query.getMany();
   }

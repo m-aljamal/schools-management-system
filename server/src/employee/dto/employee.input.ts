@@ -7,4 +7,10 @@ export class EmployeeInput {
 
   @Field(() => [String])
   archives: string[];
+
+  @Field(() => [String])
+  levels: string[];
+
+  @Field(() => [String])
+  divisions: string[];
 }

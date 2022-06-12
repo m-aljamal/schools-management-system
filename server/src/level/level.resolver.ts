@@ -12,8 +12,8 @@ export class LevelResolver {
     return this.levelService.findAll();
   }
 
-  @Mutation(()=> Level, {name: "createLevel"})
-  async createLevel(@Args('input')levelInput : LevelInput){
-    return this.levelService.create(levelInput)
+  @Mutation(() => Level, { name: 'createLevel' })
+  async createLevel(@Args('input') levelInput: LevelInput) {
+    return this.levelService.create(levelInput);
   }
 }

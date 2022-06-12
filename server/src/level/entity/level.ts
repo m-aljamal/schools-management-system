@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
+import { Employee } from 'src/employee/entity/employee';
 import { Student } from 'src/student/entity/student';
 import {
   Column,
@@ -36,4 +37,8 @@ export class Level {
   @Field(() => [Archive])
   @JoinTable()
   archives: Archive[];
+
+  @ManyToMany(() => Employee, (employee) => employee.levels)
+  @Field(() => [Student], { nullable: true })
+  employees: Employee[];
 }

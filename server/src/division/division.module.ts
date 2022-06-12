@@ -8,5 +8,6 @@ import { ArchiveModule } from 'src/archive/archive.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Division]), ArchiveModule],
   providers: [DivisionService, DivisionResolver],
+  exports: [DivisionService],
 })
 export class DivisionModule {}

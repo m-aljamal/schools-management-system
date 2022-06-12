@@ -15,7 +15,7 @@ export class DivisionService {
 
   async findAll(): Promise<Division[]> {
     return this.divisionRepository.find({
-      relations: ['students', 'archives'],
+      relations: ['students', 'archives', 'employees'],
     });
   }
 
@@ -34,5 +34,11 @@ export class DivisionService {
       archives,
     });
     return await this.divisionRepository.save(division);
+  }
+
+  async findOne(id: string): Promise<Division> {
+    return await this.divisionRepository.findOne({
+      where: { id },
+    });
   }
 }
