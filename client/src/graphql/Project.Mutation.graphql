@@ -1,0 +1,7 @@
+mutation createProject($name_ar: String!) {
+  createProject(input: { name_ar: $name_ar }) {
+    id
+    name_ar
+    createdAt
+  }
+}

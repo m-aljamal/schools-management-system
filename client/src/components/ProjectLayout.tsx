@@ -1,7 +1,8 @@
 import { Link, Outlet, useParams } from "react-router-dom";
 
 const ProjectLayout = () => {
-  const projectId = "12";
+  const { projectId } = useParams();
+
   const projectLinks = [
     {
       label: "الرئيسية",

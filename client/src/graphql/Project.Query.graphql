@@ -1,0 +1,8 @@
+query findProjects {
+  findProjects {
+    id
+    name_ar
+    updatedAt
+    createdAt
+  }
+}
