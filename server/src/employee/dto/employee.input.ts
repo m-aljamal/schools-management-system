@@ -5,8 +5,8 @@ export class EmployeeInput {
   @Field()
   name: string;
 
-  @Field(() => [String])
-  archives: string[];
+  // @Field(() => [String])
+  // archives: string[];
 
   @Field(() => [String])
   levels: string[];

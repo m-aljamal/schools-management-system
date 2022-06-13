@@ -8,6 +8,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -27,18 +28,30 @@ export class Level {
   @Field(() => [Division], { nullable: true })
   divisions: Division[];
 
-  @ManyToMany(() => Student, (student) => student.levels)
+  @OneToMany(() => Student, (student) => student.level)
   @Field(() => [Student], { nullable: true })
   students: Student[];
 
-  @ManyToMany(() => Archive, (archive) => archive.levels, {
-    cascade: true,
-  })
-  @Field(() => [Archive])
-  @JoinTable()
-  archives: Archive[];
+  // @ManyToMany(() => Student, (student) => student.levels)
+  // @Field(() => [Student], { nullable: true })
+  // students: Student[];
+
+  // @ManyToMany(() => Archive, (archive) => archive.levels, {
+  //   cascade: true,
+  // })
+  // @Field(() => [Archive])
+  // @JoinTable()
+  // archives: Archive[];
 
   @ManyToMany(() => Employee, (employee) => employee.levels)
   @Field(() => [Student], { nullable: true })
   employees: Employee[];
+
+  @ManyToOne(() => Archive, (archive) => archive.levels)
+  @Field(() => Archive)
+  archive: Archive;
+
+  @Field()
+  @Column()
+  archiveId: string;
 }

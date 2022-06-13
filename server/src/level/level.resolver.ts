@@ -1,5 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { LevelInput } from './dto/level.input';
+import { LevelUpdateInput } from './dto/level.update';
 import { Level } from './entity/level';
 import { LevelService } from './level.service';
 
@@ -15,5 +16,13 @@ export class LevelResolver {
   @Mutation(() => Level, { name: 'createLevel' })
   async createLevel(@Args('input') levelInput: LevelInput) {
     return this.levelService.create(levelInput);
+  }
+
+  @Mutation(() => Level, { name: 'updateLevel' })
+  async updateLevel(
+    @Args('id') id: string,
+    @Args('input') levelInput: LevelUpdateInput,
+  ) {
+    return this.levelService.update(id, levelInput);
   }
 }

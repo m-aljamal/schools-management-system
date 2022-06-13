@@ -24,15 +24,15 @@ export class EmployeeService {
   }
 
   async create(input: EmployeeInput) {
-    const archives = await Promise.all(
-      input.archives.map(async (id) => {
-        const archive = await this.loadArchives(id);
-        if (!archive) {
-          throw new BadRequestException('الارشيف غير موجود');
-        }
-        return archive;
-      }),
-    );
+    // const archives = await Promise.all(
+    //   input.archives.map(async (id) => {
+    //     const archive = await this.loadArchives(id);
+    //     if (!archive) {
+    //       throw new BadRequestException('الارشيف غير موجود');
+    //     }
+    //     return archive;
+    //   }),
+    // );
     // check if the employee is teacher
     const levels = await Promise.all(
       input.levels.map(async (id) => {
@@ -55,7 +55,7 @@ export class EmployeeService {
 
     const employee = this.employeeRepo.create({
       ...input,
-      archives,
+      // archives,
       divisions,
       levels,
     });

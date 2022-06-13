@@ -5,12 +5,12 @@ export class StudentInput {
   @Field()
   name: string;
 
-  @Field(() => [String])
-  levels: string[];
+  @Field()
+  levelId: string;
 
   @Field()
   divisionId: string;
 
-  @Field(() => [String])
-  archives: string[];
+  // @Field(() => [String])
+  // archives: string[];
 }

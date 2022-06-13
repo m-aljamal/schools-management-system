@@ -22,12 +22,12 @@ export class Semester {
   @Column()
   name: string;
 
-  @ManyToMany(() => Archive, (archive) => archive.semesters, {
-    cascade: true,
-  })
-  @Field(() => [Archive])
-  @JoinTable()
-  archives: Archive[];
+  // @ManyToMany(() => Archive, (archive) => archive.semesters, {
+  //   cascade: true,
+  // })
+  // @Field(() => [Archive])
+  // @JoinTable()
+  // archives: Archive[];
 
   @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.semester)
   @Field(() => [AbsentStudent])

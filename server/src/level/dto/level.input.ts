@@ -5,6 +5,6 @@ export class LevelInput {
   @Field()
   name: string;
 
-  @Field(() => [String])
-  archives: string[];
+  @Field()
+  archiveId: string;
 }

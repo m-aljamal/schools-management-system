@@ -36,12 +36,12 @@ export class Division {
   @Field(() => [Student])
   students: Student[];
 
-  @ManyToMany(() => Archive, (archive) => archive.divisions, {
-    cascade: true,
-  })
-  @Field(() => [Archive])
-  @JoinTable()
-  archives: Archive[];
+  // @ManyToMany(() => Archive, (archive) => archive.divisions, {
+  //   cascade: true,
+  // })
+  // @Field(() => [Archive])
+  // @JoinTable()
+  // archives: Archive[];
 
   @ManyToMany(() => Employee, (employee) => employee.divisions)
   @Field(() => [Student], { nullable: true })

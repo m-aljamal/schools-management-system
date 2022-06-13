@@ -26,12 +26,12 @@ export class Student {
   @Column()
   name: string;
 
-  @ManyToMany(() => Level, (level) => level.students, {
-    cascade: true,
-  })
-  @Field(() => [Level])
-  @JoinTable()
-  levels: Level[];
+  // @ManyToMany(() => Level, (level) => level.students, {
+  //   cascade: true,
+  // })
+  // @Field(() => [Level])
+  // @JoinTable()
+  // levels: Level[];
 
   @ManyToOne(() => Division, (division) => division.students)
   @Field(() => Division)
@@ -41,12 +41,23 @@ export class Student {
   @Column()
   divisionId: string;
 
-  @ManyToMany(() => Archive, (archive) => archive.students, {
-    cascade: true,
-  })
-  @Field(() => [Archive])
-  @JoinTable()
-  archives: Archive[];
+  @ManyToOne(() => Level, (level) => level.students)
+  @Field(() => Level)
+  level: Level;
+
+  @Field()
+  @Column()
+  levelId: string;
+
+
+  
+
+  // @ManyToMany(() => Archive, (archive) => archive.students, {
+  //   cascade: true,
+  // })
+  // @Field(() => [Archive])
+  // @JoinTable()
+  // archives: Archive[];
 
   @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.student)
   @Field(() => [AbsentStudent])

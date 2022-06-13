@@ -43,23 +43,11 @@ export class Archive {
   @Column()
   projectId: string;
 
-  @ManyToMany(() => Employee, (employee) => employee.archives)
-  @Field(() => [Employee])
-  employees: Employee[];
-
-  @ManyToMany(() => Student, (student) => student.archives)
-  @Field(() => [Student])
-  students: Student[];
-
-  @ManyToMany(() => Division, (division) => division.archives)
-  @Field(() => [Division])
-  divisions: Division[];
-
-  @ManyToMany(() => Level, (level) => level.archives)
+  @OneToMany(() => Level, (level) => level.archive)
   @Field(() => [Level])
   levels: Level[];
 
-  @ManyToMany(() => Semester, (semester) => semester.archives)
-  @Field(() => [Semester])
-  semesters: Semester[];
+  // @ManyToMany(() => Semester, (semester) => semester.archives)
+  // @Field(() => [Semester])
+  // semesters: Semester[];
 }

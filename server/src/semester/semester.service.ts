@@ -20,19 +20,19 @@ export class SemesterService {
   }
 
   async create(input: SemesterInput): Promise<Semester> {
-    const archives = await Promise.all(
-      input.archives.map(async (id) => {
-        const archive = await this.archiveService.findOne(id);
-        if (!archive) {
-          throw new BadRequestException('الارشيف غير موجود');
-        }
-        return archive;
-      }),
-    );
-    const semester = this.semesterRepository.create({
-      ...input,
-      archives,
-    });
-    return await this.semesterRepository.save(semester);
+    // const archives = await Promise.all(
+    //   input.archives.map(async (id) => {
+    //     const archive = await this.archiveService.findOne(id);
+    //     if (!archive) {
+    //       throw new BadRequestException('الارشيف غير موجود');
+    //     }
+    //     return archive;
+    //   }),
+    // );
+    // const semester = this.semesterRepository.create({
+    //   ...input,
+    //   archives,
+    // });
+    return await this.semesterRepository.save(input);
   }
 }

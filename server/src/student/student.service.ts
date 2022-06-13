@@ -22,30 +22,30 @@ export class StudentService {
   }
 
   async create(input: StudentInput) {
-    const archives = await Promise.all(
-      input.archives.map(async (id) => {
-        const archive = await this.archiveService.findOne(id);
-        if (!archive) {
-          throw new BadRequestException('الارشيف غير موجود');
-        }
-        return archive;
-      }),
-    );
-    const levels = await Promise.all(
-      input.levels.map(async (id) => {
-        const level = await this.levelService.findOne(id);
-        if (!level) {
-          throw new BadRequestException('المرحلة غير موجودة');
-        }
-        return level;
-      }),
-    );
+    // const archives = await Promise.all(
+    //   input.archives.map(async (id) => {
+    //     const archive = await this.archiveService.findOne(id);
+    //     if (!archive) {
+    //       throw new BadRequestException('الارشيف غير موجود');
+    //     }
+    //     return archive;
+    //   }),
+    // );
+    // const levels = await Promise.all(
+    //   input.levels.map(async (id) => {
+    //     const level = await this.levelService.findOne(id);
+    //     if (!level) {
+    //       throw new BadRequestException('المرحلة غير موجودة');
+    //     }
+    //     return level;
+    //   }),
+    // );
 
-    const student = this.studentRepo.create({
-      ...input,
-      archives,
-      levels,
-    });
-    return await this.studentRepo.save(student);
+    // const student = this.studentRepo.create({
+    //   ...input,
+    //   // archives,
+    //   levels,
+    // });
+    return await this.studentRepo.save(input);
   }
 }

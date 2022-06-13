@@ -1,8 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { ArchiveService } from 'src/archive/archive.service';
 import { Repository } from 'typeorm';
 import { LevelInput } from './dto/level.input';
+import { LevelUpdateInput } from './dto/level.update';
 import { Level } from './entity/level';
 
 @Injectable()
@@ -20,20 +21,19 @@ export class LevelService {
   }
 
   async create(levelInput: LevelInput): Promise<Level> {
-    const archives = await Promise.all(
-      levelInput.archives.map(async (id) => {
-        const archive = await this.archiveService.findOne(id);
-        if (!archive) {
-          throw new BadRequestException('الارشيف غير موجود');
-        }
-        return archive;
-      }),
-    );
-    const level = this.levelRepository.create({
-      ...levelInput,
-      archives,
-    });
-    return await this.levelRepository.save(level);
+    // const archives = await Promise.all(
+    //   levelInput.archives.map(async (id) => {
+    //     const archive = await this.archiveService.findOne(id);
+    //     if (!archive) {
+    //       throw new BadRequestException('الارشيف غير موجود');
+    //     }
+    //     return archive;
+    //   }),
+    // );
+    // const level = this.levelRepository.create({
+    //   ...levelInput,
+    // });
+    return await this.levelRepository.save(levelInput);
   }
 
   async findOne(id: string): Promise<Level> {
@@ -42,5 +42,13 @@ export class LevelService {
     });
   }
 
-   
+  async update(id: string, levelInput: LevelUpdateInput){
+    const level = await this.levelRepository.findOne({
+      where: { id },
+    });
+    if (!level) {
+      throw new NotFoundException('المستوى غير موجود');
+    }
+    
+  }
 }

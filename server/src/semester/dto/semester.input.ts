@@ -5,6 +5,6 @@ export class SemesterInput {
   @Field()
   name: string;
 
-  @Field(() => [String])
-  archives: string[];
+  @Field()
+  archiveId: string;
 }
