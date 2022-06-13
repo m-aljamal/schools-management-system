@@ -35,4 +35,8 @@ export class Project {
   @OneToMany(() => Archive, (archive) => archive.project)
   @Field(() => [Archive], { nullable: true })
   archives: Archive[];
+
+  @Field()
+  @Column()
+  current_archive_id: string;
 }

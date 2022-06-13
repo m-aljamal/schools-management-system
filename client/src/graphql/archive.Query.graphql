@@ -1,0 +1,6 @@
+query findAllArchives {
+  findAllArchives {
+    id
+    name
+  }
+}

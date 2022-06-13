@@ -1,18 +1,19 @@
 import { Link, Outlet, useParams } from "react-router-dom";
 
 const ProjectLayout = () => {
-  const { projectId } = useParams();
+  const { projectId, archiveId } = useParams();
+console.log(projectId, archiveId);
 
   const projectLinks = [
     {
       label: "الرئيسية",
-      to: `/projects/${projectId}`,
+      to: `/projects/${projectId}/${archiveId}`,
       icon: "📦",
     },
 
     {
       label: "الموظفين ",
-      to: `/projects/${projectId}/employees`,
+      to: `/projects/${projectId}/employees/${archiveId}`,
       icon: "📦",
     },
     {
@@ -28,6 +29,11 @@ const ProjectLayout = () => {
     {
       label: "الرواتب",
       to: `/projects/${projectId}/salaries`,
+      icon: "📦",
+    },
+    {
+      label: "الارشيف",
+      to: `/projects/${projectId}/archives`,
       icon: "📦",
     },
   ];

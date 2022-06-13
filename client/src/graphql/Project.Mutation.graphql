@@ -1,5 +1,7 @@
-mutation createProject($name_ar: String!) {
-  createProject(input: { name_ar: $name_ar }) {
+mutation createProject($name_ar: String!, $current_archive_id: String!) {
+  createProject(
+    input: { name_ar: $name_ar, current_archive_id: $current_archive_id }
+  ) {
     id
     name_ar
     createdAt

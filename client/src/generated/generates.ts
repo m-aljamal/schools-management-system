@@ -56,15 +56,11 @@ export type AbsentStudentInput = {
 export type Archive = {
   __typename?: 'Archive';
   createdAt: Scalars['DateTime'];
-  divisions: Array<Division>;
-  employees: Array<Employee>;
   id: Scalars['String'];
   levels: Array<Level>;
   name: Scalars['String'];
   project: Project;
   projectId: Scalars['String'];
-  semesters: Array<Semester>;
-  students: Array<Student>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -75,7 +71,7 @@ export type ArchiveInput = {
 
 export type Division = {
   __typename?: 'Division';
-  archives: Array<Archive>;
+  employees?: Maybe<Array<Student>>;
   id: Scalars['String'];
   level: Level;
   levelId: Scalars['String'];
@@ -84,7 +80,6 @@ export type Division = {
 };
 
 export type DivisionInput = {
-  archives: Array<Scalars['String']>;
   levelId: Scalars['String'];
   name: Scalars['String'];
 };
@@ -92,28 +87,37 @@ export type DivisionInput = {
 export type Employee = {
   __typename?: 'Employee';
   absentEmployees: Array<AbsentEmployee>;
-  archives: Array<Archive>;
+  divisions: Array<Division>;
   id: Scalars['String'];
+  levels: Array<Level>;
   name: Scalars['String'];
 };
 
 export type EmployeeInput = {
-  archives: Array<Scalars['String']>;
+  divisions: Array<Scalars['String']>;
+  levels: Array<Scalars['String']>;
   name: Scalars['String'];
 };
 
 export type Level = {
   __typename?: 'Level';
-  archives: Array<Archive>;
+  archive: Archive;
+  archiveId: Scalars['String'];
   divisions?: Maybe<Array<Division>>;
+  employees?: Maybe<Array<Student>>;
   id: Scalars['String'];
   name: Scalars['String'];
   students?: Maybe<Array<Student>>;
 };
 
 export type LevelInput = {
-  archives: Array<Scalars['String']>;
+  archiveId: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type LevelUpdateInput = {
+  archiveId?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -127,6 +131,7 @@ export type Mutation = {
   createProject: Project;
   createSemester: Semester;
   createStudent: Student;
+  updateLevel: Level;
 };
 
 
@@ -174,16 +179,24 @@ export type MutationCreateStudentArgs = {
   input: StudentInput;
 };
 
+
+export type MutationUpdateLevelArgs = {
+  id: Scalars['String'];
+  input: LevelUpdateInput;
+};
+
 export type Project = {
   __typename?: 'Project';
   archives?: Maybe<Array<Archive>>;
   createdAt: Scalars['DateTime'];
+  current_archive_id: Scalars['String'];
   id: Scalars['String'];
   name_ar: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
 export type ProjectInput = {
+  current_archive_id: Scalars['String'];
   name_ar: Scalars['String'];
 };
 
@@ -204,36 +217,35 @@ export type Semester = {
   __typename?: 'Semester';
   absentEmployees: Array<AbsentEmployee>;
   absentStudents: Array<AbsentStudent>;
-  archives: Array<Archive>;
   id: Scalars['String'];
   name: Scalars['String'];
 };
 
 export type SemesterInput = {
-  archives: Array<Scalars['String']>;
+  archiveId: Scalars['String'];
   name: Scalars['String'];
 };
 
 export type Student = {
   __typename?: 'Student';
   absentStudents: Array<AbsentStudent>;
-  archives: Array<Archive>;
   division: Division;
   divisionId: Scalars['String'];
   id: Scalars['String'];
-  levels: Array<Level>;
+  level: Level;
+  levelId: Scalars['String'];
   name: Scalars['String'];
 };
 
 export type StudentInput = {
-  archives: Array<Scalars['String']>;
   divisionId: Scalars['String'];
-  levels: Array<Scalars['String']>;
+  levelId: Scalars['String'];
   name: Scalars['String'];
 };
 
 export type CreateProjectMutationVariables = Exact<{
   name_ar: Scalars['String'];
+  current_archive_id: Scalars['String'];
 }>;
 
 
@@ -242,12 +254,19 @@ export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { 
 export type FindProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any }> };
+export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_id: string }> };
+
+export type FindAllArchivesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindAllArchivesQuery = { __typename?: 'Query', findAllArchives: Array<{ __typename?: 'Archive', id: string, name: string }> };
 
 
 export const CreateProjectDocument = `
-    mutation createProject($name_ar: String!) {
-  createProject(input: {name_ar: $name_ar}) {
+    mutation createProject($name_ar: String!, $current_archive_id: String!) {
+  createProject(
+    input: {name_ar: $name_ar, current_archive_id: $current_archive_id}
+  ) {
     id
     name_ar
     createdAt
@@ -274,6 +293,7 @@ export const FindProjectsDocument = `
     name_ar
     updatedAt
     createdAt
+    current_archive_id
   }
 }
     `;
@@ -289,5 +309,27 @@ export const useFindProjectsQuery = <
     useQuery<FindProjectsQuery, TError, TData>(
       variables === undefined ? ['findProjects'] : ['findProjects', variables],
       fetcher<FindProjectsQuery, FindProjectsQueryVariables>(client, FindProjectsDocument, variables, headers),
+      options
+    );
+export const FindAllArchivesDocument = `
+    query findAllArchives {
+  findAllArchives {
+    id
+    name
+  }
+}
+    `;
+export const useFindAllArchivesQuery = <
+      TData = FindAllArchivesQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: FindAllArchivesQueryVariables,
+      options?: UseQueryOptions<FindAllArchivesQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindAllArchivesQuery, TError, TData>(
+      variables === undefined ? ['findAllArchives'] : ['findAllArchives', variables],
+      fetcher<FindAllArchivesQuery, FindAllArchivesQueryVariables>(client, FindAllArchivesDocument, variables, headers),
       options
     );
