@@ -10,7 +10,7 @@ const CreateProject = () => {
   const onSubmit = (data: ProjectInput) => {
     mutate({
       name_ar: data.name_ar,
-      current_archive_id: data.current_archive_id,
+      current_archive_name: data.current_archive_name,
     });
     navigate("/projects");
   };
@@ -26,7 +26,7 @@ const CreateProject = () => {
           className="border"
         />
         <input
-          {...register("current_archive_id")}
+          {...register("current_archive_name")}
           placeholder="current_archive_id"
           className="border"
         />

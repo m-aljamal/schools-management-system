@@ -2,5 +2,31 @@ query findAllArchives {
   findAllArchives {
     id
     name
+    project {
+      name_ar
+      id
+    }
+  }
+}
+
+query findArchive($name: String!) {
+  findArchive(name: $name) {
+    name
+    id
+    levels {
+      name
+      divisions {
+        name
+        id
+        students {
+          name
+          id
+        }
+        employees {
+          name
+          id
+        }
+      }
+    }
   }
 }

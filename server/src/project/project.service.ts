@@ -20,4 +20,9 @@ export class ProjectService {
   async create(input: ProjectInput): Promise<Project> {
     return this.projectRepository.save(input);
   }
+  async findOne(id: string): Promise<Project> {
+    return this.projectRepository.findOne({
+      where: { id },
+    });
+  }
 }

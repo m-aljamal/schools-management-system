@@ -4,6 +4,6 @@ query findProjects {
     name_ar
     updatedAt
     createdAt
-    current_archive_id
+    current_archive_name
   }
 }

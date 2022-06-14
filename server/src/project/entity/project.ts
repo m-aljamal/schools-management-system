@@ -38,5 +38,5 @@ export class Project {
 
   @Field()
   @Column()
-  current_archive_id: string;
+  current_archive_name: string;
 }

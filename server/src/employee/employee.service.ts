@@ -61,8 +61,4 @@ export class EmployeeService {
     });
     return this.employeeRepo.save(employee);
   }
-
-  private async loadArchives(id: string) {
-    return await this.archiveService.findOne(id);
-  }
 }

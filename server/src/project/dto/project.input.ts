@@ -6,5 +6,5 @@ export class ProjectInput {
   name_ar: string;
 
   @Field()
-  current_archive_id: string;
+  current_archive_name: string;
 }

@@ -189,14 +189,14 @@ export type Project = {
   __typename?: 'Project';
   archives?: Maybe<Array<Archive>>;
   createdAt: Scalars['DateTime'];
-  current_archive_id: Scalars['String'];
+  current_archive_name: Scalars['String'];
   id: Scalars['String'];
   name_ar: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
 export type ProjectInput = {
-  current_archive_id: Scalars['String'];
+  current_archive_name: Scalars['String'];
   name_ar: Scalars['String'];
 };
 
@@ -205,12 +205,18 @@ export type Query = {
   absentStudents: Array<AbsentStudent>;
   findAbsentEmployees: Array<AbsentEmployee>;
   findAllArchives: Array<Archive>;
+  findArchive: Archive;
   findDivisions: Array<Division>;
   findEmployee: Array<Employee>;
   findLevels: Array<Level>;
   findProjects: Array<Project>;
   findSemesters: Array<Semester>;
   findStudents: Array<Student>;
+};
+
+
+export type QueryFindArchiveArgs = {
+  name: Scalars['String'];
 };
 
 export type Semester = {
@@ -245,7 +251,7 @@ export type StudentInput = {
 
 export type CreateProjectMutationVariables = Exact<{
   name_ar: Scalars['String'];
-  current_archive_id: Scalars['String'];
+  current_archive_name: Scalars['String'];
 }>;
 
 
@@ -254,18 +260,25 @@ export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { 
 export type FindProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_id: string }> };
+export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_name: string }> };
 
 export type FindAllArchivesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindAllArchivesQuery = { __typename?: 'Query', findAllArchives: Array<{ __typename?: 'Archive', id: string, name: string }> };
+export type FindAllArchivesQuery = { __typename?: 'Query', findAllArchives: Array<{ __typename?: 'Archive', id: string, name: string, project: { __typename?: 'Project', name_ar: string, id: string } }> };
+
+export type FindArchiveQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename?: 'Archive', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', name: string, id: string }>, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> } };
 
 
 export const CreateProjectDocument = `
-    mutation createProject($name_ar: String!, $current_archive_id: String!) {
+    mutation createProject($name_ar: String!, $current_archive_name: String!) {
   createProject(
-    input: {name_ar: $name_ar, current_archive_id: $current_archive_id}
+    input: {name_ar: $name_ar, current_archive_name: $current_archive_name}
   ) {
     id
     name_ar
@@ -293,7 +306,7 @@ export const FindProjectsDocument = `
     name_ar
     updatedAt
     createdAt
-    current_archive_id
+    current_archive_name
   }
 }
     `;
@@ -316,6 +329,10 @@ export const FindAllArchivesDocument = `
   findAllArchives {
     id
     name
+    project {
+      name_ar
+      id
+    }
   }
 }
     `;
@@ -331,5 +348,42 @@ export const useFindAllArchivesQuery = <
     useQuery<FindAllArchivesQuery, TError, TData>(
       variables === undefined ? ['findAllArchives'] : ['findAllArchives', variables],
       fetcher<FindAllArchivesQuery, FindAllArchivesQueryVariables>(client, FindAllArchivesDocument, variables, headers),
+      options
+    );
+export const FindArchiveDocument = `
+    query findArchive($name: String!) {
+  findArchive(name: $name) {
+    name
+    id
+    levels {
+      name
+      divisions {
+        name
+        id
+        students {
+          name
+          id
+        }
+        employees {
+          name
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+export const useFindArchiveQuery = <
+      TData = FindArchiveQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindArchiveQueryVariables,
+      options?: UseQueryOptions<FindArchiveQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindArchiveQuery, TError, TData>(
+      ['findArchive', variables],
+      fetcher<FindArchiveQuery, FindArchiveQueryVariables>(client, FindArchiveDocument, variables, headers),
       options
     );

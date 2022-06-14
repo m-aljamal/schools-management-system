@@ -2,7 +2,6 @@ import { Link, Outlet, useParams } from "react-router-dom";
 
 const ProjectLayout = () => {
   const { projectId, archiveId } = useParams();
-console.log(projectId, archiveId);
 
   const projectLinks = [
     {
@@ -13,27 +12,27 @@ console.log(projectId, archiveId);
 
     {
       label: "الموظفين ",
-      to: `/projects/${projectId}/employees/${archiveId}`,
+      to: `/projects/${projectId}/${archiveId}/employees`,
       icon: "📦",
     },
     {
       label: "الطلاب ",
-      to: `/projects/${projectId}/students`,
+      to: `/projects/${projectId}/${archiveId}/students`,
       icon: "📦",
     },
     {
       label: "الخصومات",
-      to: `/projects/${projectId}/discounts`,
+      to: `/projects/${projectId}/${archiveId}/discounts`,
       icon: "📦",
     },
     {
       label: "الرواتب",
-      to: `/projects/${projectId}/salaries`,
+      to: `/projects/${projectId}/${archiveId}/salaries`,
       icon: "📦",
     },
     {
       label: "الارشيف",
-      to: `/projects/${projectId}/archives`,
+      to: `/projects/${projectId}/${archiveId}/archives`,
       icon: "📦",
     },
   ];

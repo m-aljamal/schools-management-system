@@ -1,6 +1,6 @@
-mutation createProject($name_ar: String!, $current_archive_id: String!) {
+mutation createProject($name_ar: String!, $current_archive_name: String!) {
   createProject(
-    input: { name_ar: $name_ar, current_archive_id: $current_archive_id }
+    input: { name_ar: $name_ar, current_archive_name: $current_archive_name }
   ) {
     id
     name_ar
