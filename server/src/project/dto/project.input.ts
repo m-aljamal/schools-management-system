@@ -5,6 +5,6 @@ export class ProjectInput {
   @Field()
   name_ar: string;
 
-  @Field()
+  @Field({ nullable: true })
   current_archive_name: string;
 }

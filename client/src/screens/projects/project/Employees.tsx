@@ -1,9 +1,9 @@
 import React from "react";
-import { useFindArchive } from "src/utils/archive";
+import { useArchive } from "src/utils/archive";
 
 const Employees = () => {
-  const { archive } = useFindArchive();
-
+  const { archive } = useArchive();
+ 
   return (
     <div>
       <h1>Employees</h1>

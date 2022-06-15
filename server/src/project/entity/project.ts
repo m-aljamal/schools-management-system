@@ -36,7 +36,7 @@ export class Project {
   @Field(() => [Archive], { nullable: true })
   archives: Archive[];
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   current_archive_name: string;
 }

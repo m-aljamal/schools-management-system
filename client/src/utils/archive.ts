@@ -15,12 +15,12 @@ function useArchiveList() {
   };
 }
 
-function useFindArchive() {
-  const { archiveId } = useParams();
+function useArchive() {
+  const { archiveName } = useParams();
   const { data, error } = useFindArchiveQuery<FindArchiveQuery, Error>(
     graphqlRequestClient(),
     {
-      name: archiveId as string,
+      name: archiveName as string,
     }
   );
   return {
@@ -28,4 +28,4 @@ function useFindArchive() {
   };
 }
 
-export { useArchiveList, useFindArchive };
+export { useArchiveList, useArchive };
