@@ -47,6 +47,10 @@ export class Archive {
   @Field(() => [Level])
   levels: Level[];
 
+  @ManyToMany(() => Employee, (employee) => employee.archives)
+  @Field(() => [Employee])
+  employees: Employee[];
+
   // @ManyToMany(() => Semester, (semester) => semester.archives)
   // @Field(() => [Semester])
   // semesters: Semester[];

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { ArchiveService } from 'src/archive/archive.service';
 import { Repository } from 'typeorm';
@@ -15,9 +19,11 @@ export class LevelService {
   ) {}
 
   async findAll(): Promise<Level[]> {
-    return this.levelRepository.find({
-      relations: ['divisions', 'students', 'archives'],
-    });
+    const query = this.levelRepository.createQueryBuilder('level');
+    query.leftJoinAndSelect('level.divisions', 'division');
+    query.leftJoinAndSelect('division.employees', 'employee');
+    query.leftJoinAndSelect('division.students', 'student');
+    return await query.getMany();
   }
 
   async create(levelInput: LevelInput): Promise<Level> {
@@ -42,13 +48,12 @@ export class LevelService {
     });
   }
 
-  async update(id: string, levelInput: LevelUpdateInput){
+  async update(id: string, levelInput: LevelUpdateInput) {
     const level = await this.levelRepository.findOne({
       where: { id },
     });
     if (!level) {
       throw new NotFoundException('المستوى غير موجود');
     }
-    
   }
 }

@@ -19,6 +19,8 @@ export class ArchiveService {
     query.leftJoinAndSelect('level.divisions', 'division');
     query.leftJoinAndSelect('division.employees', 'employee');
     query.leftJoinAndSelect('division.students', 'student');
+    query.leftJoinAndSelect('archive.employees', 'employees');
+
     return await query.getMany();
   }
 
@@ -37,7 +39,14 @@ export class ArchiveService {
     query.leftJoinAndSelect('level.divisions', 'division');
     query.leftJoinAndSelect('division.employees', 'employee');
     query.leftJoinAndSelect('division.students', 'student');
+    query.leftJoinAndSelect('archive.employees', 'employees');
 
     return await query.getOne();
+  }
+
+  async findById(id: string): Promise<Archive> {
+    return await this.archiveRepository.findOne({
+      where: { id },
+    });
   }
 }

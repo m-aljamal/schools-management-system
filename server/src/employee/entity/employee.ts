@@ -47,4 +47,15 @@ export class Employee {
   @Field(() => [Division])
   @JoinTable()
   divisions: Division[];
+
+  @Field()
+  @Column()
+  jobTitle: string;
+
+  @ManyToMany(() => Archive, (archive) => archive.employees, {
+    cascade: true,
+  })
+  @Field(() => [Archive])
+  @JoinTable()
+  archives: Archive[];
 }
