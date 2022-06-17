@@ -6,6 +6,7 @@ import { Employee } from './entity/employee';
 import { ArchiveService } from 'src/archive/archive.service';
 import { LevelService } from 'src/level/level.service';
 import { DivisionService } from 'src/division/division.service';
+import { FindEmployeeArgs } from './dto/findEmployee.args';
 
 @Injectable()
 export class EmployeeService {
@@ -17,8 +18,18 @@ export class EmployeeService {
     private readonly divisionService: DivisionService,
   ) {}
 
-  async find() {
-    return await this.employeeRepo.find();
+  async find(args: FindEmployeeArgs) {
+    const query = this.employeeRepo.createQueryBuilder('employee');
+    if(args.excludeJobTitle){
+      query.andWhere('employee.jobTitle != :jobTitle', { jobTitle: args.excludeJobTitle });
+    }
+    // query.andWhere('employee.jobTitle != :jobTitle', { jobTitle: 'TEACHER' });
+    query.leftJoinAndSelect('employee.archives', 'archive');
+    query.andWhere('archive.name = :archiveName', {
+      archiveName: args.archiveName,
+    });
+
+    return await query.getMany();
   }
 
   async create(input: EmployeeInput) {
@@ -61,5 +72,16 @@ export class EmployeeService {
       levels,
     });
     return this.employeeRepo.save(employee);
+  }
+
+  async findEmployeesNoTeachers(args: FindEmployeeArgs) {
+    const query = this.employeeRepo.createQueryBuilder('employee');
+    query.andWhere('employee.jobTitle != :jobTitle', { jobTitle: 'TEACHER' });
+    query.leftJoinAndSelect('employee.archives', 'archive');
+    query.andWhere('archive.name = :archiveName', {
+      archiveName: args.archiveName,
+    });
+
+    return await query.getMany();
   }
 }

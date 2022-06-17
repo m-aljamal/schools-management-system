@@ -56,6 +56,7 @@ export type AbsentStudentInput = {
 export type Archive = {
   __typename?: 'Archive';
   createdAt: Scalars['DateTime'];
+  employees: Array<Employee>;
   id: Scalars['String'];
   levels: Array<Level>;
   name: Scalars['String'];
@@ -87,14 +88,18 @@ export type DivisionInput = {
 export type Employee = {
   __typename?: 'Employee';
   absentEmployees: Array<AbsentEmployee>;
+  archives: Array<Archive>;
   divisions: Array<Division>;
   id: Scalars['String'];
+  jobTitle: Scalars['String'];
   levels: Array<Level>;
   name: Scalars['String'];
 };
 
 export type EmployeeInput = {
+  archives: Array<Scalars['String']>;
   divisions: Array<Scalars['String']>;
+  jobTitle: Scalars['String'];
   levels: Array<Scalars['String']>;
   name: Scalars['String'];
 };
@@ -189,14 +194,14 @@ export type Project = {
   __typename?: 'Project';
   archives?: Maybe<Array<Archive>>;
   createdAt: Scalars['DateTime'];
-  current_archive_name: Scalars['String'];
+  current_archive_name?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   name_ar: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
 export type ProjectInput = {
-  current_archive_name: Scalars['String'];
+  current_archive_name?: InputMaybe<Scalars['String']>;
   name_ar: Scalars['String'];
 };
 
@@ -207,7 +212,7 @@ export type Query = {
   findAllArchives: Array<Archive>;
   findArchive: Archive;
   findDivisions: Array<Division>;
-  findEmployee: Array<Employee>;
+  findEmployees: Array<Employee>;
   findLevels: Array<Level>;
   findProjects: Array<Project>;
   findSemesters: Array<Semester>;
@@ -217,6 +222,17 @@ export type Query = {
 
 export type QueryFindArchiveArgs = {
   name: Scalars['String'];
+};
+
+
+export type QueryFindEmployeesArgs = {
+  archiveName: Scalars['String'];
+  excludeJobTitle?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryFindLevelsArgs = {
+  archiveId: Scalars['String'];
 };
 
 export type Semester = {
@@ -260,7 +276,7 @@ export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { 
 export type FindProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_name: string }> };
+export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_name?: string | null }> };
 
 export type FindAllArchivesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -273,6 +289,14 @@ export type FindArchiveQueryVariables = Exact<{
 
 
 export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename?: 'Archive', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', name: string, id: string }>, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> } };
+
+export type FindEmployeesQueryVariables = Exact<{
+  archiveName: Scalars['String'];
+  excludeJobTitle?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindEmployeesQuery = { __typename?: 'Query', findEmployees: Array<{ __typename?: 'Employee', name: string, id: string, jobTitle: string }> };
 
 
 export const CreateProjectDocument = `
@@ -385,5 +409,28 @@ export const useFindArchiveQuery = <
     useQuery<FindArchiveQuery, TError, TData>(
       ['findArchive', variables],
       fetcher<FindArchiveQuery, FindArchiveQueryVariables>(client, FindArchiveDocument, variables, headers),
+      options
+    );
+export const FindEmployeesDocument = `
+    query findEmployees($archiveName: String!, $excludeJobTitle: String) {
+  findEmployees(archiveName: $archiveName, excludeJobTitle: $excludeJobTitle) {
+    name
+    id
+    jobTitle
+  }
+}
+    `;
+export const useFindEmployeesQuery = <
+      TData = FindEmployeesQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindEmployeesQueryVariables,
+      options?: UseQueryOptions<FindEmployeesQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindEmployeesQuery, TError, TData>(
+      ['findEmployees', variables],
+      fetcher<FindEmployeesQuery, FindEmployeesQueryVariables>(client, FindEmployeesDocument, variables, headers),
       options
     );

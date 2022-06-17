@@ -1,0 +1,7 @@
+query findEmployees($archiveName: String!, $excludeJobTitle: String) {
+  findEmployees(archiveName: $archiveName, excludeJobTitle: $excludeJobTitle) {
+    name
+    id
+    jobTitle
+  }
+}

@@ -6,6 +6,7 @@ import {
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
 import { ArchiveService } from 'src/archive/archive.service';
 import { Repository } from 'typeorm';
+import { FindLevelArgs } from './dto/FindLevel.args';
 import { LevelInput } from './dto/level.input';
 import { LevelUpdateInput } from './dto/level.update';
 import { Level } from './entity/level';
@@ -18,11 +19,25 @@ export class LevelService {
     private readonly archiveService: ArchiveService,
   ) {}
 
-  async findAll(): Promise<Level[]> {
+  async findAll(args: FindLevelArgs): Promise<Level[]> {
     const query = this.levelRepository.createQueryBuilder('level');
+    query.where('archive.name = :archiveName', {
+      archiveName: args.archiveName,
+    });
     query.leftJoinAndSelect('level.divisions', 'division');
-    query.leftJoinAndSelect('division.employees', 'employee');
-    query.leftJoinAndSelect('division.students', 'student');
+    if (args.find === 'EMPLOYEES') {
+      query.leftJoinAndSelect('division.employees', 'employee');
+    }
+
+    if (args.find === 'STUDENTS') {
+      query.leftJoinAndSelect('division.students', 'student');
+    }
+    if (args.find === 'ALL') {
+      query.leftJoinAndSelect('division.employees', 'employee');
+      query.leftJoinAndSelect('division.students', 'student');
+    }
+
+    query.leftJoinAndSelect('level.archive', 'archive');
     return await query.getMany();
   }
 
