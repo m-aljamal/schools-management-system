@@ -1,31 +1,47 @@
 import React from "react";
-import { useArchive } from "src/utils/archive";
+import { Link, useParams } from "react-router-dom";
+import { useEmployees } from "src/utils/employees";
+import { useLevels } from "src/utils/levels";
 
 const Employees = () => {
-  const { archive } = useArchive();
- 
+  const { employees } = useEmployees();
+  const { levels } = useLevels();
+  const { projectId, archiveName } = useParams();
   return (
-    <div>
-      <h1>Employees</h1>
-      {archive?.name}
-      <p>Levels</p>
-      {archive?.levels.map((level) => (
-        <>
-          <p>{level.name}</p>
-          <p>
-            {level.divisions?.map((division) => (
-              <>
-                <p>{division.name}</p>
-                <p>
-                  {division.students.map((emp) => (
-                    <p>{emp.name}</p>
+    <div className="p-4">
+      <h1>الموظفين</h1>
+      <div className="grid grid-cols-3 gap-5">
+        {employees.map(({ name, id, jobTitle }) => (
+          <div key={id} className="bg-gray-200  ">
+            <Link to={`/projects/${projectId}/${archiveName}/employee/${id}`}>
+              <p>الاسم:{name}</p>
+              <p>الاسم الوظيفي:{jobTitle}</p>
+            </Link>
+          </div>
+        ))}
+      </div>
+      <p>المدرسين:</p>
+      <div className="grid grid-cols-3 gap-5">
+        {levels.map(({ archive, id, name, divisions }) => (
+          <div key={id} className="bg-gray-200">
+            <p className=" text-red-400">الصف:{name}</p>
+            {divisions?.map(({ name, students, employees }) => (
+              <div key={name}>
+                <p className="text-green-800"> الشعبة:{name}</p>
+                <div>
+                  {employees?.map(({ id, name }) => (
+                    <Link
+                      to={`/projects/${projectId}/${archiveName}/employee/${id}`}
+                    >
+                      <p key={id}>{name}</p>
+                    </Link>
                   ))}
-                </p>
-              </>
+                </div>
+              </div>
             ))}
-          </p>
-        </>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

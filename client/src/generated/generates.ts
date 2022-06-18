@@ -232,7 +232,8 @@ export type QueryFindEmployeesArgs = {
 
 
 export type QueryFindLevelsArgs = {
-  archiveId: Scalars['String'];
+  archiveName: Scalars['String'];
+  find: Scalars['String'];
 };
 
 export type Semester = {
@@ -297,6 +298,14 @@ export type FindEmployeesQueryVariables = Exact<{
 
 
 export type FindEmployeesQuery = { __typename?: 'Query', findEmployees: Array<{ __typename?: 'Employee', name: string, id: string, jobTitle: string }> };
+
+export type FindLevelsQueryVariables = Exact<{
+  archiveName: Scalars['String'];
+  find: Scalars['String'];
+}>;
+
+
+export type FindLevelsQuery = { __typename?: 'Query', findLevels: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string }, divisions?: Array<{ __typename?: 'Division', name: string, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null, students: Array<{ __typename?: 'Student', name: string, id: string }> }> | null }> };
 
 
 export const CreateProjectDocument = `
@@ -432,5 +441,42 @@ export const useFindEmployeesQuery = <
     useQuery<FindEmployeesQuery, TError, TData>(
       ['findEmployees', variables],
       fetcher<FindEmployeesQuery, FindEmployeesQueryVariables>(client, FindEmployeesDocument, variables, headers),
+      options
+    );
+export const FindLevelsDocument = `
+    query findLevels($archiveName: String!, $find: String!) {
+  findLevels(archiveName: $archiveName, find: $find) {
+    id
+    name
+    archive {
+      name
+      id
+    }
+    divisions {
+      name
+      employees {
+        name
+        id
+      }
+      students {
+        name
+        id
+      }
+    }
+  }
+}
+    `;
+export const useFindLevelsQuery = <
+      TData = FindLevelsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindLevelsQueryVariables,
+      options?: UseQueryOptions<FindLevelsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindLevelsQuery, TError, TData>(
+      ['findLevels', variables],
+      fetcher<FindLevelsQuery, FindLevelsQueryVariables>(client, FindLevelsDocument, variables, headers),
       options
     );

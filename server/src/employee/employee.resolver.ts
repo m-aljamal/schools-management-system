@@ -13,10 +13,10 @@ export class TeacherResolver {
     return this.employeeService.find(args);
   }
 
-  // @Query(() => [Employee], { name: 'findEmployeesNoTeachers' })
-  // async findEmployeesNoTeachers(@Args() args: FindEmployeeArgs) {
-  //   return this.employeeService.findEmployeesNoTeachers(args);
-  // }
+  @Query(() => Employee, { name: 'findEmployee' })
+  async findOne(@Args('id') id: string) {
+    return this.employeeService.findOne(id);
+  }
 
   @Mutation(() => Employee, { name: 'createEmployee' })
   async create(@Args('input') input: EmployeeInput) {

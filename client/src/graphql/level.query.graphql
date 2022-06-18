@@ -1,0 +1,22 @@
+query findLevels($archiveName: String!, $find: String!) {
+  findLevels(archiveName: $archiveName, find: $find) {
+    id
+    name
+    archive {
+      name
+      id
+    }
+    divisions {
+      name
+      employees {
+        name
+        id
+      }
+      students {
+        name
+
+        id
+      }
+    }
+  }
+}

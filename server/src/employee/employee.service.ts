@@ -1,3 +1,4 @@
+import { Query } from './../../../client/src/generated/generates';
 import { EmployeeInput } from './dto/employee.input';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,8 +21,10 @@ export class EmployeeService {
 
   async find(args: FindEmployeeArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
-    if(args.excludeJobTitle){
-      query.andWhere('employee.jobTitle != :jobTitle', { jobTitle: args.excludeJobTitle });
+    if (args.excludeJobTitle) {
+      query.andWhere('employee.jobTitle != :jobTitle', {
+        jobTitle: args.excludeJobTitle,
+      });
     }
     // query.andWhere('employee.jobTitle != :jobTitle', { jobTitle: 'TEACHER' });
     query.leftJoinAndSelect('employee.archives', 'archive');
@@ -30,6 +33,25 @@ export class EmployeeService {
     });
 
     return await query.getMany();
+  }
+
+  async findOne(id: string) {
+
+    const query = this.employeeRepo.createQueryBuilder('employee');
+    query.leftJoinAndSelect('employee.archives', 'archive');
+    query.leftJoinAndSelect('employee.levels', 'level');
+    query.leftJoinAndSelect('employee.divisions', 'division');
+    
+
+
+    const employee = await this.employeeRepo.findOne({
+      where: { id },
+      relations: ['archives', 'levels', 'divisions'],
+    });
+    if (!employee) {
+      throw new BadRequestException('Employee not found');
+    }
+    return employee;
   }
 
   async create(input: EmployeeInput) {
@@ -72,16 +94,5 @@ export class EmployeeService {
       levels,
     });
     return this.employeeRepo.save(employee);
-  }
-
-  async findEmployeesNoTeachers(args: FindEmployeeArgs) {
-    const query = this.employeeRepo.createQueryBuilder('employee');
-    query.andWhere('employee.jobTitle != :jobTitle', { jobTitle: 'TEACHER' });
-    query.leftJoinAndSelect('employee.archives', 'archive');
-    query.andWhere('archive.name = :archiveName', {
-      archiveName: args.archiveName,
-    });
-
-    return await query.getMany();
   }
 }
