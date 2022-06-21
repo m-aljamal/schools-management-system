@@ -26,7 +26,7 @@ export class EmployeeService {
         jobTitle: args.excludeJobTitle,
       });
     }
-    // query.andWhere('employee.jobTitle != :jobTitle', { jobTitle: 'TEACHER' });
+    
     query.leftJoinAndSelect('employee.archives', 'archive');
     query.andWhere('archive.name = :archiveName', {
       archiveName: args.archiveName,

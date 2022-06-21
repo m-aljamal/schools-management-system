@@ -212,6 +212,7 @@ export type Query = {
   findAllArchives: Array<Archive>;
   findArchive: Archive;
   findDivisions: Array<Division>;
+  findEmployee: Employee;
   findEmployees: Array<Employee>;
   findLevels: Array<Level>;
   findProjects: Array<Project>;
@@ -222,6 +223,11 @@ export type Query = {
 
 export type QueryFindArchiveArgs = {
   name: Scalars['String'];
+};
+
+
+export type QueryFindEmployeeArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -298,6 +304,13 @@ export type FindEmployeesQueryVariables = Exact<{
 
 
 export type FindEmployeesQuery = { __typename?: 'Query', findEmployees: Array<{ __typename?: 'Employee', name: string, id: string, jobTitle: string }> };
+
+export type FindEmployeeQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', id: string, name: string, levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
 
 export type FindLevelsQueryVariables = Exact<{
   archiveName: Scalars['String'];
@@ -441,6 +454,36 @@ export const useFindEmployeesQuery = <
     useQuery<FindEmployeesQuery, TError, TData>(
       ['findEmployees', variables],
       fetcher<FindEmployeesQuery, FindEmployeesQueryVariables>(client, FindEmployeesDocument, variables, headers),
+      options
+    );
+export const FindEmployeeDocument = `
+    query findEmployee($id: String!) {
+  findEmployee(id: $id) {
+    id
+    name
+    levels {
+      name
+      id
+      divisions {
+        name
+        id
+      }
+    }
+  }
+}
+    `;
+export const useFindEmployeeQuery = <
+      TData = FindEmployeeQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindEmployeeQueryVariables,
+      options?: UseQueryOptions<FindEmployeeQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindEmployeeQuery, TError, TData>(
+      ['findEmployee', variables],
+      fetcher<FindEmployeeQuery, FindEmployeeQueryVariables>(client, FindEmployeeDocument, variables, headers),
       options
     );
 export const FindLevelsDocument = `

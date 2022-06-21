@@ -1,12 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { useEmployee } from "src/utils/employees";
 
 const Employee = () => {
-  const { employeeId } = useParams();
+  const { employee } = useEmployee();
   return (
     <div>
-      Employee id
-      <p>{employeeId}</p>
+      <p>{employee?.name}</p>
     </div>
   );
 };

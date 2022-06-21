@@ -5,3 +5,18 @@ query findEmployees($archiveName: String!, $excludeJobTitle: String) {
     jobTitle
   }
 }
+
+query findEmployee($id: String!) {
+  findEmployee(id: $id) {
+    id
+    name
+    levels {
+      name
+      id
+      divisions {
+        name
+        id
+      }
+    }
+  }
+}
