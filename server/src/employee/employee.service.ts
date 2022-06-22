@@ -1,4 +1,4 @@
-import { Query } from './../../../client/src/generated/generates';
+import { hashPassword } from './../../utils/hashPassword';
 import { EmployeeInput } from './dto/employee.input';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,7 +26,7 @@ export class EmployeeService {
         jobTitle: args.excludeJobTitle,
       });
     }
-    
+
     query.leftJoinAndSelect('employee.archives', 'archive');
     query.andWhere('archive.name = :archiveName', {
       archiveName: args.archiveName,
@@ -36,13 +36,10 @@ export class EmployeeService {
   }
 
   async findOne(id: string) {
-
     const query = this.employeeRepo.createQueryBuilder('employee');
     query.leftJoinAndSelect('employee.archives', 'archive');
     query.leftJoinAndSelect('employee.levels', 'level');
     query.leftJoinAndSelect('employee.divisions', 'division');
-    
-
 
     const employee = await this.employeeRepo.findOne({
       where: { id },
@@ -92,7 +89,14 @@ export class EmployeeService {
       archives,
       divisions,
       levels,
+      password: hashPassword(input.password),
     });
     return this.employeeRepo.save(employee);
+  }
+
+  async findByUsername(usename: string): Promise<Employee> {
+    return await this.employeeRepo.findOne({
+      where: { usename },
+    });
   }
 }

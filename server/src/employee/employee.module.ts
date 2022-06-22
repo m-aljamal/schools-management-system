@@ -15,5 +15,6 @@ import { DivisionModule } from 'src/division/division.module';
     DivisionModule,
   ],
   providers: [EmployeeService, TeacherResolver],
+  exports: [EmployeeService],
 })
-export class TeacherModule {}
+export class EmployeeModule {}

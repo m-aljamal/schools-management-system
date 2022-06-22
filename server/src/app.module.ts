@@ -8,10 +8,11 @@ import { ArchiveModule } from './archive/archive.module';
 import { LevelModule } from './level/level.module';
 import { DivisionModule } from './division/division.module';
 import { StudentModule } from './student/student.module';
-import { TeacherModule } from './employee/employee.module';
+import { EmployeeModule } from './employee/employee.module';
 import { SemesterModule } from './semester/semester.module';
 import { AbsentEmployeeModule } from './absent-employee/absent-employee.module';
 import { AbsentStudentModule } from './absent-student/absent-student.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -47,10 +48,11 @@ import { AbsentStudentModule } from './absent-student/absent-student.module';
     LevelModule,
     DivisionModule,
     StudentModule,
-    TeacherModule,
+    EmployeeModule,
     SemesterModule,
     AbsentEmployeeModule,
     AbsentStudentModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

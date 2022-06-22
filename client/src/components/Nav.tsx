@@ -38,9 +38,25 @@ const adminLinks = [
     icon: "📦",
   },
 ];
-
+const mangerLinks = [
+  {
+    to: "/projects/3756c712-f324-4a85-b6f8-eb7930d453b0/2022-2023",
+    label: "الرئيسية",
+    icon: "📦",
+  },
+  {
+    to: "/employees",
+    label: "الموظفين",
+    icon: "📦",
+  },
+  {
+    to: "/students",
+    label: "الطلاب",
+    icon: "📦",
+  },
+];
 function Nav() {
-  const links = adminLinks;
+  const links = mangerLinks;
 
   return (
     <nav>

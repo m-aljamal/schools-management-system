@@ -58,4 +58,16 @@ export class Employee {
   @Field(() => [Archive])
   @JoinTable()
   archives: Archive[];
+
+  @Field()
+  @Column()
+  usename: string;
+
+  @Column()
+  @Field()
+  password: string;
+
+  @Column()
+  @Field()
+  role: string;
 }
