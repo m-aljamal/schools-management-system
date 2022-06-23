@@ -1,11 +1,12 @@
 import { Link, useMatch, useParams } from "react-router-dom";
+import { useAuth } from "src/context/auth-context";
+import { useProjectLinks } from "src/utils/useLinks";
 
 interface ILink {
   link: {
     label: string;
     to: string;
-    // icon: JSX.Element;
-    icon: string;
+    icon: JSX.Element;
   };
 }
 
@@ -26,42 +27,13 @@ function NavLink({ link }: ILink) {
   );
 }
 
-const adminLinks = [
-  {
-    to: "/",
-    label: "لوحة التحكم",
-    icon: "📦",
-  },
-  {
-    to: "/projects",
-    label: "المشاريع",
-    icon: "📦",
-  },
-];
-const mangerLinks = [
-  {
-    to: "/projects/3756c712-f324-4a85-b6f8-eb7930d453b0/2022-2023",
-    label: "الرئيسية",
-    icon: "📦",
-  },
-  {
-    to: "/projects/3756c712-f324-4a85-b6f8-eb7930d453b0/2022-2023/employees",
-    label: "الموظفين",
-    icon: "📦",
-  },
-  {
-    to: "/students",
-    label: "الطلاب",
-    icon: "📦",
-  },
-];
 function Nav() {
-  const links = mangerLinks;
+  const projectLinks = useProjectLinks();
 
   return (
     <nav>
       <ul className=" space-y-4">
-        {links?.map((link) => (
+        {projectLinks?.map((link) => (
           <li key={link.label}>
             <NavLink link={link} />
           </li>

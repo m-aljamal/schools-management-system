@@ -120,12 +120,15 @@ function useProjectId(page?: string) {
   const { user }: any = useAuth();
   const { projectId } = useParams();
   const navigate = useNavigate();
-  //   useEffect(() => {
-  //     if (user.role !== Role.Admin && user.projectId !== projectId) {
-  //       navigate(`/projects/${user.projectId}/${page}`);
-  //     }
-  //   }, [projectId]);
-  return projectId;
+  useEffect(() => {
+    if (user.role !== "ADMIN" && user.archives[0].projectId !== projectId) {
+      navigate(`/projects/${user.archives[0].projectId}/${page}`);
+    }
+  }, [projectId]);
+  return {
+    projectId,
+    archiveName: user.archives[0].name,
+  };
 }
 
 export {
@@ -134,6 +137,6 @@ export {
   currentUser,
   login,
   logout,
-  //   useProjectId,
+  useProjectId,
   client,
 };
