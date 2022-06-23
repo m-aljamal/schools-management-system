@@ -18,7 +18,7 @@ export class EmployeeInput {
   jobTitle: string;
 
   @Field()
-  usename: string;
+  username: string;
 
   @Field()
   password: string;

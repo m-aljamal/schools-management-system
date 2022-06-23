@@ -45,7 +45,7 @@ const mangerLinks = [
     icon: "📦",
   },
   {
-    to: "/employees",
+    to: "/projects/3756c712-f324-4a85-b6f8-eb7930d453b0/2022-2023/employees",
     label: "الموظفين",
     icon: "📦",
   },

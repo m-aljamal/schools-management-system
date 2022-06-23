@@ -2,6 +2,7 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter as Router } from "react-router-dom";
+import { AuthProvider } from "./auth-context";
 
 type Props = {
   children?: React.ReactNode;
@@ -28,7 +29,9 @@ const AppProvider: React.FC<Props> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
-      <Router>{children}</Router>
+      <Router>
+        <AuthProvider>{children}</AuthProvider>
+      </Router>
     </QueryClientProvider>
   );
 };

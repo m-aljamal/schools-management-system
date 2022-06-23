@@ -94,6 +94,9 @@ export type Employee = {
   jobTitle: Scalars['String'];
   levels: Array<Level>;
   name: Scalars['String'];
+  password: Scalars['String'];
+  role: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type EmployeeInput = {
@@ -102,6 +105,9 @@ export type EmployeeInput = {
   jobTitle: Scalars['String'];
   levels: Array<Scalars['String']>;
   name: Scalars['String'];
+  password: Scalars['String'];
+  role: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type Level = {
@@ -125,6 +131,17 @@ export type LevelUpdateInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken: Scalars['String'];
+  user: Employee;
+};
+
+export type LoginUserInput = {
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAbsentEmployee: AbsentEmployee;
@@ -136,6 +153,7 @@ export type Mutation = {
   createProject: Project;
   createSemester: Semester;
   createStudent: Student;
+  login: LoginResponse;
   updateLevel: Level;
 };
 
@@ -185,6 +203,11 @@ export type MutationCreateStudentArgs = {
 };
 
 
+export type MutationLoginArgs = {
+  loginUserInput: LoginUserInput;
+};
+
+
 export type MutationUpdateLevelArgs = {
   id: Scalars['String'];
   input: LevelUpdateInput;
@@ -208,6 +231,7 @@ export type ProjectInput = {
 export type Query = {
   __typename?: 'Query';
   absentStudents: Array<AbsentStudent>;
+  currentEmployee?: Maybe<Employee>;
   findAbsentEmployees: Array<AbsentEmployee>;
   findAllArchives: Array<Archive>;
   findArchive: Archive;
@@ -296,6 +320,14 @@ export type FindArchiveQueryVariables = Exact<{
 
 
 export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename?: 'Archive', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', name: string, id: string }>, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> } };
+
+export type LoginMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', accessToken: string, user: { __typename?: 'Employee', name: string, id: string, username: string } } };
 
 export type FindEmployeesQueryVariables = Exact<{
   archiveName: Scalars['String'];
@@ -431,6 +463,31 @@ export const useFindArchiveQuery = <
     useQuery<FindArchiveQuery, TError, TData>(
       ['findArchive', variables],
       fetcher<FindArchiveQuery, FindArchiveQueryVariables>(client, FindArchiveDocument, variables, headers),
+      options
+    );
+export const LoginDocument = `
+    mutation login($username: String!, $password: String!) {
+  login(loginUserInput: {password: $password, username: $username}) {
+    accessToken
+    user {
+      name
+      id
+      username
+    }
+  }
+}
+    `;
+export const useLoginMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<LoginMutation, TError, LoginMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
+      ['login'],
+      (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables, headers)(),
       options
     );
 export const FindEmployeesDocument = `

@@ -61,7 +61,7 @@ export class Employee {
 
   @Field()
   @Column()
-  usename: string;
+  username: string;
 
   @Column()
   @Field()

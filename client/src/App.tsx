@@ -1,11 +1,11 @@
-import React from 'react';
-import Auth from './authentication/Auth';
-import UnAuth from './authentication/UnAuth';
- 
+import Auth from "./authentication/Auth";
+import UnAuth from "./authentication/UnAuth";
+import { useAuth } from "./context/auth-context";
 
 function App() {
-  const user = true
-  return user ? <Auth/> : <UnAuth/>
+  const { user }: any = useAuth();
+
+  return user ? <Auth /> : <UnAuth />;
 }
 
 export default App;

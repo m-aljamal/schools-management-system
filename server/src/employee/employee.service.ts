@@ -94,9 +94,10 @@ export class EmployeeService {
     return this.employeeRepo.save(employee);
   }
 
-  async findByUsername(usename: string): Promise<Employee> {
+  async findByUsername(username: string): Promise<Employee> {
     return await this.employeeRepo.findOne({
-      where: { usename },
+      where: { username },
+      relations: ['archives'],
     });
   }
 }
