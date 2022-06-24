@@ -31,10 +31,9 @@ async function currentUser(accessToken: string) {
               name
               role
               username
-              archives{
-                name 
-                id 
-                projectId
+              project{
+                current_archive_name
+                id
               }
             }
           }
@@ -121,13 +120,13 @@ function useProjectId(page?: string) {
   const { projectId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (user.role !== "ADMIN" && user.archives[0].projectId !== projectId) {
-      navigate(`/projects/${user.archives[0].projectId}/${page}`);
+    if (user.role !== "ADMIN" && user.project.id !== projectId) {
+      navigate(`/projects/${user.project.id}/${page}`);
     }
   }, [projectId]);
   return {
     projectId,
-    archiveName: user.archives[0].name,
+    archiveName: user.project.current_archive_name,
   };
 }
 

@@ -1,3 +1,4 @@
+import { Project } from 'src/project/entity/project';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { AbsentEmployee } from 'src/absent-employee/entity/absent-employee';
 import { Archive } from 'src/archive/entity/archive';
@@ -10,6 +11,7 @@ import {
   JoinTable,
   PrimaryGeneratedColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 @ObjectType()
@@ -70,4 +72,12 @@ export class Employee {
   @Column()
   @Field()
   role: string;
+
+  @ManyToOne(() => Project, (project) => project.employees)
+  @Field(() => Project)
+  project: Project;
+
+  @Field()
+  @Column()
+  projectId: string;
 }

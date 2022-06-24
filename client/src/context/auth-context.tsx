@@ -24,7 +24,7 @@ async function bootstrapAppData() {
   return user;
 }
 
-const AuthContext = createContext(null);
+const AuthContext = createContext<Employee | null>(null);
 
 function AuthProvider(props: any) {
   const {
@@ -86,7 +86,7 @@ function useAuthClient() {
   const accessToken = user.accessToken;
   return {
     client: useCallback(() => graphqlRequestClient(accessToken), [accessToken]),
-    projectId: user.role === "ADMIN" ? projectId : user.archives[0].projectId,
+    projectId: user.role === "ADMIN" ? projectId : user.project.id,
   };
 }
 export { AuthProvider, useAuth, useAuthClient };

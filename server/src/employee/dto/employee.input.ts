@@ -25,4 +25,7 @@ export class EmployeeInput {
 
   @Field()
   role: string;
+
+  @Field()
+  projectId: string
 }

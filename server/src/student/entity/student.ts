@@ -49,9 +49,6 @@ export class Student {
   @Column()
   levelId: string;
 
-
-  
-
   // @ManyToMany(() => Archive, (archive) => archive.students, {
   //   cascade: true,
   // })
@@ -62,4 +59,12 @@ export class Student {
   @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.student)
   @Field(() => [AbsentStudent])
   absentStudents: AbsentStudent[];
+
+  @Field()
+  @Column()
+  username: string;
+
+  @Field()
+  @Column()
+  password: string;
 }

@@ -1,12 +1,13 @@
 import { EmployeeModule } from 'src/employee/employee.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
- import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthResolver } from './auth.resolver';
+import { StudentModule } from 'src/student/student.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthResolver } from './auth.resolver';
       },
     }),
     EmployeeModule,
+    StudentModule,
   ],
 
   providers: [AuthService, JwtStrategy, LocalStrategy, AuthResolver],

@@ -11,6 +11,12 @@ export class StudentInput {
   @Field()
   divisionId: string;
 
+  @Field()
+  username: string;
+
+  @Field()
+  password: string;
+
   // @Field(() => [String])
   // archives: string[];
 }

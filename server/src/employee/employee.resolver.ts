@@ -1,15 +1,27 @@
 import { CurrentUser } from './../auth/current-user.decorator';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { EmployeeInput } from './dto/employee.input';
 import { Employee } from './entity/employee';
 import { EmployeeService } from './employee.service';
 import { FindEmployeeArgs } from './dto/findEmployee.args';
 import { UseGuards } from '@nestjs/common';
+import { Project } from 'src/project/entity/project';
+import { ProjectService } from 'src/project/project.service';
 
 @Resolver(() => Employee)
 export class TeacherResolver {
-  constructor(private readonly employeeService: EmployeeService) {}
+  constructor(
+    private readonly employeeService: EmployeeService,
+    private readonly projectService: ProjectService,
+  ) {}
 
   @Query(() => [Employee], { name: 'findEmployees' })
   async findAll(@Args() args: FindEmployeeArgs) {
@@ -30,5 +42,10 @@ export class TeacherResolver {
   @UseGuards(JwtAuthGuard)
   getEmployee(@CurrentUser() user: Employee) {
     return user;
+  }
+
+  @ResolveField(() => Employee)
+  async project(@Parent() employee: Employee): Promise<Project> {
+    return this.projectService.findOne(employee.projectId);
   }
 }

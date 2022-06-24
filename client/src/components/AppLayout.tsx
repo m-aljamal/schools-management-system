@@ -1,5 +1,6 @@
 import { ErrorBoundary } from "react-error-boundary";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "src/context/auth-context";
 import FullPageErrorFallback from "./FullPageErrorFallback";
 import Nav from "./Nav";
 
@@ -35,9 +36,12 @@ function ErrorFallback({ error }: any) {
 }
 
 const UserInfo = () => {
+  const { logout }: any = useAuth();
   return (
     <div>
-      <div className="flex justify-around">icons</div>
+      <div className="flex justify-around">
+        <button onClick={logout}>Logout</button>
+      </div>
       <div className="w-24 h-24 mx-auto mt-8 mb-3">image</div>
       <div className="mb-8">
         <p className=" text-white text-lg">Mohammad jamal</p>

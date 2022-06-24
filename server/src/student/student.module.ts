@@ -9,5 +9,6 @@ import { LevelModule } from 'src/level/level.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Student]), ArchiveModule, LevelModule],
   providers: [StudentService, StudentResolver],
+  exports: [StudentService],
 })
 export class StudentModule {}

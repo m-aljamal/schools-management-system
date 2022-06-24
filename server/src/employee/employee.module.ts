@@ -6,6 +6,7 @@ import { Employee } from './entity/employee';
 import { ArchiveModule } from 'src/archive/archive.module';
 import { LevelModule } from 'src/level/level.module';
 import { DivisionModule } from 'src/division/division.module';
+import { ProjectModule } from 'src/project/project.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { DivisionModule } from 'src/division/division.module';
     ArchiveModule,
     LevelModule,
     DivisionModule,
+    ProjectModule,
   ],
   providers: [EmployeeService, TeacherResolver],
   exports: [EmployeeService],

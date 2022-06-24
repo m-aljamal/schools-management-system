@@ -1,3 +1,5 @@
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 import { ArchiveService } from './archive.service';
 import {
   Resolver,
@@ -20,6 +22,7 @@ export class ArchiveResolver {
     private readonly projectService: ProjectService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => [Archive], { name: 'findAllArchives' })
   async findAll(): Promise<Archive[]> {
     return this.archiveService.findAll();

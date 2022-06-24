@@ -48,4 +48,11 @@ export class StudentService {
     // });
     return await this.studentRepo.save(input);
   }
+
+  async findByUserName(username: string) {
+    return await this.studentRepo.findOne({
+      where: { username },
+      // relations: ['archives', 'absentStudents', 'levels'],
+    });
+  }
 }
