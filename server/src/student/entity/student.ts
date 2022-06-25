@@ -67,4 +67,8 @@ export class Student {
   @Field()
   @Column()
   password: string;
+
+  @Field({ defaultValue: 'student' })
+  @Column({ default: 'student' })
+  role: string;
 }

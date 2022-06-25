@@ -17,5 +17,5 @@ export class Auth {
   accessToken: string;
 
   @Field()
-  type: string;
+  role: string;
 }

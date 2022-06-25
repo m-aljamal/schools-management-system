@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { StudentInput } from './dto/student.input';
 import { ArchiveService } from 'src/archive/archive.service';
 import { LevelService } from 'src/level/level.service';
+import { hashPassword } from 'utils/hashPassword';
 
 @Injectable()
 export class StudentService {
@@ -46,7 +47,11 @@ export class StudentService {
     //   // archives,
     //   levels,
     // });
-    return await this.studentRepo.save(input);
+    const student = this.studentRepo.create({
+      ...input,
+      password: hashPassword(input.password),
+    });
+    return await this.studentRepo.save(student);
   }
 
   async findByUserName(username: string) {

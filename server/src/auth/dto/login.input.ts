@@ -7,4 +7,8 @@ export class LoginUserInput {
 
   @Field()
   password: string;
+
+  @Field()
+  role: string;
+
 }

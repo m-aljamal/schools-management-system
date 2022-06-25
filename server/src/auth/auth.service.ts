@@ -2,7 +2,7 @@ import { StudentService } from './../student/student.service';
 import { Employee } from 'src/employee/entity/employee';
 import { JwtService } from '@nestjs/jwt';
 import { EmployeeService } from './../employee/employee.service';
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { Student } from 'src/student/entity/student';
 
@@ -14,10 +14,18 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validate(username: string, password: string): Promise<Employee | null> {
-    console.log('validate');
+  async validate(
+    username: string,
+    password: string,
+    role: string,
+  ): Promise<Employee | null | Student> {
+    let user: Employee | Student | null;
 
-    const user = await this.employeeService.findByUsername(username);
+    if (role === 'student') {
+      user = await this.studentService.findByUserName(username);
+    } else {
+      user = await this.employeeService.findByUsername(username);
+    }
 
     if (!user) {
       return null;
@@ -32,9 +40,7 @@ export class AuthService {
   }
 
   async login(user: Employee) {
-    console.log('login');
-
-    const payload = { username: user.username, sub: user.id };
+    const payload = { username: user.username, sub: user.id, role: user.role };
 
     const token = this.jwtService.sign(payload);
     return {
@@ -43,34 +49,12 @@ export class AuthService {
     };
   }
 
-  async studentValidate(
-    username: string,
-    password: string,
-  ): Promise<Student | null> {
-    const student = await this.studentService.findByUserName(username);
-
-    if (!student) {
-      return null;
+  async jwtValidate(username: string, role: string) {
+    if (role === 'student') {
+      return await this.studentService.findByUserName(username);
     }
-    const isPasswordMatch = bcrypt.compareSync(password, student.password);
-
-    if (!isPasswordMatch) {
-      return null;
-    }
-
-    return student;
+    return await this.employeeService.findByUsername(username);
   }
-
-  async studentLogin(student: Student) {
-    const payload = { username: student.username, sub: student.id };
-
-    const token = this.jwtService.sign(payload);
-    return {
-      accessToken: token,
-      student,
-    };
-  }
-
   // async verify(token: string) {
   //   console.log('verify');
 
