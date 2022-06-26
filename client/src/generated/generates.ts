@@ -95,7 +95,9 @@ export type Employee = {
   levels: Array<Level>;
   name: Scalars['String'];
   password: Scalars['String'];
-  role: Scalars['String'];
+  project: Project;
+  projectId: Scalars['String'];
+  role: Role;
   username: Scalars['String'];
 };
 
@@ -106,7 +108,8 @@ export type EmployeeInput = {
   levels: Array<Scalars['String']>;
   name: Scalars['String'];
   password: Scalars['String'];
-  role: Scalars['String'];
+  projectId: Scalars['String'];
+  role: Role;
   username: Scalars['String'];
 };
 
@@ -137,7 +140,13 @@ export type LoginResponse = {
   user: Employee;
 };
 
+export enum LoginRole {
+  Employee = 'EMPLOYEE',
+  Student = 'STUDENT'
+}
+
 export type LoginUserInput = {
+  loginRole: LoginRole;
   password: Scalars['String'];
   username: Scalars['String'];
 };
@@ -218,8 +227,10 @@ export type Project = {
   archives?: Maybe<Array<Archive>>;
   createdAt: Scalars['DateTime'];
   current_archive_name?: Maybe<Scalars['String']>;
+  employees?: Maybe<Array<Employee>>;
   id: Scalars['String'];
   name_ar: Scalars['String'];
+  students?: Maybe<Array<Employee>>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -231,7 +242,7 @@ export type ProjectInput = {
 export type Query = {
   __typename?: 'Query';
   absentStudents: Array<AbsentStudent>;
-  currentEmployee?: Maybe<Employee>;
+  currentUser?: Maybe<Employee>;
   findAbsentEmployees: Array<AbsentEmployee>;
   findAllArchives: Array<Archive>;
   findArchive: Archive;
@@ -266,6 +277,20 @@ export type QueryFindLevelsArgs = {
   find: Scalars['String'];
 };
 
+export enum Role {
+  Admin = 'ADMIN',
+  Cleaner = 'CLEANER',
+  Counselor = 'COUNSELOR',
+  DataEntry = 'DATA_ENTRY',
+  EducationSupervisor = 'EDUCATION_SUPERVISOR',
+  Guard = 'GUARD',
+  MediaFotographer = 'MEDIA_Fotographer',
+  Principal = 'PRINCIPAL',
+  Secretary = 'SECRETARY',
+  Student = 'STUDENT',
+  Teacher = 'TEACHER'
+}
+
 export type Semester = {
   __typename?: 'Semester';
   absentEmployees: Array<AbsentEmployee>;
@@ -288,12 +313,20 @@ export type Student = {
   level: Level;
   levelId: Scalars['String'];
   name: Scalars['String'];
+  password: Scalars['String'];
+  project: Project;
+  projectId: Scalars['String'];
+  role: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type StudentInput = {
   divisionId: Scalars['String'];
   levelId: Scalars['String'];
   name: Scalars['String'];
+  password: Scalars['String'];
+  projectId: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type CreateProjectMutationVariables = Exact<{
@@ -324,6 +357,7 @@ export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
+  loginRole: LoginRole;
 }>;
 
 
@@ -466,8 +500,10 @@ export const useFindArchiveQuery = <
       options
     );
 export const LoginDocument = `
-    mutation login($username: String!, $password: String!) {
-  login(loginUserInput: {password: $password, username: $username}) {
+    mutation login($username: String!, $password: String!, $loginRole: LoginRole!) {
+  login(
+    loginUserInput: {password: $password, username: $username, loginRole: $loginRole}
+  ) {
     accessToken
     user {
       name

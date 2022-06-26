@@ -1,6 +1,7 @@
 import { useProjectId } from "./auth-provider";
 import { AiOutlinePieChart } from "react-icons/ai";
 import { useAuth } from "src/context/auth-context";
+import { Role } from "src/generated/generates";
 
 export const useProjectLinks = () => {
   const { archiveName, projectId } = useProjectId();
@@ -50,5 +51,5 @@ export const useProjectLinks = () => {
       icon: <AiOutlinePieChart />,
     },
   ];
-  return user.role === "Admin" ? adminLinks : mangerLinks;
+  return user.role === Role.Admin ? adminLinks : mangerLinks;
 };

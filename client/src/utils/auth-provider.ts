@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "src/context/auth-context";
+import { LoginRole, Role } from "src/generated/generates";
 
 const localStorageKey = "___auth_provider_token___";
 
@@ -25,11 +26,12 @@ async function currentUser(accessToken: string) {
     },
     body: JSON.stringify({
       query: `
-        query currentEmployee{
-          currentEmployee{
+        query currentUser{
+          currentUser{
               id
               name
               role
+              projectId
               username
               project{
                 current_archive_name
@@ -42,8 +44,8 @@ async function currentUser(accessToken: string) {
   });
   const json = await response.json();
 
-  if (json.data.currentEmployee) {
-    return { ...json.data.currentEmployee, accessToken };
+  if (json.data.currentUser) {
+    return { ...json.data.currentUser, accessToken };
   }
   return null;
 }
@@ -51,9 +53,11 @@ async function currentUser(accessToken: string) {
 async function login({
   username,
   password,
+  loginRole,
 }: {
   username: string;
   password: string;
+  loginRole: LoginRole;
 }) {
   const response = await fetch("http://localhost:3001/graphql", {
     method: "POST",
@@ -64,11 +68,13 @@ async function login({
       query: `
       mutation login(
         $username: String!,
-        $password: String!
+        $password: String!,
+        $loginRole: LoginRole!
       ){
         login(loginUserInput:{
           password: $password,
-          username:$username
+          username:$username,
+          loginRole: $loginRole
         }){
           accessToken,
           user{
@@ -82,6 +88,7 @@ async function login({
       variables: {
         username,
         password,
+        loginRole,
       },
     }),
   });
@@ -117,16 +124,19 @@ async function client(endpoint: string, data: any) {
 
 function useProjectId(page?: string) {
   const { user }: any = useAuth();
-  const { projectId } = useParams();
+  const { projectId, archiveName } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (user.role !== "ADMIN" && user.project.id !== projectId) {
+    if (user.role !== Role.Admin && user.project.id !== projectId) {
       navigate(`/projects/${user.project.id}/${page}`);
     }
   }, [projectId]);
   return {
-    projectId,
-    archiveName: user.project.current_archive_name,
+    projectId: user.role === Role.Admin ? projectId : user.project.id,
+    archiveName:
+      user.role === Role.Admin
+        ? archiveName
+        : user.project.current_archive_name,
   };
 }
 

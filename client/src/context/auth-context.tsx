@@ -82,11 +82,12 @@ function useAuth() {
 
 function useAuthClient() {
   const { user }: any = useAuth();
-  const { projectId } = useParams();
+  const { archiveName, projectId } = auth.useProjectId();
   const accessToken = user.accessToken;
   return {
     client: useCallback(() => graphqlRequestClient(accessToken), [accessToken]),
-    projectId: user.role === "ADMIN" ? projectId : user.project.id,
+    projectId,
+    archiveName,
   };
 }
 export { AuthProvider, useAuth, useAuthClient };

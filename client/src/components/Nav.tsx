@@ -1,5 +1,4 @@
-import { Link, useMatch, useParams } from "react-router-dom";
-import { useAuth } from "src/context/auth-context";
+import { Link, useMatch } from "react-router-dom";
 import { useProjectLinks } from "src/utils/useLinks";
 
 interface ILink {

@@ -1,4 +1,5 @@
 import { useQueryClient } from "react-query";
+import { useAuthClient } from "src/context/auth-context";
 import {
   useFindProjectsQuery,
   CreateProjectMutation,
@@ -9,8 +10,10 @@ import {
 import graphqlRequestClient from "./graphqlRequestClient";
 
 function useProjectList() {
+  const { client } = useAuthClient();
+
   const { data, error } = useFindProjectsQuery<FindProjectsQuery, Error>(
-    graphqlRequestClient()
+    client()
   );
 
   return {
@@ -20,7 +23,9 @@ function useProjectList() {
 
 function useCreateProject() {
   const queryClent = useQueryClient();
-  const { mutate } = useCreateProjectMutation<Error>(graphqlRequestClient(), {
+  const { client } = useAuthClient();
+
+  const { mutate } = useCreateProjectMutation<Error>(client(), {
     onSuccess: (
       data: CreateProjectMutation,
       _varibles: CreateProjectMutationVariables,

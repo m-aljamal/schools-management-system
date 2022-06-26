@@ -1,22 +1,24 @@
-import React from "react";
 import AppManager from "src/apps/AppManager";
 import TeacherApp from "src/apps/TeacherApp";
 import { useAuth } from "src/context/auth-context";
+import { Role } from "src/generated/generates";
 import AdminApp from "../apps/AdminApp";
 
 const Auth = () => {
   const { user }: any = useAuth();
-  // check if user is admin or manger or teacher
-  if (user.role === "ADMIN") {
-    return <AdminApp />;
+
+  switch (user.role) {
+    case Role.Admin:
+      return <AdminApp />;
+    case Role.DataEntry:
+      return <AppManager />;
+    case Role.Teacher:
+      return <TeacherApp />;
+    case Role.Student:
+      return <p>Student App</p>;
+    default:
+      return <p>Not Role found </p>;
   }
-  if (user.role === "MANAGER") {
-    return <AppManager />;
-  }
-  if (user.role === "TEACHER") {
-    return <TeacherApp />;
-  }
-  return <p>Not Role found </p>;
 };
 
 export default Auth;
