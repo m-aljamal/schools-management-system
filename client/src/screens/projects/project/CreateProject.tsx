@@ -23,14 +23,14 @@ const CreateProject = () => {
         <input
           {...register("name_ar")}
           placeholder="اسم المشروع"
-          className="border"
+          className="border block my-4"
         />
         <input
           {...register("current_archive_name")}
-          placeholder="current_archive_id"
+          placeholder="current_archive_name"
           className="border"
         />
-        <button>create</button>
+        <button className="border block my-3">create</button>
       </form>
     </div>
   );

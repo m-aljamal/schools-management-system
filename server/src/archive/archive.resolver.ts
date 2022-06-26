@@ -1,5 +1,5 @@
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
-import { UseGuards } from '@nestjs/common';
+import { forwardRef, Inject, UseGuards } from '@nestjs/common';
 import { ArchiveService } from './archive.service';
 import {
   Resolver,

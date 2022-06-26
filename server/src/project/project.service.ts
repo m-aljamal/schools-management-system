@@ -1,5 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ArchiveService } from 'src/archive/archive.service';
 import { Repository } from 'typeorm';
 import { ProjectInput } from './dto/project.input';
 import { UpdateProject } from './dto/project.update';
@@ -10,6 +16,7 @@ export class ProjectService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
+    private readonly archiveService: ArchiveService,
   ) {}
 
   async findAll(): Promise<Project[]> {
@@ -18,8 +25,19 @@ export class ProjectService {
     });
   }
 
-  async create(input: ProjectInput): Promise<Project> {
-    return this.projectRepository.save(input);
+  async create(input: ProjectInput) {
+    const project = await this.projectRepository.save(input);
+
+    const archive = await this.archiveService.create({
+      projectId: project.id,
+      name: input.current_archive_name,
+    });
+
+    await this.projectRepository.save({
+      ...project,
+      current_archive_name: archive.name,
+    });
+    return project;
   }
   async findOne(id: string): Promise<Project> {
     return this.projectRepository.findOne({

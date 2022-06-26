@@ -164,6 +164,7 @@ export type Mutation = {
   createStudent: Student;
   login: LoginResponse;
   updateLevel: Level;
+  updateProject: Project;
 };
 
 
@@ -220,6 +221,12 @@ export type MutationLoginArgs = {
 export type MutationUpdateLevelArgs = {
   id: Scalars['String'];
   input: LevelUpdateInput;
+};
+
+
+export type MutationUpdateProjectArgs = {
+  id: Scalars['String'];
+  updateProjectInput: UpdateProject;
 };
 
 export type Project = {
@@ -327,6 +334,11 @@ export type StudentInput = {
   password: Scalars['String'];
   projectId: Scalars['String'];
   username: Scalars['String'];
+};
+
+export type UpdateProject = {
+  current_archive_name?: InputMaybe<Scalars['String']>;
+  name_ar?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateProjectMutationVariables = Exact<{
