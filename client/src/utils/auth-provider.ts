@@ -126,9 +126,12 @@ function useProjectId(page?: string) {
   const { user }: any = useAuth();
   const { projectId, archiveName } = useParams();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (user.role !== Role.Admin && user.project.id !== projectId) {
-      navigate(`/projects/${user.project.id}/${page}`);
+      navigate(
+        `/projects/${user.project.id}/${user.project.current_archive_name}/${page}`
+      );
     }
   }, [projectId]);
   return {
