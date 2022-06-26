@@ -17,7 +17,7 @@ const Auth = () => {
     case Role.Student:
       return <p>Student App</p>;
     default:
-      return <p>Not Role found </p>;
+      return <p>No Role found </p>;
   }
 };
 
