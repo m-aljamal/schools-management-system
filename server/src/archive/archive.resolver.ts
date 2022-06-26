@@ -14,6 +14,9 @@ import { ArchiveInput } from './dto/archive.input';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from 'src/project/project.service';
 import { FindArchiveArgs } from './dto/findArchive.args';
+import { hasRoles } from 'src/auth/roles.decorator';
+import { Role } from 'utils/enum';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Resolver(() => Archive)
 export class ArchiveResolver {
@@ -22,7 +25,8 @@ export class ArchiveResolver {
     private readonly projectService: ProjectService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @hasRoles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @Query(() => [Archive], { name: 'findAllArchives' })
   async findAll(): Promise<Archive[]> {
     return this.archiveService.findAll();

@@ -11,7 +11,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({
       usernameField: 'username',
       passwordField: 'password',
-
       passReqToCallback: true,
     });
   }
@@ -24,7 +23,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     const user = await this.authService.validate(
       username,
       password,
-      req.body['role'],
+      req.body['loginRole'],
     );
 
     if (!user) {

@@ -13,6 +13,7 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
+import { Role } from 'utils/enum';
 
 @ObjectType()
 @Entity()
@@ -70,8 +71,8 @@ export class Employee {
   password: string;
 
   @Column()
-  @Field()
-  role: string;
+  @Field(() => Role)
+  role: Role;
 
   @ManyToOne(() => Project, (project) => project.employees)
   @Field(() => Project)

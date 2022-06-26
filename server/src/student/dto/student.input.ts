@@ -17,6 +17,6 @@ export class StudentInput {
   @Field()
   password: string;
 
-  // @Field(() => [String])
-  // archives: string[];
+  @Field()
+  projectId: string;
 }

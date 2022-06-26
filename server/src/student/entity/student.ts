@@ -1,18 +1,17 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { AbsentStudent } from 'src/absent-student/entity/absent-student';
-import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Level } from 'src/level/entity/level';
+import { Project } from 'src/project/entity/project';
 import {
   Column,
   Entity,
   Index,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Role } from 'utils/enum';
 
 @ObjectType()
 @Entity()
@@ -25,13 +24,6 @@ export class Student {
   @Field()
   @Column()
   name: string;
-
-  // @ManyToMany(() => Level, (level) => level.students, {
-  //   cascade: true,
-  // })
-  // @Field(() => [Level])
-  // @JoinTable()
-  // levels: Level[];
 
   @ManyToOne(() => Division, (division) => division.students)
   @Field(() => Division)
@@ -49,13 +41,6 @@ export class Student {
   @Column()
   levelId: string;
 
-  // @ManyToMany(() => Archive, (archive) => archive.students, {
-  //   cascade: true,
-  // })
-  // @Field(() => [Archive])
-  // @JoinTable()
-  // archives: Archive[];
-
   @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.student)
   @Field(() => [AbsentStudent])
   absentStudents: AbsentStudent[];
@@ -69,6 +54,18 @@ export class Student {
   password: string;
 
   @Field({ defaultValue: 'student' })
-  @Column({ default: 'student' })
-  role: string;
+  @Column({
+    enum: Role,
+    default: Role.STUDENT,
+    type: 'enum',
+  })
+  role: Role;
+
+  @ManyToOne(() => Project, (project) => project.students)
+  @Field(() => Project)
+  project: Project;
+
+  @Field()
+  @Column()
+  projectId: string;
 }

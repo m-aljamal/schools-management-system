@@ -1,3 +1,4 @@
+import { Role } from 'utils/enum';
 import { StudentService } from './../student/student.service';
 import { Employee } from 'src/employee/entity/employee';
 import { JwtService } from '@nestjs/jwt';
@@ -5,6 +6,7 @@ import { EmployeeService } from './../employee/employee.service';
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { Student } from 'src/student/entity/student';
+import { LoginRole } from 'utils/enum';
 
 @Injectable()
 export class AuthService {
@@ -17,11 +19,11 @@ export class AuthService {
   async validate(
     username: string,
     password: string,
-    role: string,
+    role: LoginRole,
   ): Promise<Employee | null | Student> {
     let user: Employee | Student | null;
 
-    if (role === 'student') {
+    if (LoginRole.STUDENT === role) {
       user = await this.studentService.findByUserName(username);
     } else {
       user = await this.employeeService.findByUsername(username);
@@ -49,8 +51,8 @@ export class AuthService {
     };
   }
 
-  async jwtValidate(username: string, role: string) {
-    if (role === 'student') {
+  async jwtValidate(username: string, role: LoginRole) {
+    if (LoginRole.STUDENT === role) {
       return await this.studentService.findByUserName(username);
     }
     return await this.employeeService.findByUsername(username);
