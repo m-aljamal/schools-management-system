@@ -13,7 +13,7 @@ import { Archive } from './entity/archive';
 import { ArchiveInput } from './dto/archive.input';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from 'src/project/project.service';
-import { FindArchiveArgs } from './dto/findArchive.args';
+import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
 import { hasRoles } from 'src/auth/roles.decorator';
 import { Role } from 'utils/enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -27,14 +27,14 @@ export class ArchiveResolver {
 
   // @hasRoles(Role.ADMIN)
   // @UseGuards(JwtAuthGuard, RolesGuard)
-  @Query(() => [Archive], { name: 'findAllArchives' })
-  async findAll(): Promise<Archive[]> {
-    return this.archiveService.findAll();
+  @Query(() => [Archive], { name: 'findArchives' })
+  async findAll(@Args() findArgs: FindArchivesArgs): Promise<Archive[]> {
+    return this.archiveService.findAll(findArgs);
   }
 
   @Query(() => Archive, { name: 'findArchive' })
-  async findOne(@Args() input: FindArchiveArgs): Promise<Archive> {
-    return this.archiveService.findOne(input);
+  async findArchive(@Args() findArgs: FindArchiveArgs): Promise<Archive> {
+    return this.archiveService.findOne(findArgs);
   }
 
   @Mutation(() => Archive, { name: 'createArchive' })

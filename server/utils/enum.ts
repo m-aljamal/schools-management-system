@@ -26,3 +26,11 @@ export enum LoginRole {
 registerEnumType(LoginRole, {
   name: 'LoginRole',
 });
+
+export enum Sort {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+registerEnumType(Sort, {
+  name: 'Sort',
+});

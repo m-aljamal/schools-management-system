@@ -1,5 +1,5 @@
-query findAllArchives {
-  findAllArchives {
+query findArchives($projectId: String!, $name: String, $sortBy: Sort) {
+  findArchives(projectId: $projectId, name: $name, sortBy: $sortBy) {
     id
     name
     project {
@@ -9,8 +9,8 @@ query findAllArchives {
   }
 }
 
-query findArchive($name: String!) {
-  findArchive(name: $name) {
+query findArchive($name: String!, $projectId: String!, $sortBy: Sort) {
+  findArchive(name: $name, projectId: $projectId, sortBy: $sortBy) {
     name
     id
     levels {

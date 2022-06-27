@@ -251,8 +251,8 @@ export type Query = {
   absentStudents: Array<AbsentStudent>;
   currentUser?: Maybe<Employee>;
   findAbsentEmployees: Array<AbsentEmployee>;
-  findAllArchives: Array<Archive>;
   findArchive: Archive;
+  findArchives: Array<Archive>;
   findDivisions: Array<Division>;
   findEmployee: Employee;
   findEmployees: Array<Employee>;
@@ -265,6 +265,15 @@ export type Query = {
 
 export type QueryFindArchiveArgs = {
   name: Scalars['String'];
+  projectId: Scalars['String'];
+  sortBy?: InputMaybe<Sort>;
+};
+
+
+export type QueryFindArchivesArgs = {
+  name?: InputMaybe<Scalars['String']>;
+  projectId: Scalars['String'];
+  sortBy?: InputMaybe<Sort>;
 };
 
 
@@ -311,6 +320,11 @@ export type SemesterInput = {
   name: Scalars['String'];
 };
 
+export enum Sort {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
 export type Student = {
   __typename?: 'Student';
   absentStudents: Array<AbsentStudent>;
@@ -354,13 +368,19 @@ export type FindProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_name?: string | null }> };
 
-export type FindAllArchivesQueryVariables = Exact<{ [key: string]: never; }>;
+export type FindArchivesQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  sortBy?: InputMaybe<Sort>;
+}>;
 
 
-export type FindAllArchivesQuery = { __typename?: 'Query', findAllArchives: Array<{ __typename?: 'Archive', id: string, name: string, project: { __typename?: 'Project', name_ar: string, id: string } }> };
+export type FindArchivesQuery = { __typename?: 'Query', findArchives: Array<{ __typename?: 'Archive', id: string, name: string, project: { __typename?: 'Project', name_ar: string, id: string } }> };
 
 export type FindArchiveQueryVariables = Exact<{
   name: Scalars['String'];
+  projectId: Scalars['String'];
+  sortBy?: InputMaybe<Sort>;
 }>;
 
 
@@ -448,9 +468,9 @@ export const useFindProjectsQuery = <
       fetcher<FindProjectsQuery, FindProjectsQueryVariables>(client, FindProjectsDocument, variables, headers),
       options
     );
-export const FindAllArchivesDocument = `
-    query findAllArchives {
-  findAllArchives {
+export const FindArchivesDocument = `
+    query findArchives($projectId: String!, $name: String, $sortBy: Sort) {
+  findArchives(projectId: $projectId, name: $name, sortBy: $sortBy) {
     id
     name
     project {
@@ -460,23 +480,23 @@ export const FindAllArchivesDocument = `
   }
 }
     `;
-export const useFindAllArchivesQuery = <
-      TData = FindAllArchivesQuery,
+export const useFindArchivesQuery = <
+      TData = FindArchivesQuery,
       TError = unknown
     >(
       client: GraphQLClient,
-      variables?: FindAllArchivesQueryVariables,
-      options?: UseQueryOptions<FindAllArchivesQuery, TError, TData>,
+      variables: FindArchivesQueryVariables,
+      options?: UseQueryOptions<FindArchivesQuery, TError, TData>,
       headers?: RequestInit['headers']
     ) =>
-    useQuery<FindAllArchivesQuery, TError, TData>(
-      variables === undefined ? ['findAllArchives'] : ['findAllArchives', variables],
-      fetcher<FindAllArchivesQuery, FindAllArchivesQueryVariables>(client, FindAllArchivesDocument, variables, headers),
+    useQuery<FindArchivesQuery, TError, TData>(
+      ['findArchives', variables],
+      fetcher<FindArchivesQuery, FindArchivesQueryVariables>(client, FindArchivesDocument, variables, headers),
       options
     );
 export const FindArchiveDocument = `
-    query findArchive($name: String!) {
-  findArchive(name: $name) {
+    query findArchive($name: String!, $projectId: String!, $sortBy: Sort) {
+  findArchive(name: $name, projectId: $projectId, sortBy: $sortBy) {
     name
     id
     levels {

@@ -1,26 +1,31 @@
-import { FindArchiveQuery } from "./../generated/generates";
 import {
-  useFindAllArchivesQuery,
-  FindAllArchivesQuery,
-  useFindArchiveQuery,
-} from "src/generated/generates";
-import graphqlRequestClient from "./graphqlRequestClient";
-import { useParams } from "react-router-dom";
+  FindArchiveQuery,
+  FindArchivesQuery,
+  useFindArchivesQuery,
+} from "./../generated/generates";
+import { useFindArchiveQuery } from "src/generated/generates";
+import { useAuthClient } from "src/context/auth-context";
+
 function useArchiveList() {
-  const { data, error } = useFindAllArchivesQuery<FindAllArchivesQuery, Error>(
-    graphqlRequestClient()
+  const { client, projectId } = useAuthClient();
+  const { data, error } = useFindArchivesQuery<FindArchivesQuery, Error>(
+    client(),
+    {
+      projectId,
+    }
   );
   return {
-    archives: data?.findAllArchives || [],
+    archives: data?.findArchives || [],
   };
 }
 
 function useArchive() {
-  const { archiveName } = useParams();
+  const { client, projectId, archiveName } = useAuthClient();
   const { data, error } = useFindArchiveQuery<FindArchiveQuery, Error>(
-    graphqlRequestClient(),
+    client(),
     {
-      name: archiveName as string,
+      projectId,
+      name: archiveName,
     }
   );
   return {
