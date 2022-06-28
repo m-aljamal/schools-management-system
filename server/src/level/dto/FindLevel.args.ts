@@ -1,4 +1,5 @@
-import { Field,  ArgsType } from '@nestjs/graphql';
+import { ReturnData } from './../../../utils/enum';
+import { Field, ArgsType } from '@nestjs/graphql';
 
 @ArgsType()
 export class FindLevelArgs {
@@ -6,5 +7,8 @@ export class FindLevelArgs {
   archiveName: string;
 
   @Field()
-  find: string;
+  projectId: string;
+
+  @Field(() => ReturnData)
+  returnData: ReturnData;
 }

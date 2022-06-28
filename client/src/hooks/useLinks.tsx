@@ -29,7 +29,11 @@ export const useProjectLinks = () => {
       to: `/projects/${projectId}/${archiveName}`,
       icon: <AiOutlinePieChart />,
     },
-
+    {
+      label: "الصفوف",
+      to: `/projects/${projectId}/${archiveName}/levels`,
+      icon: <AiOutlinePieChart />,
+    },
     {
       label: "الموظفين ",
       to: `/projects/${projectId}/${archiveName}/employees`,

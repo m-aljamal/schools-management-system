@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "src/context/auth-context";
 import { LoginRole, LoginUserInput } from "src/generated/generates";
-import { useAsync } from "src/utils/hook";
+import { useAsync } from "src/hooks/hook";
 
 const UnAuth = () => {
   return (

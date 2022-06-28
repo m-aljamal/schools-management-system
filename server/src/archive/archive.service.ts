@@ -1,9 +1,10 @@
 import { Archive } from './entity/archive';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArchiveInput } from './dto/archive.input';
 import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class ArchiveService {
@@ -42,6 +43,13 @@ export class ArchiveService {
   }
 
   async create(input: ArchiveInput): Promise<Archive> {
+    const findArchive = await this.archiveRepository.findOne({
+      where: { projectId: input.projectId, name: input.name },
+    });
+    if (findArchive) {
+      throw new BadRequestException('Archive already exists');
+    }
+
     return this.archiveRepository.save(input);
   }
 

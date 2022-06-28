@@ -6,7 +6,6 @@ import { Student } from 'src/student/entity/student';
 import {
   Column,
   Entity,
-  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -31,17 +30,6 @@ export class Level {
   @OneToMany(() => Student, (student) => student.level)
   @Field(() => [Student], { nullable: true })
   students: Student[];
-
-  // @ManyToMany(() => Student, (student) => student.levels)
-  // @Field(() => [Student], { nullable: true })
-  // students: Student[];
-
-  // @ManyToMany(() => Archive, (archive) => archive.levels, {
-  //   cascade: true,
-  // })
-  // @Field(() => [Archive])
-  // @JoinTable()
-  // archives: Archive[];
 
   @ManyToMany(() => Employee, (employee) => employee.levels)
   @Field(() => [Student], { nullable: true })

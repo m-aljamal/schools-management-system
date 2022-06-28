@@ -1,3 +1,4 @@
+import { ReturnData } from './../../utils/enum';
 import {
   BadRequestException,
   Injectable,
@@ -21,39 +22,37 @@ export class LevelService {
 
   async findAll(args: FindLevelArgs): Promise<Level[]> {
     const query = this.levelRepository.createQueryBuilder('level');
-    query.where('archive.name = :archiveName', {
+    query.where('archive.projectId = :projectId', {
+      projectId: args.projectId,
+    });
+    query.andWhere('archive.name = :archiveName', {
       archiveName: args.archiveName,
     });
-    query.leftJoinAndSelect('level.divisions', 'division');
-    if (args.find === 'EMPLOYEES') {
-      query.leftJoinAndSelect('division.employees', 'employee');
-    }
-
-    if (args.find === 'STUDENTS') {
-      query.leftJoinAndSelect('division.students', 'student');
-    }
-    if (args.find === 'ALL') {
-      query.leftJoinAndSelect('division.employees', 'employee');
-      query.leftJoinAndSelect('division.students', 'student');
-    }
-
     query.leftJoinAndSelect('level.archive', 'archive');
+    if (args.returnData === ReturnData.FULL) {
+      query.leftJoinAndSelect('division.employees', 'employee');
+      query.leftJoinAndSelect('division.students', 'student');
+    }
+    if (args.returnData === ReturnData.EMPLOYEE) {
+      query.leftJoinAndSelect('division.employees', 'employee');
+    }
+    if (args.returnData === ReturnData.STUDENT) {
+      query.leftJoinAndSelect('division.students', 'student');
+    }
+    if (args.returnData === ReturnData.LEVELS) {
+      query.leftJoinAndSelect('level.divisions', 'division');
+    }
+
     return await query.getMany();
   }
 
   async create(levelInput: LevelInput): Promise<Level> {
-    // const archives = await Promise.all(
-    //   levelInput.archives.map(async (id) => {
-    //     const archive = await this.archiveService.findOne(id);
-    //     if (!archive) {
-    //       throw new BadRequestException('الارشيف غير موجود');
-    //     }
-    //     return archive;
-    //   }),
-    // );
-    // const level = this.levelRepository.create({
-    //   ...levelInput,
-    // });
+    const findLevel = await this.levelRepository.findOne({
+      where: { name: levelInput.name, archiveId: levelInput.archiveId },
+    });
+    if (findLevel) {
+      throw new BadRequestException('المستوى موجود مسبقا');
+    }
     return await this.levelRepository.save(levelInput);
   }
 

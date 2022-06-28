@@ -1,5 +1,5 @@
 import { Link, useMatch } from "react-router-dom";
-import { useProjectLinks } from "src/utils/useLinks";
+import { useProjectLinks } from "src/hooks/useLinks";
 
 interface ILink {
   link: {

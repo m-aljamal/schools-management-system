@@ -3,6 +3,7 @@ import AppLayout from "src/components/AppLayout";
 import { useAuth } from "src/context/auth-context";
 import Employees from "src/screens/projects/project/Employees";
 import ProjectScreen from "src/screens/projects/project/index";
+import Levels from "src/screens/projects/project/Levels";
 import Students from "src/screens/projects/project/Students";
 const AppManager = () => {
   const { user }: any = useAuth();
@@ -14,6 +15,7 @@ const AppManager = () => {
 
         <Route path="employees" element={<Employees />} />
         <Route path="students" element={<Students />} />
+        <Route path="levels" element={<Levels />} />
       </Route>
       <Route
         path="*"

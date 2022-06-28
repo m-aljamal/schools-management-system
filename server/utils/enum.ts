@@ -34,3 +34,13 @@ export enum Sort {
 registerEnumType(Sort, {
   name: 'Sort',
 });
+
+export enum ReturnData {
+  FULL = 'FULL',
+  EMPLOYEE = 'EMPLOYEE',
+  STUDENT = 'STUDENT',
+  LEVELS = 'LEVELS',
+}
+registerEnumType(ReturnData, {
+  name: 'ReturnData',
+});

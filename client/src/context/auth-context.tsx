@@ -10,8 +10,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import FullPageErrorFallback from "src/components/FullPageErrorFallback";
 import { Employee, LoginUserInput } from "src/generated/generates";
 import graphqlRequestClient from "src/utils/graphqlRequestClient";
-import * as auth from "src/utils/auth-provider";
-import { useAsync } from "src/utils/hook";
+import * as auth from "src/hooks/auth-provider";
+import { useAsync } from "src/hooks/hook";
 
 async function bootstrapAppData() {
   let user: Employee | null = null;
