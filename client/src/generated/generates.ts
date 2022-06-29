@@ -256,10 +256,13 @@ export type Query = {
   findDivisions: Array<Division>;
   findEmployee: Employee;
   findEmployees: Array<Employee>;
-  findLevels: Array<Level>;
   findProjects: Array<Project>;
   findSemesters: Array<Semester>;
   findStudents: Array<Student>;
+  find_levels_divisions: Array<Level>;
+  find_levels_divisions_employees: Array<Level>;
+  find_levels_divisions_employees_students: Array<Level>;
+  find_levels_divisions_students: Array<Level>;
 };
 
 
@@ -288,9 +291,27 @@ export type QueryFindEmployeesArgs = {
 };
 
 
-export type QueryFindLevelsArgs = {
+export type QueryFind_Levels_DivisionsArgs = {
   archiveName: Scalars['String'];
-  find: Scalars['String'];
+  projectId: Scalars['String'];
+};
+
+
+export type QueryFind_Levels_Divisions_EmployeesArgs = {
+  archiveName: Scalars['String'];
+  projectId: Scalars['String'];
+};
+
+
+export type QueryFind_Levels_Divisions_Employees_StudentsArgs = {
+  archiveName: Scalars['String'];
+  projectId: Scalars['String'];
+};
+
+
+export type QueryFind_Levels_Divisions_StudentsArgs = {
+  archiveName: Scalars['String'];
+  projectId: Scalars['String'];
 };
 
 export enum Role {
@@ -410,13 +431,37 @@ export type FindEmployeeQueryVariables = Exact<{
 
 export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', id: string, name: string, levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
 
-export type FindLevelsQueryVariables = Exact<{
+export type Find_Levels_DivisionsQueryVariables = Exact<{
   archiveName: Scalars['String'];
-  find: Scalars['String'];
+  projectId: Scalars['String'];
 }>;
 
 
-export type FindLevelsQuery = { __typename?: 'Query', findLevels: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string }, divisions?: Array<{ __typename?: 'Division', name: string, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null, students: Array<{ __typename?: 'Student', name: string, id: string }> }> | null }> };
+export type Find_Levels_DivisionsQuery = { __typename?: 'Query', find_levels_divisions: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> };
+
+export type Find_Levels_Divisions_Employees_StudentsQueryVariables = Exact<{
+  archiveName: Scalars['String'];
+  projectId: Scalars['String'];
+}>;
+
+
+export type Find_Levels_Divisions_Employees_StudentsQuery = { __typename?: 'Query', find_levels_divisions_employees_students: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', id: string, name: string }>, employees?: Array<{ __typename?: 'Student', id: string }> | null }> | null }> };
+
+export type Find_Levels_Divisions_StudentsQueryVariables = Exact<{
+  archiveName: Scalars['String'];
+  projectId: Scalars['String'];
+}>;
+
+
+export type Find_Levels_Divisions_StudentsQuery = { __typename?: 'Query', find_levels_divisions_students: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', id: string, name: string }> }> | null }> };
+
+export type Find_Levels_Divisions_EmployeesQueryVariables = Exact<{
+  archiveName: Scalars['String'];
+  projectId: Scalars['String'];
+}>;
+
+
+export type Find_Levels_Divisions_EmployeesQuery = { __typename?: 'Query', find_levels_divisions_employees: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> };
 
 
 export const CreateProjectDocument = `
@@ -611,22 +656,130 @@ export const useFindEmployeeQuery = <
       fetcher<FindEmployeeQuery, FindEmployeeQueryVariables>(client, FindEmployeeDocument, variables, headers),
       options
     );
-export const FindLevelsDocument = `
-    query findLevels($archiveName: String!, $find: String!) {
-  findLevels(archiveName: $archiveName, find: $find) {
+export const Find_Levels_DivisionsDocument = `
+    query find_levels_divisions($archiveName: String!, $projectId: String!) {
+  find_levels_divisions(archiveName: $archiveName, projectId: $projectId) {
     id
     name
     archive {
       name
       id
+      projectId
     }
     divisions {
       name
-      employees {
+      id
+    }
+  }
+}
+    `;
+export const useFind_Levels_DivisionsQuery = <
+      TData = Find_Levels_DivisionsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: Find_Levels_DivisionsQueryVariables,
+      options?: UseQueryOptions<Find_Levels_DivisionsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<Find_Levels_DivisionsQuery, TError, TData>(
+      ['find_levels_divisions', variables],
+      fetcher<Find_Levels_DivisionsQuery, Find_Levels_DivisionsQueryVariables>(client, Find_Levels_DivisionsDocument, variables, headers),
+      options
+    );
+export const Find_Levels_Divisions_Employees_StudentsDocument = `
+    query find_levels_divisions_employees_students($archiveName: String!, $projectId: String!) {
+  find_levels_divisions_employees_students(
+    archiveName: $archiveName
+    projectId: $projectId
+  ) {
+    id
+    name
+    archive {
+      name
+      id
+      projectId
+    }
+    divisions {
+      name
+      id
+      students {
+        id
         name
+      }
+      employees {
         id
       }
+    }
+  }
+}
+    `;
+export const useFind_Levels_Divisions_Employees_StudentsQuery = <
+      TData = Find_Levels_Divisions_Employees_StudentsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: Find_Levels_Divisions_Employees_StudentsQueryVariables,
+      options?: UseQueryOptions<Find_Levels_Divisions_Employees_StudentsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<Find_Levels_Divisions_Employees_StudentsQuery, TError, TData>(
+      ['find_levels_divisions_employees_students', variables],
+      fetcher<Find_Levels_Divisions_Employees_StudentsQuery, Find_Levels_Divisions_Employees_StudentsQueryVariables>(client, Find_Levels_Divisions_Employees_StudentsDocument, variables, headers),
+      options
+    );
+export const Find_Levels_Divisions_StudentsDocument = `
+    query find_levels_divisions_students($archiveName: String!, $projectId: String!) {
+  find_levels_divisions_students(archiveName: $archiveName, projectId: $projectId) {
+    id
+    name
+    archive {
+      name
+      id
+      projectId
+    }
+    divisions {
+      name
+      id
       students {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const useFind_Levels_Divisions_StudentsQuery = <
+      TData = Find_Levels_Divisions_StudentsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: Find_Levels_Divisions_StudentsQueryVariables,
+      options?: UseQueryOptions<Find_Levels_Divisions_StudentsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<Find_Levels_Divisions_StudentsQuery, TError, TData>(
+      ['find_levels_divisions_students', variables],
+      fetcher<Find_Levels_Divisions_StudentsQuery, Find_Levels_Divisions_StudentsQueryVariables>(client, Find_Levels_Divisions_StudentsDocument, variables, headers),
+      options
+    );
+export const Find_Levels_Divisions_EmployeesDocument = `
+    query find_levels_divisions_employees($archiveName: String!, $projectId: String!) {
+  find_levels_divisions_employees(
+    archiveName: $archiveName
+    projectId: $projectId
+  ) {
+    id
+    name
+    archive {
+      name
+      id
+      projectId
+    }
+    divisions {
+      name
+      id
+      employees {
         name
         id
       }
@@ -634,17 +787,17 @@ export const FindLevelsDocument = `
   }
 }
     `;
-export const useFindLevelsQuery = <
-      TData = FindLevelsQuery,
+export const useFind_Levels_Divisions_EmployeesQuery = <
+      TData = Find_Levels_Divisions_EmployeesQuery,
       TError = unknown
     >(
       client: GraphQLClient,
-      variables: FindLevelsQueryVariables,
-      options?: UseQueryOptions<FindLevelsQuery, TError, TData>,
+      variables: Find_Levels_Divisions_EmployeesQueryVariables,
+      options?: UseQueryOptions<Find_Levels_Divisions_EmployeesQuery, TError, TData>,
       headers?: RequestInit['headers']
     ) =>
-    useQuery<FindLevelsQuery, TError, TData>(
-      ['findLevels', variables],
-      fetcher<FindLevelsQuery, FindLevelsQueryVariables>(client, FindLevelsDocument, variables, headers),
+    useQuery<Find_Levels_Divisions_EmployeesQuery, TError, TData>(
+      ['find_levels_divisions_employees', variables],
+      fetcher<Find_Levels_Divisions_EmployeesQuery, Find_Levels_Divisions_EmployeesQueryVariables>(client, Find_Levels_Divisions_EmployeesDocument, variables, headers),
       options
     );

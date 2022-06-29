@@ -1,8 +1,8 @@
 import React from "react";
-import { useLevels } from "src/utils/levels";
+import { useLevelsForStudents } from "src/utils/levels";
 
 const Students = () => {
-  const { levels } = useLevels();
+  const { levels } = useLevelsForStudents();
 
   return (
     <div>
@@ -11,7 +11,7 @@ const Students = () => {
         {levels.map(({ archive, id, name, divisions }) => (
           <div key={id} className="bg-gray-200">
             <p className=" text-red-400">الصف:{name}</p>
-            {divisions?.map(({ name, students, employees }) => (
+            {divisions?.map(({ name, students }) => (
               <div key={name}>
                 <p className="text-green-800"> الشعبة:{name}</p>
                 <div>

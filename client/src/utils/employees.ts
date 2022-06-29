@@ -6,7 +6,6 @@ import {
   useFindEmployeeQuery,
   useFindEmployeesQuery,
 } from "./../generated/generates";
-import graphqlRequestClient from "./graphqlRequestClient";
 
 function useEmployees() {
   const { archiveName, client } = useAuthClient();
