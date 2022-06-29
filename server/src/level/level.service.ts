@@ -1,11 +1,10 @@
-import { ReturnData } from './../../utils/enum';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
-import { ArchiveService } from 'src/archive/archive.service';
+import { findLevels } from 'src/queries/levels.query';
 import { Repository } from 'typeorm';
 import { FindLevelArgs } from './dto/FindLevel.args';
 import { LevelInput } from './dto/level.input';
@@ -17,34 +16,7 @@ export class LevelService {
   constructor(
     @InjectRepository(Level)
     private readonly levelRepository: Repository<Level>,
-    private readonly archiveService: ArchiveService,
   ) {}
-
-  async findAll(args: FindLevelArgs): Promise<Level[]> {
-    const query = this.levelRepository.createQueryBuilder('level');
-    query.where('archive.projectId = :projectId', {
-      projectId: args.projectId,
-    });
-    query.andWhere('archive.name = :archiveName', {
-      archiveName: args.archiveName,
-    });
-    query.leftJoinAndSelect('level.archive', 'archive');
-    if (args.returnData === ReturnData.FULL) {
-      query.leftJoinAndSelect('division.employees', 'employee');
-      query.leftJoinAndSelect('division.students', 'student');
-    }
-    if (args.returnData === ReturnData.EMPLOYEE) {
-      query.leftJoinAndSelect('division.employees', 'employee');
-    }
-    if (args.returnData === ReturnData.STUDENT) {
-      query.leftJoinAndSelect('division.students', 'student');
-    }
-    if (args.returnData === ReturnData.LEVELS) {
-      query.leftJoinAndSelect('level.divisions', 'division');
-    }
-
-    return await query.getMany();
-  }
 
   async create(levelInput: LevelInput): Promise<Level> {
     const findLevel = await this.levelRepository.findOne({
@@ -69,5 +41,44 @@ export class LevelService {
     if (!level) {
       throw new NotFoundException('المستوى غير موجود');
     }
+  }
+
+  async find_levels_divisions(args: FindLevelArgs): Promise<Level[]> {
+    const query = this.levelRepository.createQueryBuilder('level');
+
+    findLevels(args, query);
+
+    return await query.getMany();
+  }
+
+  async find_levels_divisions_students(args: FindLevelArgs): Promise<Level[]> {
+    const query = this.levelRepository.createQueryBuilder('level');
+
+    findLevels(args, query);
+
+    query.leftJoinAndSelect('division.students', 'student');
+
+    return await query.getMany();
+  }
+  async find_levels_divisions_employees(args: FindLevelArgs): Promise<Level[]> {
+    const query = this.levelRepository.createQueryBuilder('level');
+
+    findLevels(args, query);
+
+    query.leftJoinAndSelect('division.employees', 'employee');
+    return await query.getMany();
+  }
+
+  async find_levels_divisions_employees_students(
+    args: FindLevelArgs,
+  ): Promise<Level[]> {
+    const query = this.levelRepository.createQueryBuilder('level');
+
+    findLevels(args, query);
+
+    query.leftJoinAndSelect('division.employees', 'employee');
+    query.leftJoinAndSelect('division.students', 'student');
+
+    return await query.getMany();
   }
 }

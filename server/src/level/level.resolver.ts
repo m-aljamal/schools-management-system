@@ -21,9 +21,30 @@ export class LevelResolver {
     private readonly archiveService: ArchiveService,
   ) {}
 
-  @Query(() => [Level], { name: 'findLevels' })
-  async findLevels(@Args() args: FindLevelArgs): Promise<Level[]> {
-    return this.levelService.findAll(args);
+  @Query(() => [Level], { name: 'find_levels_divisions' })
+  async find_levels_divisions(@Args() args: FindLevelArgs): Promise<Level[]> {
+    return this.levelService.find_levels_divisions(args);
+  }
+
+  @Query(() => [Level], { name: 'find_levels_divisions_students' })
+  async find_levels_divisions_students(
+    @Args() args: FindLevelArgs,
+  ): Promise<Level[]> {
+    return this.levelService.find_levels_divisions_students(args);
+  }
+
+  @Query(() => [Level], { name: 'find_levels_divisions_employees' })
+  async find_levels_divisions_employees(
+    @Args() args: FindLevelArgs,
+  ): Promise<Level[]> {
+    return this.levelService.find_levels_divisions_employees(args);
+  }
+
+  @Query(() => [Level], { name: 'find_levels_divisions_employees_students' })
+  async find_levels_divisions_employees_students(
+    @Args() args: FindLevelArgs,
+  ): Promise<Level[]> {
+    return this.levelService.find_levels_divisions_employees_students(args);
   }
 
   @Mutation(() => Level, { name: 'createLevel' })

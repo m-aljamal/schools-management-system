@@ -1,20 +1,98 @@
-query findLevels($archiveName: String!, $find: String!) {
-  findLevels(archiveName: $archiveName, find: $find) {
+query find_levels_divisions($archiveName: String!, $projectId: String!) {
+  find_levels_divisions(archiveName: $archiveName, projectId: $projectId) {
     id
     name
+
     archive {
       name
       id
+      projectId
     }
     divisions {
       name
-      employees {
+      id
+    }
+  }
+}
+
+query find_levels_divisions_employees_students(
+  $archiveName: String!
+  $projectId: String!
+) {
+  find_levels_divisions_employees_students(
+    archiveName: $archiveName
+    projectId: $projectId
+  ) {
+    id
+    name
+
+    archive {
+      name
+      id
+      projectId
+    }
+    divisions {
+      name
+      id
+      students {
+        id
         name
+      }
+      employees {
         id
       }
-      students {
-        name
+    }
+  }
+}
 
+query find_levels_divisions_students(
+  $archiveName: String!
+  $projectId: String!
+) {
+  find_levels_divisions_students(
+    archiveName: $archiveName
+    projectId: $projectId
+  ) {
+    id
+    name
+
+    archive {
+      name
+      id
+      projectId
+    }
+    divisions {
+      name
+      id
+      students {
+        id
+        name
+      }
+    }
+  }
+}
+
+query find_levels_divisions_employees(
+  $archiveName: String!
+  $projectId: String!
+) {
+  find_levels_divisions_employees(
+    archiveName: $archiveName
+    projectId: $projectId
+  ) {
+    id
+    name
+
+    archive {
+      name
+      id
+      projectId
+    }
+    divisions {
+      name
+      id
+      employees {
+        name
         id
       }
     }
