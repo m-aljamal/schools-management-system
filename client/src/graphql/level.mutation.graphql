@@ -1,0 +1,6 @@
+mutation createLevel($name: String!, $archiveId: String!) {
+  createLevel(input: { name: $name, archiveId: $archiveId }) {
+    id
+    name
+  }
+}

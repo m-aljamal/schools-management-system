@@ -233,6 +233,7 @@ export type Project = {
   __typename?: 'Project';
   archives?: Maybe<Array<Archive>>;
   createdAt: Scalars['DateTime'];
+  current_archive_id?: Maybe<Scalars['String']>;
   current_archive_name?: Maybe<Scalars['String']>;
   employees?: Maybe<Array<Employee>>;
   id: Scalars['String'];
@@ -242,6 +243,7 @@ export type Project = {
 };
 
 export type ProjectInput = {
+  current_archive_id?: InputMaybe<Scalars['String']>;
   current_archive_name?: InputMaybe<Scalars['String']>;
   name_ar: Scalars['String'];
 };
@@ -372,6 +374,7 @@ export type StudentInput = {
 };
 
 export type UpdateProject = {
+  current_archive_id?: InputMaybe<Scalars['String']>;
   current_archive_name?: InputMaybe<Scalars['String']>;
   name_ar?: InputMaybe<Scalars['String']>;
 };
@@ -416,6 +419,14 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', accessToken: string, user: { __typename?: 'Employee', name: string, id: string, username: string } } };
 
+export type CreateDivisionMutationVariables = Exact<{
+  levelId: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type CreateDivisionMutation = { __typename?: 'Mutation', createDivision: { __typename?: 'Division', id: string, name: string } };
+
 export type FindEmployeesQueryVariables = Exact<{
   archiveName: Scalars['String'];
   excludeJobTitle?: InputMaybe<Scalars['String']>;
@@ -430,6 +441,14 @@ export type FindEmployeeQueryVariables = Exact<{
 
 
 export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', id: string, name: string, levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
+
+export type CreateLevelMutationVariables = Exact<{
+  name: Scalars['String'];
+  archiveId: Scalars['String'];
+}>;
+
+
+export type CreateLevelMutation = { __typename?: 'Mutation', createLevel: { __typename?: 'Level', id: string, name: string } };
 
 export type Find_Levels_DivisionsQueryVariables = Exact<{
   archiveName: Scalars['String'];
@@ -603,6 +622,27 @@ export const useLoginMutation = <
       (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables, headers)(),
       options
     );
+export const CreateDivisionDocument = `
+    mutation createDivision($levelId: String!, $name: String!) {
+  createDivision(input: {levelId: $levelId, name: $name}) {
+    id
+    name
+  }
+}
+    `;
+export const useCreateDivisionMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreateDivisionMutation, TError, CreateDivisionMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreateDivisionMutation, TError, CreateDivisionMutationVariables, TContext>(
+      ['createDivision'],
+      (variables?: CreateDivisionMutationVariables) => fetcher<CreateDivisionMutation, CreateDivisionMutationVariables>(client, CreateDivisionDocument, variables, headers)(),
+      options
+    );
 export const FindEmployeesDocument = `
     query findEmployees($archiveName: String!, $excludeJobTitle: String) {
   findEmployees(archiveName: $archiveName, excludeJobTitle: $excludeJobTitle) {
@@ -654,6 +694,27 @@ export const useFindEmployeeQuery = <
     useQuery<FindEmployeeQuery, TError, TData>(
       ['findEmployee', variables],
       fetcher<FindEmployeeQuery, FindEmployeeQueryVariables>(client, FindEmployeeDocument, variables, headers),
+      options
+    );
+export const CreateLevelDocument = `
+    mutation createLevel($name: String!, $archiveId: String!) {
+  createLevel(input: {name: $name, archiveId: $archiveId}) {
+    id
+    name
+  }
+}
+    `;
+export const useCreateLevelMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreateLevelMutation, TError, CreateLevelMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreateLevelMutation, TError, CreateLevelMutationVariables, TContext>(
+      ['createLevel'],
+      (variables?: CreateLevelMutationVariables) => fetcher<CreateLevelMutation, CreateLevelMutationVariables>(client, CreateLevelDocument, variables, headers)(),
       options
     );
 export const Find_Levels_DivisionsDocument = `

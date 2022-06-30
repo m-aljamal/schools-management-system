@@ -36,6 +36,7 @@ async function currentUser(accessToken: string) {
               project{
                 current_archive_name
                 id
+                current_archive_id
               }
             }
           }
@@ -134,12 +135,14 @@ function useProjectId(page?: string) {
       );
     }
   }, [projectId]);
+
   return {
     projectId: user.role === Role.Admin ? projectId : user.project.id,
     archiveName:
       user.role === Role.Admin
         ? archiveName
-        : user.project.current_archive_name,
+        : archiveName || user.project.current_archive_name,
+    archiveId: user.project.current_archive_id,
   };
 }
 

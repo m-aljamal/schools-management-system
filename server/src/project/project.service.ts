@@ -36,6 +36,7 @@ export class ProjectService {
     await this.projectRepository.save({
       ...project,
       current_archive_name: archive.name,
+      current_archive_id: archive.id,
     });
     return project;
   }

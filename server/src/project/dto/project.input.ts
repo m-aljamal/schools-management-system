@@ -7,4 +7,7 @@ export class ProjectInput {
 
   @Field({ nullable: true })
   current_archive_name: string;
+  
+  @Field({ nullable: true })
+  current_archive_id: string;
 }

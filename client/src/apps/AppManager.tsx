@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "src/components/AppLayout";
 import { useAuth } from "src/context/auth-context";
+import Archives from "src/screens/projects/project/Archives";
 import Employees from "src/screens/projects/project/Employees";
 import ProjectScreen from "src/screens/projects/project/index";
 import Levels from "src/screens/projects/project/Levels";
@@ -16,6 +17,7 @@ const AppManager = () => {
         <Route path="employees" element={<Employees />} />
         <Route path="students" element={<Students />} />
         <Route path="levels" element={<Levels />} />
+        <Route path="archives" element={<Archives />} />
       </Route>
       <Route
         path="*"

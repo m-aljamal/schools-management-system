@@ -42,6 +42,11 @@ export class Project {
   @Column({ nullable: true })
   current_archive_name: string;
 
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  current_archive_id: string;
+
   @OneToMany(() => Employee, (employee) => employee.project)
   @Field(() => [Employee], { nullable: true })
   employees: Employee[];

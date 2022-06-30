@@ -54,6 +54,11 @@ export const useProjectLinks = () => {
       to: `/projects/${projectId}/${archiveName}/salaries`,
       icon: <AiOutlinePieChart />,
     },
+    {
+      label: "الارشيف",
+      to: `/projects/${projectId}/${archiveName}/archives`,
+      icon: <AiOutlinePieChart />,
+    },
   ];
   return user.role === Role.Admin ? adminLinks : mangerLinks;
 };

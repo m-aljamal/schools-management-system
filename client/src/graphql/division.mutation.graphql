@@ -1,0 +1,6 @@
+mutation createDivision($levelId: String!, $name: String!) {
+  createDivision(input: { levelId: $levelId, name: $name }) {
+    id
+    name
+  }
+}
