@@ -289,7 +289,7 @@ export type QueryFindEmployeeArgs = {
 
 export type QueryFindEmployeesArgs = {
   archiveName: Scalars['String'];
-  excludeJobTitle?: InputMaybe<Scalars['String']>;
+  excludeJobTitle?: InputMaybe<Role>;
 };
 
 
@@ -429,7 +429,7 @@ export type CreateDivisionMutation = { __typename?: 'Mutation', createDivision: 
 
 export type FindEmployeesQueryVariables = Exact<{
   archiveName: Scalars['String'];
-  excludeJobTitle?: InputMaybe<Scalars['String']>;
+  excludeJobTitle?: InputMaybe<Role>;
 }>;
 
 
@@ -644,7 +644,7 @@ export const useCreateDivisionMutation = <
       options
     );
 export const FindEmployeesDocument = `
-    query findEmployees($archiveName: String!, $excludeJobTitle: String) {
+    query findEmployees($archiveName: String!, $excludeJobTitle: Role) {
   findEmployees(archiveName: $archiveName, excludeJobTitle: $excludeJobTitle) {
     name
     id

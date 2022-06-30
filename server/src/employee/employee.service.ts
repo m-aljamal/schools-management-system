@@ -8,6 +8,7 @@ import { ArchiveService } from 'src/archive/archive.service';
 import { LevelService } from 'src/level/level.service';
 import { DivisionService } from 'src/division/division.service';
 import { FindEmployeeArgs } from './dto/findEmployee.args';
+import { Role } from 'utils/enum';
 
 @Injectable()
 export class EmployeeService {
@@ -21,9 +22,11 @@ export class EmployeeService {
 
   async find(args: FindEmployeeArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
+    console.log(args);
+
     if (args.excludeJobTitle) {
-      query.andWhere('employee.jobTitle != :jobTitle', {
-        jobTitle: args.excludeJobTitle,
+      query.where('employee.role != :role', {
+        role: args.excludeJobTitle,
       });
     }
 
@@ -64,7 +67,7 @@ export class EmployeeService {
 
     let levels = [];
     let divisions = [];
-    if (input.jobTitle === 'TEACHER') {
+    if (input.role === Role.TEACHER) {
       levels = await Promise.all(
         input.levels.map(async (id) => {
           const level = await this.levelService.findOne(id);

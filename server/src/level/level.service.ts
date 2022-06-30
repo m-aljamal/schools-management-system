@@ -64,8 +64,7 @@ export class LevelService {
     const query = this.levelRepository.createQueryBuilder('level');
 
     findLevels(args, query);
-
-    query.leftJoinAndSelect('division.employees', 'employee');
+    query.innerJoinAndSelect('division.employees', 'employee');
     return await query.getMany();
   }
 

@@ -36,7 +36,7 @@ export class LevelResolver {
   @Query(() => [Level], { name: 'find_levels_divisions_employees' })
   async find_levels_divisions_employees(
     @Args() args: FindLevelArgs,
-  ): Promise<Level[]> {
+  )  {
     return this.levelService.find_levels_divisions_employees(args);
   }
 

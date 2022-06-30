@@ -3,6 +3,7 @@ import { useAuthClient } from "src/context/auth-context";
 import {
   FindEmployeeQuery,
   FindEmployeesQuery,
+  Role,
   useFindEmployeeQuery,
   useFindEmployeesQuery,
 } from "./../generated/generates";
@@ -12,7 +13,7 @@ function useEmployees() {
 
   const { data } = useFindEmployeesQuery<FindEmployeesQuery, Error>(client(), {
     archiveName: archiveName as string,
-    excludeJobTitle: "TEACHER",
+    excludeJobTitle: Role.Teacher,
   });
   return {
     employees: data?.findEmployees || [],

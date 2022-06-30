@@ -8,7 +8,6 @@ const Employees = () => {
   const { levels } = useLevelsForEmployees();
   const { projectId, archiveName } = useParams();
 
-   
   return (
     <div className="p-4">
       <h1>الموظفين</h1>
