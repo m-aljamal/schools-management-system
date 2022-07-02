@@ -34,3 +34,14 @@ export enum Sort {
 registerEnumType(Sort, {
   name: 'Sort',
 });
+
+export enum ExamType {
+  FINAL = 'امتحان',
+  FIRST_QUIZ = 'مذاكرة اولى',
+  SECOND_QUIZ = 'مذاكرة ثانية',
+  ORAL_EXAM = 'امتحان شفوي',
+  HOME_WORK = 'وظائف',
+}
+registerEnumType(ExamType, {
+  name: 'ExamType',
+});

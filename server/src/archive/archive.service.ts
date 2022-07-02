@@ -4,13 +4,15 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArchiveInput } from './dto/archive.input';
 import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
-import { NotFoundError } from 'rxjs';
+import { SemesterService } from 'src/semester/semester.service';
+import { semesters } from 'utils/constant';
 
 @Injectable()
 export class ArchiveService {
   constructor(
     @InjectRepository(Archive)
     private readonly archiveRepository: Repository<Archive>,
+    private readonly semesterService: SemesterService,
   ) {}
 
   async findAll(findArgs: FindArchivesArgs): Promise<Archive[]> {
@@ -38,7 +40,7 @@ export class ArchiveService {
     query.leftJoinAndSelect('level.divisions', 'division');
     query.leftJoinAndSelect('division.employees', 'employee');
     query.leftJoinAndSelect('division.students', 'student');
-
+    query.leftJoinAndSelect('archive.semesters', 'semester');
     return await query.getOne();
   }
 
@@ -50,7 +52,15 @@ export class ArchiveService {
       throw new BadRequestException('Archive already exists');
     }
 
-    return this.archiveRepository.save(input);
+    const archive = await this.archiveRepository.save(input);
+
+    for (const s of semesters) {
+      await this.semesterService.create({
+        name: s,
+        archiveId: archive.id,
+      });
+    }
+    return archive;
   }
 
   async findById(id: string): Promise<Archive> {

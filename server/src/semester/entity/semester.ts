@@ -5,8 +5,7 @@ import { Archive } from 'src/archive/entity/archive';
 import {
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -22,12 +21,13 @@ export class Semester {
   @Column()
   name: string;
 
-  // @ManyToMany(() => Archive, (archive) => archive.semesters, {
-  //   cascade: true,
-  // })
-  // @Field(() => [Archive])
-  // @JoinTable()
-  // archives: Archive[];
+  @ManyToOne(() => Archive, (archive) => archive.semesters)
+  @Field(() => Archive)
+  archive: Archive;
+
+  @Field()
+  @Column()
+  archiveId: String;
 
   @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.semester)
   @Field(() => [AbsentStudent])

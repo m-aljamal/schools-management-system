@@ -13,6 +13,7 @@ import { SemesterModule } from './semester/semester.module';
 import { AbsentEmployeeModule } from './absent-employee/absent-employee.module';
 import { AbsentStudentModule } from './absent-student/absent-student.module';
 import { AuthModule } from './auth/auth.module';
+import { ExamModule } from './exam/exam.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -53,6 +54,7 @@ import { AuthModule } from './auth/auth.module';
     AbsentEmployeeModule,
     AbsentStudentModule,
     AuthModule,
+    ExamModule,
   ],
 })
 export class AppModule {}
