@@ -1,7 +1,7 @@
-import { InputType } from "@nestjs/graphql";
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class ExamInput {
-    marks: number;
-    
+  @Field(() => Number)
+  mark: number;
 }

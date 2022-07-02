@@ -1,3 +1,4 @@
+import { ExamInput } from './dto/exam.input';
 import { Exam } from './entity/exam';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ExamService } from './exam.service';
@@ -12,7 +13,7 @@ export class ExamResolver {
   }
 
   @Mutation(() => Exam, { name: 'createExam' })
-  async createExam(@Args('input') input: Exam): Promise<Exam> {
+  async createExam(@Args('input') input: ExamInput): Promise<Exam> {
     return await this.examService.create(input);
   }
 }

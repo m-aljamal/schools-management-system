@@ -7,4 +7,7 @@ export class Exam {
   @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Field()
+  mark: number;
 }

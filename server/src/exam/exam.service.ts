@@ -1,3 +1,4 @@
+import { ExamInput } from './dto/exam.input';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,5 +13,9 @@ export class ExamService {
 
   async find(): Promise<Exam[]> {
     return await this.examRepo.find();
+  }
+
+  async create(input: ExamInput): Promise<Exam> {
+    return await this.examRepo.save(input);
   }
 }
