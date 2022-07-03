@@ -14,6 +14,8 @@ import { AbsentEmployeeModule } from './absent-employee/absent-employee.module';
 import { AbsentStudentModule } from './absent-student/absent-student.module';
 import { AuthModule } from './auth/auth.module';
 import { ExamModule } from './exam/exam.module';
+import { SubjectModule } from './subject/subject.module';
+import { GradeModule } from './grade/grade.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -55,6 +57,8 @@ import { ExamModule } from './exam/exam.module';
     AbsentStudentModule,
     AuthModule,
     ExamModule,
+    SubjectModule,
+    GradeModule,
   ],
 })
 export class AppModule {}

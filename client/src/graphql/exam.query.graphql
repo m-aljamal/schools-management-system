@@ -1,0 +1,10 @@
+query findExams {
+  findExams {
+    id
+    level {
+      name
+    }
+  }
+}
+
+

@@ -62,6 +62,7 @@ export type Archive = {
   name: Scalars['String'];
   project: Project;
   projectId: Scalars['String'];
+  semesters: Array<Semester>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -91,7 +92,6 @@ export type Employee = {
   archives: Array<Archive>;
   divisions: Array<Division>;
   id: Scalars['String'];
-  jobTitle: Scalars['String'];
   levels: Array<Level>;
   name: Scalars['String'];
   password: Scalars['String'];
@@ -103,14 +103,55 @@ export type Employee = {
 
 export type EmployeeInput = {
   archives: Array<Scalars['String']>;
-  divisions: Array<Scalars['String']>;
-  jobTitle: Scalars['String'];
-  levels: Array<Scalars['String']>;
+  divisions?: InputMaybe<Array<Scalars['String']>>;
+  levels?: InputMaybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   password: Scalars['String'];
   projectId: Scalars['String'];
   role: Role;
   username: Scalars['String'];
+};
+
+export type Exam = {
+  __typename?: 'Exam';
+  grades: Array<Grade>;
+  id: Scalars['String'];
+  level: Level;
+  levelId: Scalars['String'];
+  semester: Semester;
+  semesterId: Scalars['String'];
+};
+
+export type ExamInput = {
+  levelId: Scalars['String'];
+  semesterId: Scalars['String'];
+};
+
+export type Grade = {
+  __typename?: 'Grade';
+  exam: Exam;
+  examId: Scalars['String'];
+  final_grade?: Maybe<Scalars['Float']>;
+  first_quiz_grade?: Maybe<Scalars['Float']>;
+  homework_grade?: Maybe<Scalars['Float']>;
+  id: Scalars['String'];
+  oral_grade?: Maybe<Scalars['Float']>;
+  second_quiz_grade?: Maybe<Scalars['Float']>;
+  student: Student;
+  studentId: Scalars['String'];
+  subject: Subject;
+  subjectId: Scalars['String'];
+};
+
+export type GradeInput = {
+  examId: Scalars['String'];
+  final_grade?: InputMaybe<Scalars['Float']>;
+  first_quiz_grade?: InputMaybe<Scalars['Float']>;
+  homework_grade?: InputMaybe<Scalars['Float']>;
+  oral_grade?: InputMaybe<Scalars['Float']>;
+  second_quiz_grade?: InputMaybe<Scalars['Float']>;
+  studentId: Scalars['String'];
+  subjectId: Scalars['String'];
 };
 
 export type Level = {
@@ -119,9 +160,11 @@ export type Level = {
   archiveId: Scalars['String'];
   divisions?: Maybe<Array<Division>>;
   employees?: Maybe<Array<Student>>;
+  exams: Array<Exam>;
   id: Scalars['String'];
   name: Scalars['String'];
   students?: Maybe<Array<Student>>;
+  subjects: Array<Subject>;
 };
 
 export type LevelInput = {
@@ -158,10 +201,13 @@ export type Mutation = {
   createArchive: Archive;
   createDivision: Division;
   createEmployee: Employee;
+  createExam: Exam;
+  createGrade: Grade;
   createLevel: Level;
   createProject: Project;
   createSemester: Semester;
   createStudent: Student;
+  createSubject: Subject;
   login: LoginResponse;
   updateLevel: Level;
   updateProject: Project;
@@ -193,6 +239,16 @@ export type MutationCreateEmployeeArgs = {
 };
 
 
+export type MutationCreateExamArgs = {
+  input: ExamInput;
+};
+
+
+export type MutationCreateGradeArgs = {
+  input: GradeInput;
+};
+
+
 export type MutationCreateLevelArgs = {
   input: LevelInput;
 };
@@ -210,6 +266,11 @@ export type MutationCreateSemesterArgs = {
 
 export type MutationCreateStudentArgs = {
   input: StudentInput;
+};
+
+
+export type MutationCreateSubjectArgs = {
+  input: SubjectInput;
 };
 
 
@@ -258,9 +319,12 @@ export type Query = {
   findDivisions: Array<Division>;
   findEmployee: Employee;
   findEmployees: Array<Employee>;
+  findExams: Array<Exam>;
+  findGrades: Array<Grade>;
   findProjects: Array<Project>;
   findSemesters: Array<Semester>;
   findStudents: Array<Student>;
+  findSubjects: Array<Subject>;
   find_levels_divisions: Array<Level>;
   find_levels_divisions_employees: Array<Level>;
   find_levels_divisions_employees_students: Array<Level>;
@@ -334,6 +398,9 @@ export type Semester = {
   __typename?: 'Semester';
   absentEmployees: Array<AbsentEmployee>;
   absentStudents: Array<AbsentStudent>;
+  archive: Archive;
+  archiveId: Scalars['String'];
+  exams: Array<Exam>;
   id: Scalars['String'];
   name: Scalars['String'];
 };
@@ -353,6 +420,7 @@ export type Student = {
   absentStudents: Array<AbsentStudent>;
   division: Division;
   divisionId: Scalars['String'];
+  grades: Array<Grade>;
   id: Scalars['String'];
   level: Level;
   levelId: Scalars['String'];
@@ -371,6 +439,20 @@ export type StudentInput = {
   password: Scalars['String'];
   projectId: Scalars['String'];
   username: Scalars['String'];
+};
+
+export type Subject = {
+  __typename?: 'Subject';
+  grades: Array<Grade>;
+  id: Scalars['String'];
+  level: Level;
+  levelId: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type SubjectInput = {
+  levelId: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type UpdateProject = {
@@ -433,7 +515,7 @@ export type FindEmployeesQueryVariables = Exact<{
 }>;
 
 
-export type FindEmployeesQuery = { __typename?: 'Query', findEmployees: Array<{ __typename?: 'Employee', name: string, id: string, jobTitle: string }> };
+export type FindEmployeesQuery = { __typename?: 'Query', findEmployees: Array<{ __typename?: 'Employee', name: string, id: string }> };
 
 export type FindEmployeeQueryVariables = Exact<{
   id: Scalars['String'];
@@ -648,7 +730,6 @@ export const FindEmployeesDocument = `
   findEmployees(archiveName: $archiveName, excludeJobTitle: $excludeJobTitle) {
     name
     id
-    jobTitle
   }
 }
     `;

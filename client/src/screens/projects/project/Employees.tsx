@@ -12,11 +12,11 @@ const Employees = () => {
     <div className="p-4">
       <h1>الموظفين</h1>
       <div className="grid grid-cols-3 gap-5">
-        {employees.map(({ name, id, jobTitle }) => (
+        {employees.map(({ name, id }) => (
           <div key={id} className="bg-gray-200  ">
             <Link to={`/projects/${projectId}/${archiveName}/employee/${id}`}>
               <p>الاسم:{name}</p>
-              <p>الاسم الوظيفي:{jobTitle}</p>
+              <p>الاسم الوظيفي:</p>
             </Link>
           </div>
         ))}

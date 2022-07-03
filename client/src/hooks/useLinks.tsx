@@ -35,6 +35,11 @@ export const useProjectLinks = () => {
       icon: <AiOutlinePieChart />,
     },
     {
+      label: "الامتحانات",
+      to: `/projects/${projectId}/${archiveName}/exams`,
+      icon: <AiOutlinePieChart />,
+    },
+    {
       label: "الموظفين ",
       to: `/projects/${projectId}/${archiveName}/employees`,
       icon: <AiOutlinePieChart />,

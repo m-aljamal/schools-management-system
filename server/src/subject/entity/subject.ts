@@ -1,5 +1,5 @@
 import { Level } from 'src/level/entity/level';
-import { Semester } from 'src/semester/entity/semester';
+import { Grade } from './../../grade/entity/grade';
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
@@ -8,30 +8,23 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Grade } from 'src/grade/entity/grade';
 
 @ObjectType()
 @Entity()
-export class Exam {
+export class Subject {
   @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // start date, end date, notes
-
-  @ManyToOne(() => Semester, (semester) => semester.exams)
-  @Field(() => Semester)
-  semester: Semester;
-
   @Field()
   @Column()
-  semesterId: string;
+  name: string;
 
-  @OneToMany(() => Grade, (grade) => grade.exam)
+  @OneToMany(() => Grade, (grade) => grade.subject)
   @Field(() => [Grade])
   grades: Grade[];
 
-  @ManyToOne(() => Level, (level) => level.exams)
+  @ManyToOne(() => Level, (level) => level.subjects)
   @Field(() => Level)
   level: Level;
 

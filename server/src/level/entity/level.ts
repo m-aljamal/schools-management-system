@@ -2,7 +2,9 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Employee } from 'src/employee/entity/employee';
+import { Exam } from 'src/exam/entity/exam';
 import { Student } from 'src/student/entity/student';
+import { Subject } from 'src/subject/entity/subject';
 import {
   Column,
   Entity,
@@ -42,4 +44,12 @@ export class Level {
   @Field()
   @Column()
   archiveId: string;
+
+  @OneToMany(() => Exam, (exam) => exam.level)
+  @Field(() => [Exam])
+  exams: Exam[];
+
+  @OneToMany(() => Subject, (subject) => subject.level)
+  @Field(() => [Subject])
+  subjects: Subject[];
 }

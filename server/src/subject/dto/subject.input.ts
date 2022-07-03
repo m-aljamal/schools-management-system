@@ -1,9 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class ExamInput {
+export class SubjectInput {
   @Field()
-  semesterId: string;
+  name: string;
 
   @Field()
   levelId: string;

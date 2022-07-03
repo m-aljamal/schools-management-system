@@ -12,7 +12,9 @@ export class ExamService {
   ) {}
 
   async find(): Promise<Exam[]> {
-    return await this.examRepo.find();
+    return await this.examRepo.find({
+      relations: ['grades'],
+    });
   }
 
   async create(input: ExamInput): Promise<Exam> {

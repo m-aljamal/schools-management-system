@@ -1,4 +1,5 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { FindSemesterArgs } from './dto/findSemester.args';
 import { SemesterInput } from './dto/semester.input';
 import { Semester } from './entity/semester';
 import { SemesterService } from './semester.service';
@@ -8,8 +9,8 @@ export class SemesterResolver {
   constructor(private readonly semesterService: SemesterService) {}
 
   @Query(() => [Semester], { name: 'findSemesters' })
-  async findSemesters(): Promise<Semester[]> {
-    return await this.semesterService.findAll();
+  async findSemesters(@Args() args: FindSemesterArgs): Promise<Semester[]> {
+    return await this.semesterService.findAll(args);
   }
 
   @Mutation(() => Semester, { name: 'createSemester' })

@@ -1,3 +1,4 @@
+import { FindSemesterArgs } from './dto/findSemester.args';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArchiveService } from 'src/archive/archive.service';
@@ -12,9 +13,9 @@ export class SemesterService {
     private readonly semesterRepository: Repository<Semester>,
   ) {}
 
-  async findAll(): Promise<Semester[]> {
+  async findAll(args: FindSemesterArgs): Promise<Semester[]> {
     return await this.semesterRepository.find({
-      relations: ['archives', 'absentStudents', 'absentEmployees'],
+      relations: ['absentStudents', 'absentEmployees', 'exams'],
     });
   }
 

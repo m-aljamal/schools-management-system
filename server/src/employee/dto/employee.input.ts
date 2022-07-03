@@ -9,14 +9,11 @@ export class EmployeeInput {
   @Field(() => [String])
   archives: string[];
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   levels: string[];
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   divisions: string[];
-
-  @Field()
-  jobTitle: string;
 
   @Field()
   username: string;
