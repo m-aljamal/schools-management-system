@@ -28,7 +28,7 @@ export class Semester {
 
   @Field()
   @Column()
-  archiveId: String;
+  archiveId: string;
 
   @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.semester)
   @Field(() => [AbsentStudent])

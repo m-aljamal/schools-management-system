@@ -1,0 +1,6 @@
+query findSemesters($archiveId: String!) {
+  findSemesters(archiveId: $archiveId) {
+    id
+    name
+  }
+}

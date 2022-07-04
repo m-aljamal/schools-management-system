@@ -28,7 +28,7 @@ export class Exam {
   semesterId: string;
 
   @OneToMany(() => Grade, (grade) => grade.exam)
-  @Field(() => [Grade])
+  @Field(() => [Grade], { nullable: true })
   grades: Grade[];
 
   @ManyToOne(() => Level, (level) => level.exams)

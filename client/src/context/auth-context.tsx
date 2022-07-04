@@ -82,13 +82,14 @@ function useAuth() {
 
 function useAuthClient() {
   const { user }: any = useAuth();
-  const { archiveName, projectId } = auth.useProjectId();
+  const { archiveName, projectId, archiveId } = auth.useProjectId();
   const accessToken = user.accessToken;
 
   return {
     client: useCallback(() => graphqlRequestClient(accessToken), [accessToken]),
     projectId,
     archiveName,
+    archiveId,
   };
 }
 export { AuthProvider, useAuth, useAuthClient };
