@@ -96,7 +96,7 @@ export type Employee = {
   name: Scalars['String'];
   password: Scalars['String'];
   project: Project;
-  projectId: Scalars['String'];
+  projectId?: Maybe<Scalars['String']>;
   role: Role;
   username: Scalars['String'];
 };
@@ -107,7 +107,7 @@ export type EmployeeInput = {
   levels?: InputMaybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   password: Scalars['String'];
-  projectId: Scalars['String'];
+  projectId?: InputMaybe<Scalars['String']>;
   role: Role;
   username: Scalars['String'];
 };
@@ -305,7 +305,7 @@ export type Project = {
 
 export type ProjectInput = {
   current_archive_id?: InputMaybe<Scalars['String']>;
-  current_archive_name?: InputMaybe<Scalars['String']>;
+  current_archive_name: Scalars['String'];
   name_ar: Scalars['String'];
 };
 
@@ -315,6 +315,7 @@ export type Query = {
   currentUser?: Maybe<Employee>;
   findAbsentEmployees: Array<AbsentEmployee>;
   findArchive: Archive;
+  findArchiveId: Archive;
   findArchives: Array<Archive>;
   findDivisions: Array<Division>;
   findEmployee: Employee;
@@ -339,6 +340,13 @@ export type QueryFindArchiveArgs = {
 };
 
 
+export type QueryFindArchiveIdArgs = {
+  name: Scalars['String'];
+  projectId: Scalars['String'];
+  sortBy?: InputMaybe<Sort>;
+};
+
+
 export type QueryFindArchivesArgs = {
   name?: InputMaybe<Scalars['String']>;
   projectId: Scalars['String'];
@@ -354,6 +362,11 @@ export type QueryFindEmployeeArgs = {
 export type QueryFindEmployeesArgs = {
   archiveName: Scalars['String'];
   excludeJobTitle?: InputMaybe<Role>;
+};
+
+
+export type QueryFindSemestersArgs = {
+  archiveId: Scalars['String'];
 };
 
 
@@ -492,6 +505,14 @@ export type FindArchiveQueryVariables = Exact<{
 
 export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename?: 'Archive', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', name: string, id: string }>, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> } };
 
+export type FindArchiveIdQueryVariables = Exact<{
+  name: Scalars['String'];
+  projectId: Scalars['String'];
+}>;
+
+
+export type FindArchiveIdQuery = { __typename?: 'Query', findArchiveId: { __typename?: 'Archive', id: string, name: string } };
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -523,6 +544,11 @@ export type FindEmployeeQueryVariables = Exact<{
 
 
 export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', id: string, name: string, levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
+
+export type FindExamsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindExamsQuery = { __typename?: 'Query', findExams: Array<{ __typename?: 'Exam', id: string, level: { __typename?: 'Level', name: string } }> };
 
 export type CreateLevelMutationVariables = Exact<{
   name: Scalars['String'];
@@ -677,6 +703,28 @@ export const useFindArchiveQuery = <
       fetcher<FindArchiveQuery, FindArchiveQueryVariables>(client, FindArchiveDocument, variables, headers),
       options
     );
+export const FindArchiveIdDocument = `
+    query findArchiveId($name: String!, $projectId: String!) {
+  findArchiveId(name: $name, projectId: $projectId) {
+    id
+    name
+  }
+}
+    `;
+export const useFindArchiveIdQuery = <
+      TData = FindArchiveIdQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindArchiveIdQueryVariables,
+      options?: UseQueryOptions<FindArchiveIdQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindArchiveIdQuery, TError, TData>(
+      ['findArchiveId', variables],
+      fetcher<FindArchiveIdQuery, FindArchiveIdQueryVariables>(client, FindArchiveIdDocument, variables, headers),
+      options
+    );
 export const LoginDocument = `
     mutation login($username: String!, $password: String!, $loginRole: LoginRole!) {
   login(
@@ -775,6 +823,30 @@ export const useFindEmployeeQuery = <
     useQuery<FindEmployeeQuery, TError, TData>(
       ['findEmployee', variables],
       fetcher<FindEmployeeQuery, FindEmployeeQueryVariables>(client, FindEmployeeDocument, variables, headers),
+      options
+    );
+export const FindExamsDocument = `
+    query findExams {
+  findExams {
+    id
+    level {
+      name
+    }
+  }
+}
+    `;
+export const useFindExamsQuery = <
+      TData = FindExamsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: FindExamsQueryVariables,
+      options?: UseQueryOptions<FindExamsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindExamsQuery, TError, TData>(
+      variables === undefined ? ['findExams'] : ['findExams', variables],
+      fetcher<FindExamsQuery, FindExamsQueryVariables>(client, FindExamsDocument, variables, headers),
       options
     );
 export const CreateLevelDocument = `

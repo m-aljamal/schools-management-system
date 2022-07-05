@@ -123,35 +123,4 @@ async function client(endpoint: string, data: any) {
     });
 }
 
-function useProjectId(page?: string) {
-  const { user }: any = useAuth();
-  const { projectId, archiveName } = useParams();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user.role !== Role.Admin && user.project.id !== projectId) {
-      navigate(
-        `/projects/${user.project.id}/${user.project.current_archive_name}/${page}`
-      );
-    }
-  }, [projectId]);
-
-  return {
-    projectId: user.role === Role.Admin ? projectId : user.project.id,
-    archiveName:
-      user.role === Role.Admin
-        ? archiveName
-        : archiveName || user.project.current_archive_name,
-    archiveId: user.project.current_archive_id,
-  };
-}
-
-export {
-  getToken,
-  handleUserResponse,
-  currentUser,
-  login,
-  logout,
-  useProjectId,
-  client,
-};
+export { getToken, handleUserResponse, currentUser, login, logout, client };

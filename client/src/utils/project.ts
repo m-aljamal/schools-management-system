@@ -7,7 +7,6 @@ import {
   FindProjectsQuery,
   useCreateProjectMutation,
 } from "src/generated/generates";
-import graphqlRequestClient from "./graphqlRequestClient";
 
 function useProjectList() {
   const { client } = useAuthClient();

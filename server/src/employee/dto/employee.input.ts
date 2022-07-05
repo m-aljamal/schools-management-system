@@ -24,6 +24,6 @@ export class EmployeeInput {
   @Field(() => Role)
   role: Role;
 
-  @Field()
+  @Field({ nullable: true })
   projectId: string;
 }

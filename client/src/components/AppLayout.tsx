@@ -7,12 +7,12 @@ import Nav from "./Nav";
 const AppLayout = () => {
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      <div className="flex justify-between " style={{ direction: "rtl" }}>
-        <div className="bg-slate-900 text-gray-200 h-screen p-2 w-80 pt-5 sticky top-0  text-center ">
+      <div className="flex justify-between   " style={{ direction: "rtl" }}>
+        <div className="bg-slate-900 min-h-screen  text-gray-200 p-2 w-80 pt-5 sticky top-0  text-center ">
           <UserInfo />
           <Nav />
         </div>
-        <main className="w-full">
+        <main className="  w-full  ">
           <Header />
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Outlet />

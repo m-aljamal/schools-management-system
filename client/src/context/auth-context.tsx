@@ -8,10 +8,11 @@ import {
 import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import FullPageErrorFallback from "src/components/FullPageErrorFallback";
-import { Employee, LoginUserInput } from "src/generated/generates";
+import { Employee, LoginUserInput, Role } from "src/generated/generates";
 import graphqlRequestClient from "src/utils/graphqlRequestClient";
 import * as auth from "src/hooks/auth-provider";
 import { useAsync } from "src/hooks/hook";
+import { useFindArchiveId } from "src/utils/archive";
 
 async function bootstrapAppData() {
   let user: Employee | null = null;
@@ -82,13 +83,24 @@ function useAuth() {
 
 function useAuthClient() {
   const { user }: any = useAuth();
-  const { archiveName, projectId } = auth.useProjectId();
   const accessToken = user.accessToken;
-
   return {
     client: useCallback(() => graphqlRequestClient(accessToken), [accessToken]),
-    projectId,
-    archiveName,
   };
 }
-export { AuthProvider, useAuth, useAuthClient };
+
+function useUrlParams() {
+  const { user }: any = useAuth();
+
+  const { projectId: urlProjectId, archiveName: urlArchiveName } = useParams();
+  const archiveName: string =
+    urlArchiveName || user.project.current_archive_name;
+  const projectId: string = urlProjectId || user.project.id;
+  const { archiveId } = useFindArchiveId(archiveName, projectId);
+  return {
+    projectId,
+    archiveName,
+    archiveId,
+  };
+}
+export { AuthProvider, useAuth, useAuthClient, useUrlParams };

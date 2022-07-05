@@ -1,10 +1,9 @@
-import { useProjectId } from "./auth-provider";
 import { AiOutlinePieChart } from "react-icons/ai";
-import { useAuth } from "src/context/auth-context";
+import { useAuth, useAuthClient, useUrlParams } from "src/context/auth-context";
 import { Role } from "src/generated/generates";
 
 export const useProjectLinks = () => {
-  const { archiveName, projectId } = useProjectId();
+  const { archiveName, projectId } = useUrlParams();
   const { user }: any = useAuth();
   const adminLinks = [
     {

@@ -68,4 +68,13 @@ export class ArchiveService {
       where: { id },
     });
   }
+
+  async findArchiveId(input: ArchiveInput): Promise<Archive> {
+    return await this.archiveRepository.findOne({
+      where: {
+        name: input.name,
+        projectId: input.projectId,
+      },
+    });
+  }
 }

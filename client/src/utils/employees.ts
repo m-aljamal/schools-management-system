@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useAuthClient } from "src/context/auth-context";
+import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import {
   FindEmployeeQuery,
   FindEmployeesQuery,
@@ -9,7 +9,8 @@ import {
 } from "./../generated/generates";
 
 function useEmployees() {
-  const { archiveName, client } = useAuthClient();
+  const { client } = useAuthClient();
+  const { archiveName } = useUrlParams();
 
   const { data } = useFindEmployeesQuery<FindEmployeesQuery, Error>(client(), {
     archiveName: archiveName as string,

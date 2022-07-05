@@ -55,6 +55,8 @@ export class EmployeeService {
   }
 
   async create(input: EmployeeInput) {
+    if (input.role !== Role.ADMIN && input.projectId === undefined)
+      return new BadRequestException('projectId should be provided');
     const archives = await Promise.all(
       input.archives.map(async (id) => {
         const archive = await this.archiveService.findById(id);
@@ -87,6 +89,7 @@ export class EmployeeService {
         }),
       );
     }
+
     const employee = this.employeeRepo.create({
       ...input,
       archives,

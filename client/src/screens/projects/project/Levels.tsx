@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import { DivisionInput, LevelInput } from "src/generated/generates";
-import { useProjectId } from "src/hooks/auth-provider";
 import { useCreateDivision } from "src/utils/division";
 import { useCreateLevel, useLevels } from "src/utils/levels";
 
@@ -34,7 +34,7 @@ const Levels = () => {
 export default Levels;
 
 const CreateLevel = () => {
-  const { archiveId } = useProjectId();
+  const { archiveId } = useUrlParams();
   const { mutate } = useCreateLevel();
   const { register, handleSubmit } = useForm<LevelInput>();
 

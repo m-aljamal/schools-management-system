@@ -37,6 +37,11 @@ export class ArchiveResolver {
     return this.archiveService.findOne(findArgs);
   }
 
+  @Query(() => Archive, { name: 'findArchiveId' })
+  async findArchiveId(@Args() findArgs: FindArchiveArgs): Promise<Archive> {
+    return this.archiveService.findArchiveId(findArgs);
+  }
+
   @Mutation(() => Archive, { name: 'createArchive' })
   async create(@Args('input') input: ArchiveInput): Promise<Archive> {
     return this.archiveService.create(input);
