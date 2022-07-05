@@ -91,12 +91,16 @@ function useAuthClient() {
 
 function useUrlParams() {
   const { user }: any = useAuth();
+console.log(user);
 
   const { projectId: urlProjectId, archiveName: urlArchiveName } = useParams();
+
   const archiveName: string =
     urlArchiveName || user.project.current_archive_name;
   const projectId: string = urlProjectId || user.project.id;
   const { archiveId } = useFindArchiveId(archiveName, projectId);
+  console.log("useUrlParams", { archiveId, archiveName, projectId });
+
   return {
     projectId,
     archiveName,
