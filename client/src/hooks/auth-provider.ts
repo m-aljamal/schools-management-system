@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "src/context/auth-context";
 import { LoginRole, Role } from "src/generated/generates";
 
 const localStorageKey = "___auth_provider_token___";

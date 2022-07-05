@@ -55,9 +55,7 @@ export class LevelService {
     const query = this.levelRepository.createQueryBuilder('level');
 
     findLevels(args, query);
-
     query.leftJoinAndSelect('division.students', 'student');
-
     return await query.getMany();
   }
   async find_levels_divisions_employees(args: FindLevelArgs): Promise<Level[]> {

@@ -15,6 +15,7 @@ export class SemesterService {
 
   async findAll(args: FindSemesterArgs): Promise<Semester[]> {
     return await this.semesterRepository.find({
+      where: { archiveId: args.archiveId },
       relations: ['absentStudents', 'absentEmployees', 'exams'],
     });
   }

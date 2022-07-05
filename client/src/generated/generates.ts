@@ -114,7 +114,7 @@ export type EmployeeInput = {
 
 export type Exam = {
   __typename?: 'Exam';
-  grades: Array<Grade>;
+  grades?: Maybe<Array<Grade>>;
   id: Scalars['String'];
   level: Level;
   levelId: Scalars['String'];
@@ -590,6 +590,13 @@ export type Find_Levels_Divisions_EmployeesQueryVariables = Exact<{
 
 export type Find_Levels_Divisions_EmployeesQuery = { __typename?: 'Query', find_levels_divisions_employees: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> };
 
+export type FindSemestersQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+}>;
+
+
+export type FindSemestersQuery = { __typename?: 'Query', findSemesters: Array<{ __typename?: 'Semester', id: string, name: string }> };
+
 
 export const CreateProjectDocument = `
     mutation createProject($name_ar: String!, $current_archive_name: String!) {
@@ -1013,5 +1020,27 @@ export const useFind_Levels_Divisions_EmployeesQuery = <
     useQuery<Find_Levels_Divisions_EmployeesQuery, TError, TData>(
       ['find_levels_divisions_employees', variables],
       fetcher<Find_Levels_Divisions_EmployeesQuery, Find_Levels_Divisions_EmployeesQueryVariables>(client, Find_Levels_Divisions_EmployeesDocument, variables, headers),
+      options
+    );
+export const FindSemestersDocument = `
+    query findSemesters($archiveId: String!) {
+  findSemesters(archiveId: $archiveId) {
+    id
+    name
+  }
+}
+    `;
+export const useFindSemestersQuery = <
+      TData = FindSemestersQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindSemestersQueryVariables,
+      options?: UseQueryOptions<FindSemestersQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindSemestersQuery, TError, TData>(
+      ['findSemesters', variables],
+      fetcher<FindSemestersQuery, FindSemestersQueryVariables>(client, FindSemestersDocument, variables, headers),
       options
     );
