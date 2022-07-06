@@ -13,8 +13,8 @@ const Projects = () => {
         </Link>
       </div>
       <div className="p-4 grid  grid-cols-3 gap-5 text-center">
-        {projects.map(({ id, name_ar, current_archive_name }) => (
-          <Link to={`/projects/${id}/${current_archive_name}`} key={id}>
+        {projects.map(({ id, name_ar, current_archive_id }) => (
+          <Link to={`/projects/${id}/${current_archive_id}`} key={id}>
             <p className="text-xl bg-gray-200">{name_ar}</p>
           </Link>
         ))}

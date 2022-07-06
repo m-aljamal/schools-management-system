@@ -36,12 +36,14 @@ function ErrorFallback({ error }: any) {
 }
 
 const UserInfo = () => {
-  const { logout }: any = useAuth();
+  const { logout, user }: any = useAuth();
+
   return (
     <div>
       <div className="flex justify-around">
         <button onClick={logout}>Logout</button>
       </div>
+      <p> العام الدراسي: {user?.project?.current_archive_name}</p>
       <div className="w-24 h-24 mx-auto mt-8 mb-3">image</div>
       <div className="mb-8">
         <p className=" text-white text-lg">Mohammad jamal</p>

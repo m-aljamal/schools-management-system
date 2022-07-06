@@ -1,10 +1,10 @@
 import { AiOutlinePieChart } from "react-icons/ai";
 import { useParams } from "react-router-dom";
-import { useAuth } from "src/context/auth-context";
+import { useAuth, useUrlParams } from "src/context/auth-context";
 import { Role } from "src/generated/generates";
 
 export const useProjectLinks = () => {
-  const { archiveId, projectId } = useParams();
+  const { archiveId, projectId } = useUrlParams();
   const { user }: any = useAuth();
   const adminLinks = [
     {

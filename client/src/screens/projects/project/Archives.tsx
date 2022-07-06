@@ -9,7 +9,7 @@ const Archives = () => {
     <div className="p-4 ">
       {archives.map(({ id, name, project }) => (
         <div key={id} className="py-4">
-          <Link to={`/projects/${project.id}/${name}`}>
+          <Link to={`/projects/${project.id}/${id}`}>
             <p>{name}</p>
           </Link>
         </div>

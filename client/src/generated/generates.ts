@@ -477,7 +477,7 @@ export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { 
 export type FindProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_name?: string | null }> };
+export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_name?: string | null, current_archive_id?: string | null }> };
 
 export type FindArchivesQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -614,6 +614,7 @@ export const FindProjectsDocument = `
     updatedAt
     createdAt
     current_archive_name
+    current_archive_id
   }
 }
     `;
