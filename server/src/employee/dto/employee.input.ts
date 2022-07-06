@@ -6,7 +6,7 @@ export class EmployeeInput {
   @Field()
   name: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   archives: string[];
 
   @Field(() => [String], { nullable: true })

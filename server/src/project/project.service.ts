@@ -36,6 +36,9 @@ export class ProjectService {
     return project;
   }
   async findOne(id: string): Promise<Project> {
+    if (!id) {
+      return;
+    }
     return this.projectRepository.findOne({
       where: { id },
     });

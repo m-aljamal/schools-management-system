@@ -22,7 +22,6 @@ export class EmployeeService {
 
   async find(args: FindEmployeeArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
-    console.log(args);
 
     if (args.excludeJobTitle) {
       query.where('employee.role != :role', {
@@ -31,8 +30,8 @@ export class EmployeeService {
     }
 
     query.leftJoinAndSelect('employee.archives', 'archive');
-    query.andWhere('archive.name = :archiveName', {
-      archiveName: args.archiveName,
+    query.andWhere('archive.id = :archiveId', {
+      archiveId: args.archiveId,
     });
 
     return await query.getMany();
@@ -57,16 +56,19 @@ export class EmployeeService {
   async create(input: EmployeeInput) {
     if (input.role !== Role.ADMIN && input.projectId === undefined)
       return new BadRequestException('projectId should be provided');
-    const archives = await Promise.all(
-      input.archives.map(async (id) => {
-        const archive = await this.archiveService.findById(id);
-        if (!archive) {
-          throw new BadRequestException('الارشيف غير موجود');
-        }
-        return archive;
-      }),
-    );
 
+    let archives = [];
+    if (input.role !== Role.ADMIN) {
+      archives = await Promise.all(
+        input.archives.map(async (id) => {
+          const archive = await this.archiveService.findById(id);
+          if (!archive) {
+            throw new BadRequestException('الارشيف غير موجود');
+          }
+          return archive;
+        }),
+      );
+    }
     let levels = [];
     let divisions = [];
     if (input.role === Role.TEACHER) {
@@ -97,6 +99,7 @@ export class EmployeeService {
       levels,
       password: hashPassword(input.password),
     });
+
     return this.employeeRepo.save(employee);
   }
 

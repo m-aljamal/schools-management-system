@@ -1,20 +1,20 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
+import { useUrlParams } from "src/context/auth-context";
 import { useEmployees } from "src/utils/employees";
 import { useLevelsForEmployees } from "src/utils/levels";
 
 const Employees = () => {
   const { employees } = useEmployees();
   const { levels } = useLevelsForEmployees();
-  const { projectId, archiveName } = useParams();
-
+  const { archiveId, projectId } = useParams();
   return (
     <div className="p-4">
       <h1>الموظفين</h1>
       <div className="grid grid-cols-3 gap-5">
         {employees.map(({ name, id }) => (
           <div key={id} className="bg-gray-200  ">
-            <Link to={`/projects/${projectId}/${archiveName}/employee/${id}`}>
+            <Link to={`/projects/${projectId}/${archiveId}/employee/${id}`}>
               <p>الاسم:{name}</p>
               <p>الاسم الوظيفي:</p>
             </Link>
@@ -32,7 +32,7 @@ const Employees = () => {
                 <div>
                   {employees?.map(({ id, name }) => (
                     <Link
-                      to={`/projects/${projectId}/${archiveName}/employee/${id}`}
+                      to={`/projects/${projectId}/${archiveId}/employee/${id}`}
                     >
                       <p key={id}>{name}</p>
                     </Link>

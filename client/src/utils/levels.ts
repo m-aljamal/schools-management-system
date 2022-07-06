@@ -16,12 +16,12 @@ import { useQueryClient } from "react-query";
 
 function useLevels() {
   const { client } = useAuthClient();
-  const { archiveName, projectId } = useUrlParams();
+  const { archiveId, projectId } = useUrlParams();
   const { data } = useFind_Levels_DivisionsQuery<
     Find_Levels_DivisionsQuery,
     Error
   >(client(), {
-    archiveName,
+    archiveId,
     projectId,
   });
   return {
@@ -31,13 +31,13 @@ function useLevels() {
 
 function useLevelsForAll() {
   const { client } = useAuthClient();
-  const { archiveName, projectId } = useUrlParams();
+  const { archiveId, projectId } = useUrlParams();
 
   const { data } = useFind_Levels_Divisions_Employees_StudentsQuery<
     Find_Levels_Divisions_Employees_StudentsQuery,
     Error
   >(client(), {
-    archiveName,
+    archiveId,
     projectId,
   });
   return {
@@ -47,13 +47,13 @@ function useLevelsForAll() {
 
 function useLevelsForStudents() {
   const { client } = useAuthClient();
-  const { archiveName, projectId } = useUrlParams();
+  const { archiveId, projectId } = useUrlParams();
 
   const { data } = useFind_Levels_Divisions_StudentsQuery<
     Find_Levels_Divisions_StudentsQuery,
     Error
   >(client(), {
-    archiveName,
+    archiveId,
     projectId,
   });
   return {
@@ -63,13 +63,13 @@ function useLevelsForStudents() {
 
 function useLevelsForEmployees() {
   const { client } = useAuthClient();
-  const { archiveName, projectId } = useUrlParams();
+  const { archiveId, projectId } = useUrlParams();
 
   const { data } = useFind_Levels_Divisions_EmployeesQuery<
     Find_Levels_Divisions_EmployeesQuery,
     Error
   >(client(), {
-    archiveName,
+    archiveId,
     projectId,
   });
   return {

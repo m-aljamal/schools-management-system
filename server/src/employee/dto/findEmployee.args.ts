@@ -4,7 +4,7 @@ import { Role } from 'utils/enum';
 @ArgsType()
 export class FindEmployeeArgs {
   @Field()
-  archiveName: string;
+  archiveId: string;
 
   @Field(() => Role, { nullable: true })
   excludeJobTitle: Role;

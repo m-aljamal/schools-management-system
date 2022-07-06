@@ -12,7 +12,7 @@ const AppManager = () => {
 
   return (
     <Routes>
-      <Route path="projects/:projectId/:archiveName" element={<AppLayout />}>
+      <Route path="projects/:projectId/:archiveId" element={<AppLayout />}>
         <Route index element={<ProjectScreen />} />
 
         <Route path="employees" element={<Employees />} />
@@ -25,7 +25,7 @@ const AppManager = () => {
         path="*"
         element={
           <Navigate
-            to={`/projects/${user.project.id}/${user.project.current_archive_name}`}
+            to={`/projects/${user.project.id}/${user.project.current_archive_id}`}
           />
         }
       />

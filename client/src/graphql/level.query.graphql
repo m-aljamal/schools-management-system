@@ -1,5 +1,5 @@
-query find_levels_divisions($archiveName: String!, $projectId: String!) {
-  find_levels_divisions(archiveName: $archiveName, projectId: $projectId) {
+query find_levels_divisions($archiveId: String!, $projectId: String!) {
+  find_levels_divisions(archiveId: $archiveId, projectId: $projectId) {
     id
     name
 
@@ -16,11 +16,11 @@ query find_levels_divisions($archiveName: String!, $projectId: String!) {
 }
 
 query find_levels_divisions_employees_students(
-  $archiveName: String!
+  $archiveId: String!
   $projectId: String!
 ) {
   find_levels_divisions_employees_students(
-    archiveName: $archiveName
+    archiveId: $archiveId
     projectId: $projectId
   ) {
     id
@@ -45,14 +45,8 @@ query find_levels_divisions_employees_students(
   }
 }
 
-query find_levels_divisions_students(
-  $archiveName: String!
-  $projectId: String!
-) {
-  find_levels_divisions_students(
-    archiveName: $archiveName
-    projectId: $projectId
-  ) {
+query find_levels_divisions_students($archiveId: String!, $projectId: String!) {
+  find_levels_divisions_students(archiveId: $archiveId, projectId: $projectId) {
     id
     name
 
@@ -73,11 +67,11 @@ query find_levels_divisions_students(
 }
 
 query find_levels_divisions_employees(
-  $archiveName: String!
+  $archiveId: String!
   $projectId: String!
 ) {
   find_levels_divisions_employees(
-    archiveName: $archiveName
+    archiveId: $archiveId
     projectId: $projectId
   ) {
     id

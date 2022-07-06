@@ -1,5 +1,5 @@
-query findEmployees($archiveName: String!, $excludeJobTitle: Role) {
-  findEmployees(archiveName: $archiveName, excludeJobTitle: $excludeJobTitle) {
+query findEmployees($archiveId: String!, $excludeJobTitle: Role) {
+  findEmployees(archiveId: $archiveId, excludeJobTitle: $excludeJobTitle) {
     name
     id
   }

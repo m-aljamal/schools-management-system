@@ -1,11 +1,9 @@
 import {
-  FindArchiveIdQuery,
   FindArchiveQuery,
   FindArchivesQuery,
-  useFindArchiveIdQuery,
+  useFindArchiveQuery,
   useFindArchivesQuery,
 } from "./../generated/generates";
-import { useFindArchiveQuery } from "src/generated/generates";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
 
 function useArchiveList() {
@@ -25,12 +23,12 @@ function useArchiveList() {
 
 function useArchive() {
   const { client } = useAuthClient();
-  const { projectId, archiveName } = useUrlParams();
+  const { projectId, archiveId } = useUrlParams();
   const { data, error } = useFindArchiveQuery<FindArchiveQuery, Error>(
     client(),
     {
       projectId,
-      name: archiveName,
+      archiveId,
     }
   );
   return {
@@ -38,15 +36,4 @@ function useArchive() {
   };
 }
 
-function useFindArchiveId(name: string, projectId: string) {
-  const { client } = useAuthClient();
-  const { data } = useFindArchiveIdQuery<FindArchiveIdQuery, Error>(client(), {
-    name,
-    projectId,
-  });
-  return {
-    archiveId: data?.findArchiveId.id || "",
-  };
-}
-
-export { useArchiveList, useArchive, useFindArchiveId };
+export { useArchiveList, useArchive };

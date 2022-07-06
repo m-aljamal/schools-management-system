@@ -10,10 +10,10 @@ import {
 
 function useEmployees() {
   const { client } = useAuthClient();
-  const { archiveName } = useUrlParams();
+  const { archiveId } = useUrlParams();
 
   const { data } = useFindEmployeesQuery<FindEmployeesQuery, Error>(client(), {
-    archiveName: archiveName as string,
+    archiveId,
     excludeJobTitle: Role.Teacher,
   });
   return {

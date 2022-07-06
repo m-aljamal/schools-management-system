@@ -1,0 +1,32 @@
+query findArchives($projectId: String!, $archiveId: String, $sortBy: Sort) {
+  findArchives(projectId: $projectId, archiveId: $archiveId, sortBy: $sortBy) {
+    id
+    name
+    project {
+      name_ar
+      id
+    }
+  }
+}
+
+query findArchive($archiveId: String!, $projectId: String!, $sortBy: Sort) {
+  findArchive(archiveId: $archiveId, projectId: $projectId, sortBy: $sortBy) {
+    name
+    id
+    levels {
+      name
+      divisions {
+        name
+        id
+        students {
+          name
+          id
+        }
+        employees {
+          name
+          id
+        }
+      }
+    }
+  }
+}

@@ -8,8 +8,8 @@ export function findLevels(
   query.where('archive.projectId = :projectId', {
     projectId: args.projectId,
   });
-  query.andWhere('archive.name = :archiveName', {
-    archiveName: args.archiveName,
+  query.andWhere('archive.id = :archiveId', {
+    archiveId: args.archiveId,
   });
   query.leftJoinAndSelect('level.archive', 'archive');
   query.leftJoinAndSelect('level.divisions', 'division');

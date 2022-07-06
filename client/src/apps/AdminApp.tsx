@@ -18,7 +18,7 @@ const AdminApp = () => {
         <Route path="projects" element={<Projects />} />
         <Route path="projects/create" element={<CreateProject />} />
         <Route
-          path="projects/:projectId/:archiveName"
+          path="projects/:projectId/:archiveId"
           element={<ProjectLayout />}
         >
           <Route index element={<Project />} />

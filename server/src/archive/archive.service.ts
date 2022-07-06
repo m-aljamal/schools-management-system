@@ -20,9 +20,6 @@ export class ArchiveService {
     query.where('archive.projectId = :projectId', {
       projectId: findArgs.projectId,
     });
-    if (findArgs.name) {
-      query.andWhere('archive.name = :name', { name: findArgs.name });
-    }
     if (findArgs.sortBy) {
       query.orderBy('archive.name', findArgs.sortBy);
     }
@@ -35,7 +32,7 @@ export class ArchiveService {
     query.where('archive.projectId = :projectId', {
       projectId: findArgs.projectId,
     });
-    query.andWhere('archive.name = :name', { name: findArgs.name });
+    query.andWhere('archive.id = :id', { id: findArgs.archiveId });
     query.leftJoinAndSelect('archive.levels', 'level');
     query.leftJoinAndSelect('level.divisions', 'division');
     query.leftJoinAndSelect('division.employees', 'employee');
@@ -66,15 +63,6 @@ export class ArchiveService {
   async findById(id: string): Promise<Archive> {
     return await this.archiveRepository.findOne({
       where: { id },
-    });
-  }
-
-  async findArchiveId(input: ArchiveInput): Promise<Archive> {
-    return await this.archiveRepository.findOne({
-      where: {
-        name: input.name,
-        projectId: input.projectId,
-      },
     });
   }
 }

@@ -89,20 +89,20 @@ export type DivisionInput = {
 export type Employee = {
   __typename?: 'Employee';
   absentEmployees: Array<AbsentEmployee>;
-  archives: Array<Archive>;
+  archives?: Maybe<Array<Archive>>;
   divisions: Array<Division>;
   id: Scalars['String'];
   levels: Array<Level>;
   name: Scalars['String'];
   password: Scalars['String'];
-  project: Project;
+  project?: Maybe<Project>;
   projectId?: Maybe<Scalars['String']>;
   role: Role;
   username: Scalars['String'];
 };
 
 export type EmployeeInput = {
-  archives: Array<Scalars['String']>;
+  archives?: InputMaybe<Array<Scalars['String']>>;
   divisions?: InputMaybe<Array<Scalars['String']>>;
   levels?: InputMaybe<Array<Scalars['String']>>;
   name: Scalars['String'];
@@ -315,7 +315,6 @@ export type Query = {
   currentUser?: Maybe<Employee>;
   findAbsentEmployees: Array<AbsentEmployee>;
   findArchive: Archive;
-  findArchiveId: Archive;
   findArchives: Array<Archive>;
   findDivisions: Array<Division>;
   findEmployee: Employee;
@@ -334,21 +333,14 @@ export type Query = {
 
 
 export type QueryFindArchiveArgs = {
-  name: Scalars['String'];
-  projectId: Scalars['String'];
-  sortBy?: InputMaybe<Sort>;
-};
-
-
-export type QueryFindArchiveIdArgs = {
-  name: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
   sortBy?: InputMaybe<Sort>;
 };
 
 
 export type QueryFindArchivesArgs = {
-  name?: InputMaybe<Scalars['String']>;
+  archiveId?: InputMaybe<Scalars['String']>;
   projectId: Scalars['String'];
   sortBy?: InputMaybe<Sort>;
 };
@@ -360,7 +352,7 @@ export type QueryFindEmployeeArgs = {
 
 
 export type QueryFindEmployeesArgs = {
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   excludeJobTitle?: InputMaybe<Role>;
 };
 
@@ -371,25 +363,25 @@ export type QueryFindSemestersArgs = {
 
 
 export type QueryFind_Levels_DivisionsArgs = {
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 };
 
 
 export type QueryFind_Levels_Divisions_EmployeesArgs = {
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 };
 
 
 export type QueryFind_Levels_Divisions_Employees_StudentsArgs = {
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 };
 
 
 export type QueryFind_Levels_Divisions_StudentsArgs = {
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 };
 
@@ -489,7 +481,7 @@ export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __
 
 export type FindArchivesQueryVariables = Exact<{
   projectId: Scalars['String'];
-  name?: InputMaybe<Scalars['String']>;
+  archiveId?: InputMaybe<Scalars['String']>;
   sortBy?: InputMaybe<Sort>;
 }>;
 
@@ -497,21 +489,13 @@ export type FindArchivesQueryVariables = Exact<{
 export type FindArchivesQuery = { __typename?: 'Query', findArchives: Array<{ __typename?: 'Archive', id: string, name: string, project: { __typename?: 'Project', name_ar: string, id: string } }> };
 
 export type FindArchiveQueryVariables = Exact<{
-  name: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
   sortBy?: InputMaybe<Sort>;
 }>;
 
 
 export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename?: 'Archive', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', name: string, id: string }>, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> } };
-
-export type FindArchiveIdQueryVariables = Exact<{
-  name: Scalars['String'];
-  projectId: Scalars['String'];
-}>;
-
-
-export type FindArchiveIdQuery = { __typename?: 'Query', findArchiveId: { __typename?: 'Archive', id: string, name: string } };
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -531,7 +515,7 @@ export type CreateDivisionMutationVariables = Exact<{
 export type CreateDivisionMutation = { __typename?: 'Mutation', createDivision: { __typename?: 'Division', id: string, name: string } };
 
 export type FindEmployeesQueryVariables = Exact<{
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   excludeJobTitle?: InputMaybe<Role>;
 }>;
 
@@ -559,7 +543,7 @@ export type CreateLevelMutationVariables = Exact<{
 export type CreateLevelMutation = { __typename?: 'Mutation', createLevel: { __typename?: 'Level', id: string, name: string } };
 
 export type Find_Levels_DivisionsQueryVariables = Exact<{
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 }>;
 
@@ -567,7 +551,7 @@ export type Find_Levels_DivisionsQueryVariables = Exact<{
 export type Find_Levels_DivisionsQuery = { __typename?: 'Query', find_levels_divisions: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> };
 
 export type Find_Levels_Divisions_Employees_StudentsQueryVariables = Exact<{
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 }>;
 
@@ -575,7 +559,7 @@ export type Find_Levels_Divisions_Employees_StudentsQueryVariables = Exact<{
 export type Find_Levels_Divisions_Employees_StudentsQuery = { __typename?: 'Query', find_levels_divisions_employees_students: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', id: string, name: string }>, employees?: Array<{ __typename?: 'Student', id: string }> | null }> | null }> };
 
 export type Find_Levels_Divisions_StudentsQueryVariables = Exact<{
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 }>;
 
@@ -583,7 +567,7 @@ export type Find_Levels_Divisions_StudentsQueryVariables = Exact<{
 export type Find_Levels_Divisions_StudentsQuery = { __typename?: 'Query', find_levels_divisions_students: Array<{ __typename?: 'Level', id: string, name: string, archive: { __typename?: 'Archive', name: string, id: string, projectId: string }, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', id: string, name: string }> }> | null }> };
 
 export type Find_Levels_Divisions_EmployeesQueryVariables = Exact<{
-  archiveName: Scalars['String'];
+  archiveId: Scalars['String'];
   projectId: Scalars['String'];
 }>;
 
@@ -648,8 +632,8 @@ export const useFindProjectsQuery = <
       options
     );
 export const FindArchivesDocument = `
-    query findArchives($projectId: String!, $name: String, $sortBy: Sort) {
-  findArchives(projectId: $projectId, name: $name, sortBy: $sortBy) {
+    query findArchives($projectId: String!, $archiveId: String, $sortBy: Sort) {
+  findArchives(projectId: $projectId, archiveId: $archiveId, sortBy: $sortBy) {
     id
     name
     project {
@@ -674,8 +658,8 @@ export const useFindArchivesQuery = <
       options
     );
 export const FindArchiveDocument = `
-    query findArchive($name: String!, $projectId: String!, $sortBy: Sort) {
-  findArchive(name: $name, projectId: $projectId, sortBy: $sortBy) {
+    query findArchive($archiveId: String!, $projectId: String!, $sortBy: Sort) {
+  findArchive(archiveId: $archiveId, projectId: $projectId, sortBy: $sortBy) {
     name
     id
     levels {
@@ -708,28 +692,6 @@ export const useFindArchiveQuery = <
     useQuery<FindArchiveQuery, TError, TData>(
       ['findArchive', variables],
       fetcher<FindArchiveQuery, FindArchiveQueryVariables>(client, FindArchiveDocument, variables, headers),
-      options
-    );
-export const FindArchiveIdDocument = `
-    query findArchiveId($name: String!, $projectId: String!) {
-  findArchiveId(name: $name, projectId: $projectId) {
-    id
-    name
-  }
-}
-    `;
-export const useFindArchiveIdQuery = <
-      TData = FindArchiveIdQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables: FindArchiveIdQueryVariables,
-      options?: UseQueryOptions<FindArchiveIdQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<FindArchiveIdQuery, TError, TData>(
-      ['findArchiveId', variables],
-      fetcher<FindArchiveIdQuery, FindArchiveIdQueryVariables>(client, FindArchiveIdDocument, variables, headers),
       options
     );
 export const LoginDocument = `
@@ -781,8 +743,8 @@ export const useCreateDivisionMutation = <
       options
     );
 export const FindEmployeesDocument = `
-    query findEmployees($archiveName: String!, $excludeJobTitle: Role) {
-  findEmployees(archiveName: $archiveName, excludeJobTitle: $excludeJobTitle) {
+    query findEmployees($archiveId: String!, $excludeJobTitle: Role) {
+  findEmployees(archiveId: $archiveId, excludeJobTitle: $excludeJobTitle) {
     name
     id
   }
@@ -878,8 +840,8 @@ export const useCreateLevelMutation = <
       options
     );
 export const Find_Levels_DivisionsDocument = `
-    query find_levels_divisions($archiveName: String!, $projectId: String!) {
-  find_levels_divisions(archiveName: $archiveName, projectId: $projectId) {
+    query find_levels_divisions($archiveId: String!, $projectId: String!) {
+  find_levels_divisions(archiveId: $archiveId, projectId: $projectId) {
     id
     name
     archive {
@@ -909,9 +871,9 @@ export const useFind_Levels_DivisionsQuery = <
       options
     );
 export const Find_Levels_Divisions_Employees_StudentsDocument = `
-    query find_levels_divisions_employees_students($archiveName: String!, $projectId: String!) {
+    query find_levels_divisions_employees_students($archiveId: String!, $projectId: String!) {
   find_levels_divisions_employees_students(
-    archiveName: $archiveName
+    archiveId: $archiveId
     projectId: $projectId
   ) {
     id
@@ -950,8 +912,8 @@ export const useFind_Levels_Divisions_Employees_StudentsQuery = <
       options
     );
 export const Find_Levels_Divisions_StudentsDocument = `
-    query find_levels_divisions_students($archiveName: String!, $projectId: String!) {
-  find_levels_divisions_students(archiveName: $archiveName, projectId: $projectId) {
+    query find_levels_divisions_students($archiveId: String!, $projectId: String!) {
+  find_levels_divisions_students(archiveId: $archiveId, projectId: $projectId) {
     id
     name
     archive {
@@ -985,11 +947,8 @@ export const useFind_Levels_Divisions_StudentsQuery = <
       options
     );
 export const Find_Levels_Divisions_EmployeesDocument = `
-    query find_levels_divisions_employees($archiveName: String!, $projectId: String!) {
-  find_levels_divisions_employees(
-    archiveName: $archiveName
-    projectId: $projectId
-  ) {
+    query find_levels_divisions_employees($archiveId: String!, $projectId: String!) {
+  find_levels_divisions_employees(archiveId: $archiveId, projectId: $projectId) {
     id
     name
     archive {

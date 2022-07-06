@@ -1,9 +1,10 @@
 import { AiOutlinePieChart } from "react-icons/ai";
-import { useAuth, useAuthClient, useUrlParams } from "src/context/auth-context";
+import { useParams } from "react-router-dom";
+import { useAuth } from "src/context/auth-context";
 import { Role } from "src/generated/generates";
 
 export const useProjectLinks = () => {
-  const { archiveName, projectId } = useUrlParams();
+  const { archiveId, projectId } = useParams();
   const { user }: any = useAuth();
   const adminLinks = [
     {
@@ -25,44 +26,45 @@ export const useProjectLinks = () => {
   const mangerLinks = [
     {
       label: "الرئيسية",
-      to: `/projects/${projectId}/${archiveName}`,
+      to: `/projects/${projectId}/${archiveId}`,
       icon: <AiOutlinePieChart />,
     },
     {
       label: "الصفوف",
-      to: `/projects/${projectId}/${archiveName}/levels`,
+      to: `/projects/${projectId}/${archiveId}/levels`,
       icon: <AiOutlinePieChart />,
     },
     {
       label: "الامتحانات",
-      to: `/projects/${projectId}/${archiveName}/exams`,
+      to: `/projects/${projectId}/${archiveId}/exams`,
       icon: <AiOutlinePieChart />,
     },
     {
       label: "الموظفين ",
-      to: `/projects/${projectId}/${archiveName}/employees`,
+      to: `/projects/${projectId}/${archiveId}/employees`,
       icon: <AiOutlinePieChart />,
     },
     {
       label: "الطلاب ",
-      to: `/projects/${projectId}/${archiveName}/students`,
+      to: `/projects/${projectId}/${archiveId}/students`,
       icon: <AiOutlinePieChart />,
     },
     {
       label: "الخصومات",
-      to: `/projects/${projectId}/${archiveName}/discounts`,
+      to: `/projects/${projectId}/${archiveId}/discounts`,
       icon: <AiOutlinePieChart />,
     },
     {
       label: "الرواتب",
-      to: `/projects/${projectId}/${archiveName}/salaries`,
+      to: `/projects/${projectId}/${archiveId}/salaries`,
       icon: <AiOutlinePieChart />,
     },
     {
       label: "الارشيف",
-      to: `/projects/${projectId}/${archiveName}/archives`,
+      to: `/projects/${projectId}/${archiveId}/archives`,
       icon: <AiOutlinePieChart />,
     },
   ];
+
   return user.role === Role.Admin ? adminLinks : mangerLinks;
 };

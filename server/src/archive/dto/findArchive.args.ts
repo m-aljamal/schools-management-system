@@ -4,7 +4,7 @@ import { Sort } from 'utils/enum';
 @ArgsType()
 export class FindArchivesArgs {
   @Field({ nullable: true })
-  name: string;
+  archiveId: string;
 
   @Field()
   projectId: string;
@@ -16,5 +16,5 @@ export class FindArchivesArgs {
 @ArgsType()
 export class FindArchiveArgs extends FindArchivesArgs {
   @Field()
-  name: string;
+  archiveId: string;
 }

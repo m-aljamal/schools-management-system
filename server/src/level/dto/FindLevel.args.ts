@@ -3,7 +3,7 @@ import { Field, ArgsType } from '@nestjs/graphql';
 @ArgsType()
 export class FindLevelArgs {
   @Field()
-  archiveName: string;
+  archiveId: string;
 
   @Field()
   projectId: string;

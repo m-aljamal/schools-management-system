@@ -38,12 +38,6 @@ export class TeacherResolver {
     return this.employeeService.create(input);
   }
 
-  // @Query(() => Employee, { name: 'currentEmployee', nullable: true })
-  // @UseGuards(JwtAuthGuard)
-  // getEmployee(@CurrentUser() user: Employee) {
-  //   return user;
-  // }
-
   @ResolveField(() => Employee)
   async project(@Parent() employee: Employee): Promise<Project> {
     return this.projectService.findOne(employee.projectId);

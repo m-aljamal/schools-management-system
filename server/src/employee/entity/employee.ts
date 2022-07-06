@@ -47,7 +47,7 @@ export class Employee {
   @ManyToMany(() => Archive, (archive) => archive.employees, {
     cascade: true,
   })
-  @Field(() => [Archive])
+  @Field(() => [Archive], { nullable: true })
   @JoinTable()
   archives: Archive[];
 
@@ -64,7 +64,7 @@ export class Employee {
   role: Role;
 
   @ManyToOne(() => Project, (project) => project.employees)
-  @Field(() => Project)
+  @Field(() => Project, { nullable: true })
   project: Project;
 
   @Field({ nullable: true })

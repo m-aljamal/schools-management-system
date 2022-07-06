@@ -1,38 +1,38 @@
 import { Link, Outlet, useParams } from "react-router-dom";
+import { useUrlParams } from "src/context/auth-context";
 
 const ProjectLayout = () => {
-  const { projectId, archiveName } = useParams();
-
+  const { archiveId, projectId } = useUrlParams();
   const projectLinks = [
     {
       label: "الرئيسية",
-      to: `/projects/${projectId}/${archiveName}`,
+      to: `/projects/${projectId}/${archiveId}`,
       icon: "📦",
     },
 
     {
       label: "الموظفين ",
-      to: `/projects/${projectId}/${archiveName}/employees`,
+      to: `/projects/${projectId}/${archiveId}/employees`,
       icon: "📦",
     },
     {
       label: "الطلاب ",
-      to: `/projects/${projectId}/${archiveName}/students`,
+      to: `/projects/${projectId}/${archiveId}/students`,
       icon: "📦",
     },
     {
       label: "الخصومات",
-      to: `/projects/${projectId}/${archiveName}/discounts`,
+      to: `/projects/${projectId}/${archiveId}/discounts`,
       icon: "📦",
     },
     {
       label: "الرواتب",
-      to: `/projects/${projectId}/${archiveName}/salaries`,
+      to: `/projects/${projectId}/${archiveId}/salaries`,
       icon: "📦",
     },
     {
       label: "الارشيف",
-      to: `/projects/${projectId}/${archiveName}/archives`,
+      to: `/projects/${projectId}/${archiveId}/archives`,
       icon: "📦",
     },
   ];

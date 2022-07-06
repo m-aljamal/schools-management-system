@@ -12,7 +12,6 @@ import { Employee, LoginUserInput, Role } from "src/generated/generates";
 import graphqlRequestClient from "src/utils/graphqlRequestClient";
 import * as auth from "src/hooks/auth-provider";
 import { useAsync } from "src/hooks/hook";
-import { useFindArchiveId } from "src/utils/archive";
 
 async function bootstrapAppData() {
   let user: Employee | null = null;
@@ -90,21 +89,11 @@ function useAuthClient() {
 }
 
 function useUrlParams() {
-  const { user }: any = useAuth();
-console.log(user);
-
-  const { projectId: urlProjectId, archiveName: urlArchiveName } = useParams();
-
-  const archiveName: string =
-    urlArchiveName || user.project.current_archive_name;
-  const projectId: string = urlProjectId || user.project.id;
-  const { archiveId } = useFindArchiveId(archiveName, projectId);
-  console.log("useUrlParams", { archiveId, archiveName, projectId });
+  const { projectId, archiveId } = useParams();
 
   return {
-    projectId,
-    archiveName,
-    archiveId,
+    projectId: projectId || "",
+    archiveId: archiveId || "",
   };
 }
 export { AuthProvider, useAuth, useAuthClient, useUrlParams };
