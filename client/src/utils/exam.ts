@@ -6,6 +6,7 @@ function useExam(semesterId: string) {
   const { data } = useFindExamsQuery<FindExamsQuery, Error>(client(), {
     semesterId,
   });
+
   return {
     exams: data?.findExams || [],
   };
