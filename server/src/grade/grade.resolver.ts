@@ -1,3 +1,4 @@
+import { Subject } from 'src/subject/entity/subject';
 import {
   Args,
   Mutation,
@@ -11,12 +12,14 @@ import { StudentService } from 'src/student/student.service';
 import { GradeInput } from './dto/grade.input';
 import { Grade } from './entity/grade';
 import { GradeService } from './grade.service';
+import { SubjectService } from 'src/subject/subject.service';
 
 @Resolver(() => Grade)
 export class GradeResolver {
   constructor(
     private readonly gradeService: GradeService,
     private readonly studentService: StudentService,
+    private readonly subjectService: SubjectService,
   ) {}
 
   @Query(() => [Grade], { name: 'findGrades' })
@@ -31,5 +34,10 @@ export class GradeResolver {
   @ResolveField(() => Grade)
   async student(@Parent() grade: Grade): Promise<Student> {
     return this.studentService.findOne(grade.studentId);
+  }
+
+  @ResolveField(() => Grade)
+  async subject(@Parent() grade: Grade): Promise<Subject> {
+    return this.subjectService.findOne(grade.subjectId);
   }
 }

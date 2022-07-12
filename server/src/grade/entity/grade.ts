@@ -36,7 +36,7 @@ export class Grade {
   studentId: string;
 
   @Field({ nullable: true })
-  @Column()
+  @Column({ nullable: true })
   final_grade: number;
 
   @Field(() => Number, { nullable: true })

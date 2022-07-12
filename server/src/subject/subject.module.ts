@@ -7,5 +7,6 @@ import { SubjectResolver } from './subject.resolver';
 @Module({
   imports: [TypeOrmModule.forFeature([Subject])],
   providers: [SubjectService, SubjectResolver],
+  exports: [SubjectService],
 })
 export class SubjectModule {}

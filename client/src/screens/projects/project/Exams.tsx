@@ -3,7 +3,7 @@ import { useSemesterList } from "src/utils/semester";
 
 const Exams = () => {
   const { semesters } = useSemesterList();
-
+  const [semesterId, setSemesterId] = React.useState("");
   return (
     <div>
       <h1>Exams</h1>
@@ -13,6 +13,9 @@ const Exams = () => {
             <h2>{semester.name}</h2>
           </div>
         ))}
+      </div>
+      <div>
+        <h2>النتائج</h2>
       </div>
     </div>
   );

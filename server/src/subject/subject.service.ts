@@ -18,4 +18,9 @@ export class SubjectService {
   async create(subject: SubjectInput): Promise<Subject> {
     return this.subjectRepository.save(subject);
   }
+  async findOne(id: string): Promise<Subject> {
+    return this.subjectRepository.findOne({
+      where: { id },
+    });
+  }
 }

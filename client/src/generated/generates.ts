@@ -357,6 +357,11 @@ export type QueryFindEmployeesArgs = {
 };
 
 
+export type QueryFindExamsArgs = {
+  semesterId: Scalars['String'];
+};
+
+
 export type QueryFindSemestersArgs = {
   archiveId: Scalars['String'];
 };
@@ -529,10 +534,12 @@ export type FindEmployeeQueryVariables = Exact<{
 
 export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', id: string, name: string, levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
 
-export type FindExamsQueryVariables = Exact<{ [key: string]: never; }>;
+export type FindExamsQueryVariables = Exact<{
+  semesterId: Scalars['String'];
+}>;
 
 
-export type FindExamsQuery = { __typename?: 'Query', findExams: Array<{ __typename?: 'Exam', id: string, level: { __typename?: 'Level', name: string } }> };
+export type FindExamsQuery = { __typename?: 'Query', findExams: Array<{ __typename?: 'Exam', id: string, semesterId: string, grades?: Array<{ __typename?: 'Grade', final_grade?: number | null, first_quiz_grade?: number | null, homework_grade?: number | null, id: string, oral_grade?: number | null, second_quiz_grade?: number | null, subject: { __typename?: 'Subject', id: string, name: string }, student: { __typename?: 'Student', name: string } }> | null, level: { __typename?: 'Level', id: string, name: string } }> };
 
 export type CreateLevelMutationVariables = Exact<{
   name: Scalars['String'];
@@ -796,10 +803,28 @@ export const useFindEmployeeQuery = <
       options
     );
 export const FindExamsDocument = `
-    query findExams {
-  findExams {
+    query findExams($semesterId: String!) {
+  findExams(semesterId: $semesterId) {
     id
+    semesterId
+    grades {
+      final_grade
+      first_quiz_grade
+      homework_grade
+      id
+      oral_grade
+      second_quiz_grade
+      id
+      subject {
+        id
+        name
+      }
+      student {
+        name
+      }
+    }
     level {
+      id
       name
     }
   }
@@ -810,12 +835,12 @@ export const useFindExamsQuery = <
       TError = unknown
     >(
       client: GraphQLClient,
-      variables?: FindExamsQueryVariables,
+      variables: FindExamsQueryVariables,
       options?: UseQueryOptions<FindExamsQuery, TError, TData>,
       headers?: RequestInit['headers']
     ) =>
     useQuery<FindExamsQuery, TError, TData>(
-      variables === undefined ? ['findExams'] : ['findExams', variables],
+      ['findExams', variables],
       fetcher<FindExamsQuery, FindExamsQueryVariables>(client, FindExamsDocument, variables, headers),
       options
     );

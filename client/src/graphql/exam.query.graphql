@@ -1,10 +1,27 @@
-query findExams {
-  findExams {
+query findExams($semesterId: String!) {
+  findExams(semesterId: $semesterId) {
     id
+    semesterId
+    grades {
+      final_grade
+      first_quiz_grade
+      homework_grade
+      id
+      oral_grade
+      second_quiz_grade
+
+      id
+      subject {
+        id
+        name
+      }
+      student {
+        name
+      }
+    }
     level {
+      id
       name
     }
   }
 }
-
-

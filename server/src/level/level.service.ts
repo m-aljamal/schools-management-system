@@ -31,6 +31,7 @@ export class LevelService {
   async findOne(id: string): Promise<Level> {
     return await this.levelRepository.findOne({
       where: { id },
+      relations: ['students'],
     });
   }
 

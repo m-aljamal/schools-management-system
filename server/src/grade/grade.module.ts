@@ -1,3 +1,4 @@
+import { SubjectModule } from './../subject/subject.module';
 import { StudentModule } from 'src/student/student.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -6,7 +7,7 @@ import { GradeResolver } from './grade.resolver';
 import { Grade } from './entity/grade';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Grade]), StudentModule],
+  imports: [TypeOrmModule.forFeature([Grade]), StudentModule, SubjectModule],
   providers: [GradeService, GradeResolver],
 })
 export class GradeModule {}

@@ -11,6 +11,7 @@ import {
 } from '@nestjs/graphql';
 import { ExamService } from './exam.service';
 import { LevelService } from 'src/level/level.service';
+import { FindExamArgs } from './dto/findExam.args';
 
 @Resolver(() => Exam)
 export class ExamResolver {
@@ -20,8 +21,8 @@ export class ExamResolver {
   ) {}
 
   @Query(() => [Exam], { name: 'findExams' })
-  async findExams(): Promise<Exam[]> {
-    return await this.examService.find();
+  async findExams(@Args() args: FindExamArgs): Promise<Exam[]> {
+    return await this.examService.find(args);
   }
 
   @Mutation(() => Exam, { name: 'createExam' })
