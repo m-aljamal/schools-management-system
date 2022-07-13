@@ -1,0 +1,6 @@
+query findDivisions($levelId: String!) {
+  findDivisions(levelId: $levelId) {
+    name
+    id
+  }
+}

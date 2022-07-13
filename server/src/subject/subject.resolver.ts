@@ -8,8 +8,8 @@ export class SubjectResolver {
   constructor(private readonly subjectService: SubjectService) {}
 
   @Query(() => [Subject], { name: 'findSubjects' })
-  async subjects(): Promise<Subject[]> {
-    return this.subjectService.findAll();
+  async subjects(@Args('levelId') levelId: string): Promise<Subject[]> {
+    return this.subjectService.findAll(levelId);
   }
 
   @Mutation(() => Subject, { name: 'createSubject' })

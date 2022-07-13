@@ -11,8 +11,11 @@ export class SubjectService {
     private readonly subjectRepository: Repository<Subject>,
   ) {}
 
-  async findAll(): Promise<Subject[]> {
-    return this.subjectRepository.find();
+  async findAll(levelId: string): Promise<Subject[]> {
+    return this.subjectRepository.find({
+      where: { levelId },
+      relations: ['grades', 'level'],
+    });
   }
 
   async create(subject: SubjectInput): Promise<Subject> {

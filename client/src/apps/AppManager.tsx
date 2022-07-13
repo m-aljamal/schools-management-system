@@ -5,6 +5,7 @@ import Archives from "src/screens/projects/project/Archives";
 import Employees from "src/screens/projects/project/Employees";
 import Exams from "src/screens/projects/project/Exams";
 import ProjectScreen from "src/screens/projects/project/index";
+import Level from "src/screens/projects/project/Level";
 import Levels from "src/screens/projects/project/Levels";
 import Students from "src/screens/projects/project/Students";
 const AppManager = () => {
@@ -17,8 +18,9 @@ const AppManager = () => {
 
         <Route path="employees" element={<Employees />} />
         <Route path="students" element={<Students />} />
-        <Route path="exams" element={<Exams />} />
+        {/* <Route path="exams" element={<Exams />} /> */}
         <Route path="levels" element={<Levels />} />
+        <Route path="levels/:levelId" element={<Level />} />
         <Route path="archives" element={<Archives />} />
       </Route>
       <Route

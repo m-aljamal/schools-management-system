@@ -28,6 +28,15 @@ export class LevelService {
     return await this.levelRepository.save(levelInput);
   }
 
+  // new
+
+  async findLevels(archiveId: string): Promise<Level[]> {
+    return await this.levelRepository.find({
+      where: { archiveId },
+    });
+  }
+  // end new
+
   async findOne(id: string): Promise<Level> {
     return await this.levelRepository.findOne({
       where: { id },

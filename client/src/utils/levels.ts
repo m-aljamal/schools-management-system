@@ -1,11 +1,15 @@
 import {
   CreateLevelMutation,
   CreateLevelMutationVariables,
+  FindLevelQuery,
+  FindLevelsQuery,
   Find_Levels_DivisionsQuery,
   Find_Levels_Divisions_EmployeesQuery,
   Find_Levels_Divisions_Employees_StudentsQuery,
   Find_Levels_Divisions_StudentsQuery,
   useCreateLevelMutation,
+  useFindLevelQuery,
+  useFindLevelsQuery,
   useFind_Levels_DivisionsQuery,
   useFind_Levels_Divisions_EmployeesQuery,
   useFind_Levels_Divisions_Employees_StudentsQuery,
@@ -13,6 +17,28 @@ import {
 } from "./../generated/generates";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import { useQueryClient } from "react-query";
+
+function useLevelsList() {
+  const { archiveId } = useUrlParams();
+  const { client } = useAuthClient();
+  const { data } = useFindLevelsQuery<FindLevelsQuery, Error>(client(), {
+    archiveId,
+  });
+  return {
+    levels: data?.findLevels || [],
+  };
+}
+
+function useFindLevel() {
+  const { client } = useAuthClient();
+  const { levelId } = useUrlParams();
+  const { data } = useFindLevelQuery<FindLevelQuery, Error>(client(), {
+    levelId,
+  });
+  return {
+    level: data?.findLevel || null,
+  };
+}
 
 function useLevels() {
   const { client } = useAuthClient();
@@ -87,12 +113,12 @@ function useCreateLevel() {
       _varibles: CreateLevelMutationVariables,
       _context: unknown
     ) => {
-      queryClent.invalidateQueries("find_levels_divisions");
+      queryClent.invalidateQueries("findLevels");
     },
     onError: (error: Error) => {
       console.error(error);
     },
-    onSettled: () => queryClent.invalidateQueries("find_levels_divisions"),
+    onSettled: () => queryClent.invalidateQueries("findLevels"),
   });
   return { mutate };
 }
@@ -103,4 +129,6 @@ export {
   useLevelsForStudents,
   useLevelsForEmployees,
   useCreateLevel,
+  useLevelsList,
+  useFindLevel,
 };

@@ -34,11 +34,11 @@ export const useProjectLinks = () => {
       to: `/projects/${projectId}/${archiveId}/levels`,
       icon: <AiOutlinePieChart />,
     },
-    {
-      label: "الامتحانات",
-      to: `/projects/${projectId}/${archiveId}/exams`,
-      icon: <AiOutlinePieChart />,
-    },
+    // {
+    //   label: "الامتحانات",
+    //   to: `/projects/${projectId}/${archiveId}/exams`,
+    //   icon: <AiOutlinePieChart />,
+    // },
     {
       label: "الموظفين ",
       to: `/projects/${projectId}/${archiveId}/employees`,

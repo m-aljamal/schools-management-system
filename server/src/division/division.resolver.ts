@@ -1,16 +1,28 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { Level } from 'src/level/entity/level';
+import { LevelService } from 'src/level/level.service';
 import { DivisionService } from './division.service';
 import { DivisionInput } from './dto/division.input';
 import { DivisionUpdateInput } from './dto/division.update';
 import { Division } from './entity/division';
 
-@Resolver()
+@Resolver(() => Division)
 export class DivisionResolver {
-  constructor(private readonly divisionService: DivisionService) {}
+  constructor(
+    private readonly divisionService: DivisionService,
+    private readonly levelService: LevelService,
+  ) {}
 
   @Query(() => [Division], { name: 'findDivisions' })
-  async findDivisions(): Promise<Division[]> {
-    return this.divisionService.findAll();
+  async findDivisions(@Args('levelId') levelId: string): Promise<Division[]> {
+    return this.divisionService.findAll(levelId);
   }
 
   @Mutation(() => Division, { name: 'createDivision' })
@@ -18,11 +30,8 @@ export class DivisionResolver {
     return this.divisionService.create(divisionInput);
   }
 
-  // @Mutation(() => Division, { name: 'updateDivision' })
-  // async updateDivision(
-  //   @Args('id') id: string,
-  //   @Args('input') divisionUpdateInput: DivisionUpdateInput,
-  // ) {
-  //   return this.divisionService.update(id, divisionUpdateInput);
-  // }
+  @ResolveField(() => Division)
+  async level(@Parent() division: Division): Promise<Level> {
+    return await this.levelService.findOne(division.levelId);
+  }
 }

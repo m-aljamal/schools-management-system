@@ -13,15 +13,17 @@ export class ExamService {
   ) {}
 
   async find(args: FindExamArgs): Promise<Exam[]> {
-    // return await this.examRepo.find({
-    //   relations: ['grades'],
-    // });
-
     const query = this.examRepo.createQueryBuilder('exam');
     query.where('exam.semesterId = :semesterId', {
       semesterId: args.semesterId,
     });
     query.leftJoinAndSelect('exam.grades', 'grade');
+
+    if (args.subjectId) {
+      query.andWhere('grade.subjectId = :subjectId', {
+        subjectId: args.subjectId,
+      });
+    }
     return await query.getMany();
   }
 

@@ -1,3 +1,4 @@
+import { LevelModule } from './../level/level.module';
 import { Module } from '@nestjs/common';
 import { DivisionService } from './division.service';
 import { DivisionResolver } from './division.resolver';
@@ -6,7 +7,7 @@ import { Division } from './entity/division';
 import { ArchiveModule } from 'src/archive/archive.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Division]), ArchiveModule],
+  imports: [TypeOrmModule.forFeature([Division]), LevelModule],
   providers: [DivisionService, DivisionResolver],
   exports: [DivisionService],
 })

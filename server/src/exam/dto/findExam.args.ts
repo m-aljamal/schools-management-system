@@ -4,4 +4,7 @@ import { ArgsType, Field } from '@nestjs/graphql';
 export class FindExamArgs {
   @Field()
   semesterId: string;
+
+  @Field({ nullable: true })
+  subjectId: string;
 }

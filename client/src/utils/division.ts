@@ -2,9 +2,11 @@ import {
   CreateDivisionMutation,
   CreateDivisionMutationVariables,
   useCreateDivisionMutation,
+  useFindDivisionsQuery,
+  FindDivisionsQuery,
 } from "./../generated/generates";
 import { useQueryClient } from "react-query";
-import { useAuthClient } from "src/context/auth-context";
+import { useAuthClient, useUrlParams } from "src/context/auth-context";
 
 function useCreateDivision() {
   const { client } = useAuthClient();
@@ -16,14 +18,25 @@ function useCreateDivision() {
       _varibles: CreateDivisionMutationVariables,
       _context: unknown
     ) => {
-      queryClent.invalidateQueries("find_levels_divisions");
+      queryClent.invalidateQueries("findDivisions");
     },
     onError: (error: Error) => {
       console.error(error);
     },
-    onSettled: () => queryClent.invalidateQueries("find_levels_divisions"),
+    onSettled: () => queryClent.invalidateQueries("findDivisions"),
   });
   return { mutate };
 }
 
-export { useCreateDivision };
+function useDivisionsList() {
+  const { client } = useAuthClient();
+  const { levelId } = useUrlParams();
+  const { data } = useFindDivisionsQuery<FindDivisionsQuery, Error>(client(), {
+    levelId,
+  });
+  return {
+    divisions: data?.findDivisions || [],
+  };
+}
+
+export { useCreateDivision, useDivisionsList };

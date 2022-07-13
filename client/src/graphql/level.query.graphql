@@ -1,3 +1,17 @@
+query findLevels($archiveId: String!) {
+  findLevels(archiveId: $archiveId) {
+    name
+    id
+  }
+}
+
+query findLevel($levelId: String!) {
+  findLevel(levelId: $levelId) {
+    name
+    id
+  }
+}
+
 query find_levels_divisions($archiveId: String!, $projectId: String!) {
   find_levels_divisions(archiveId: $archiveId, projectId: $projectId) {
     id

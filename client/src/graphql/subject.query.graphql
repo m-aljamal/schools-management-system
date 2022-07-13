@@ -1,0 +1,6 @@
+query findSubjects($levelId: String!) {
+  findSubjects(levelId: $levelId) {
+    id
+    name
+  }
+}
