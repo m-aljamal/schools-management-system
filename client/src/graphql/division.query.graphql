@@ -4,3 +4,14 @@ query findDivisions($levelId: String!) {
     id
   }
 }
+
+query findDivisionsStudents($levelId: String!) {
+  findDivisions(levelId: $levelId) {
+    name
+    id
+    students {
+      name
+      id
+    }
+  }
+}

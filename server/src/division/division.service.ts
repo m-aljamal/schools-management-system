@@ -17,9 +17,14 @@ export class DivisionService {
   ) {}
 
   async findAll(levelId: string): Promise<Division[]> {
-    return this.divisionRepository.find({
-      where: { levelId },
-    });
+    // return this.divisionRepository.find({
+    //   where: { levelId },
+    //   relations: ['students'],
+    // });
+    const query = await this.divisionRepository.createQueryBuilder('division');
+    query.where('division.levelId = :levelId', { levelId });
+    query.innerJoinAndSelect('division.students', 'student');
+    return query.getMany();
   }
 
   async create(divisionInput: DivisionInput): Promise<Division> {
@@ -29,6 +34,7 @@ export class DivisionService {
   async findOne(id: string): Promise<Division> {
     return await this.divisionRepository.findOne({
       where: { id },
+      relations: ['students'],
     });
   }
 

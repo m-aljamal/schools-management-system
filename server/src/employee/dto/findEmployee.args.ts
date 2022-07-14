@@ -6,6 +6,6 @@ export class FindEmployeeArgs {
   @Field()
   archiveId: string;
 
-  @Field(() => Role, { nullable: true })
-  excludeJobTitle: Role;
+  @Field({ nullable: true })
+  levelId: string;
 }

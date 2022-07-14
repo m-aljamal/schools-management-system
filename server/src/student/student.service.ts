@@ -6,6 +6,7 @@ import { StudentInput } from './dto/student.input';
 import { ArchiveService } from 'src/archive/archive.service';
 import { LevelService } from 'src/level/level.service';
 import { hashPassword } from 'utils/hashPassword';
+import { DivisionService } from 'src/division/division.service';
 
 @Injectable()
 export class StudentService {
@@ -16,8 +17,9 @@ export class StudentService {
     private readonly levelService: LevelService,
   ) {}
 
-  async findAll() {
+  async findAll(levelId: string): Promise<Student[]> {
     return await this.studentRepo.find({
+      where: { levelId },
       relations: ['absentStudents', 'grades'],
     });
   }

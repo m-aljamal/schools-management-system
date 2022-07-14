@@ -4,6 +4,8 @@ import {
   useCreateDivisionMutation,
   useFindDivisionsQuery,
   FindDivisionsQuery,
+  useFindDivisionsStudentsQuery,
+  FindDivisionsStudentsQuery,
 } from "./../generated/generates";
 import { useQueryClient } from "react-query";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
@@ -39,4 +41,17 @@ function useDivisionsList() {
   };
 }
 
-export { useCreateDivision, useDivisionsList };
+function useDivision_students() {
+  const { client } = useAuthClient();
+  const { levelId } = useUrlParams();
+  const { data } = useFindDivisionsStudentsQuery<
+    FindDivisionsStudentsQuery,
+    Error
+  >(client(), {
+    levelId,
+  });
+  return {
+    divisions: data?.findDivisions || [],
+  };
+}
+export { useCreateDivision, useDivisionsList, useDivision_students };

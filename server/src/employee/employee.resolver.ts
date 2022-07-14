@@ -28,6 +28,11 @@ export class TeacherResolver {
     return this.employeeService.find(args);
   }
 
+  @Query(() => [Employee], { name: 'findTeachers' })
+  async findTeachers(@Args() args: FindEmployeeArgs) {
+    return this.employeeService.findTeachers(args);
+  }
+
   @Query(() => Employee, { name: 'findEmployee' })
   async findOne(@Args('id') id: string) {
     return this.employeeService.findOne(id);

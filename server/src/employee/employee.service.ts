@@ -23,17 +23,23 @@ export class EmployeeService {
   async find(args: FindEmployeeArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
 
-    if (args.excludeJobTitle) {
-      query.where('employee.role != :role', {
-        role: args.excludeJobTitle,
-      });
-    }
-
     query.leftJoinAndSelect('employee.archives', 'archive');
     query.andWhere('archive.id = :archiveId', {
       archiveId: args.archiveId,
     });
 
+    return await query.getMany();
+  }
+
+  async findTeachers(args: FindEmployeeArgs) {
+    const query = this.employeeRepo.createQueryBuilder('employee');
+    query.where('employee.role = :role', { role: Role.TEACHER });
+    query.leftJoinAndSelect('employee.levels', 'level');
+    query.leftJoinAndSelect('employee.divisions', 'division');
+
+    if (args.levelId) {
+      query.andWhere('division.level.id = :levelId', { levelId: args.levelId });
+    }
     return await query.getMany();
   }
 
@@ -85,7 +91,7 @@ export class EmployeeService {
         input.divisions.map(async (id) => {
           const division = await this.divisionService.findOne(id);
           if (!division) {
-            throw new BadRequestException('القسم غير موجود');
+            throw new BadRequestException('الشعبة غير موجود');
           }
           return division;
         }),

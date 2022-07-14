@@ -2,24 +2,24 @@ import { useParams } from "react-router-dom";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import {
   FindEmployeeQuery,
-  FindEmployeesQuery,
+  FindTeachers_LevelsQuery,
   Role,
   useFindEmployeeQuery,
-  useFindEmployeesQuery,
+  useFindTeachers_LevelsQuery,
 } from "./../generated/generates";
 
-function useEmployees() {
-  const { client } = useAuthClient();
-  const { archiveId } = useUrlParams();
+// function useEmployees() {
+//   const { client } = useAuthClient();
+//   const { archiveId } = useUrlParams();
 
-  const { data } = useFindEmployeesQuery<FindEmployeesQuery, Error>(client(), {
-    archiveId,
-    excludeJobTitle: Role.Teacher,
-  });
-  return {
-    employees: data?.findEmployees || [],
-  };
-}
+//   const { data } = useFindEmployeesQuery<FindEmployeesQuery, Error>(client(), {
+//     archiveId,
+//     excludeJobTitle: Role.Teacher,
+//   });
+//   return {
+//     employees: data?.findEmployees || [],
+//   };
+// }
 
 function useEmployee() {
   const { client } = useAuthClient();
@@ -32,4 +32,23 @@ function useEmployee() {
     employee: data?.findEmployee,
   };
 }
-export { useEmployees, useEmployee };
+
+function useTeachersList_levels() {
+  const { client } = useAuthClient();
+  const { archiveId, levelId } = useUrlParams();
+  const { data } = useFindTeachers_LevelsQuery<FindTeachers_LevelsQuery, Error>(
+    client(),
+    {
+      archiveId,
+      levelId,
+    }
+  );
+  return {
+    teachers: data?.findTeachers || [],
+  };
+}
+export {
+  // useEmployees,
+  useEmployee,
+  useTeachersList_levels,
+};
