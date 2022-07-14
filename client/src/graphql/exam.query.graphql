@@ -1,7 +1,43 @@
-query findExams($semesterId: String!) {
-  findExams(semesterId: $semesterId) {
+# query findExams($semesterId: String!, $levelId: String!) {
+#   findExams(semesterId: $semesterId, levelId: $levelId) {
+#     id
+#     semesterId
+#     grades {
+#       final_grade
+#       first_quiz_grade
+#       homework_grade
+#       id
+#       oral_grade
+#       second_quiz_grade
+
+#       id
+#       subject {
+#         id
+#         name
+#       }
+#       student {
+#         name
+#       }
+#     }
+#     level {
+#       id
+#       name
+#     }
+#   }
+# }
+
+query findExams_level($levelId: String!, $archiveId: String!) {
+  findExams(archiveId: $archiveId, levelId: $levelId) {
     id
-    semesterId
+    level {
+      id
+      name
+    }
+    semester {
+      name
+      id
+    }
+
     grades {
       final_grade
       first_quiz_grade
@@ -18,10 +54,6 @@ query findExams($semesterId: String!) {
       student {
         name
       }
-    }
-    level {
-      id
-      name
     }
   }
 }

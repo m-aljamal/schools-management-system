@@ -23,14 +23,14 @@ export class TeacherResolver {
     private readonly projectService: ProjectService,
   ) {}
 
-  @Query(() => [Employee], { name: 'findEmployees' })
-  async findAll(@Args() args: FindEmployeeArgs) {
-    return this.employeeService.find(args);
-  }
-
   @Query(() => [Employee], { name: 'findTeachers' })
   async findTeachers(@Args() args: FindEmployeeArgs) {
     return this.employeeService.findTeachers(args);
+  }
+
+  @Query(() => [Employee], { name: 'findManagers' })
+  async findManagers(@Args() args: FindEmployeeArgs) {
+    return this.employeeService.findManagers(args);
   }
 
   @Query(() => Employee, { name: 'findEmployee' })

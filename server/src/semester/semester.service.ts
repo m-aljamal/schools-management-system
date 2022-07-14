@@ -13,6 +13,12 @@ export class SemesterService {
     private readonly semesterRepository: Repository<Semester>,
   ) {}
 
+  async findOne(id: string): Promise<Semester> {
+    return await this.semesterRepository.findOne({
+      where: { id },
+    });
+  }
+
   async findAll(args: FindSemesterArgs): Promise<Semester[]> {
     return await this.semesterRepository.find({
       where: { archiveId: args.archiveId },

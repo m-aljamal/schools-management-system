@@ -27,3 +27,11 @@ query findTeachers_levels($archiveId: String!, $levelId: String!) {
     }
   }
 }
+
+query findManagers($archiveId: String!) {
+  findManagers(archiveId: $archiveId) {
+    name
+    id
+    role
+  }
+}

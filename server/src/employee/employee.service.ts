@@ -2,7 +2,7 @@ import { hashPassword } from './../../utils/hashPassword';
 import { EmployeeInput } from './dto/employee.input';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { Employee } from './entity/employee';
 import { ArchiveService } from 'src/archive/archive.service';
 import { LevelService } from 'src/level/level.service';
@@ -20,11 +20,15 @@ export class EmployeeService {
     private readonly divisionService: DivisionService,
   ) {}
 
-  async find(args: FindEmployeeArgs) {
+  async findManagers(args: FindEmployeeArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
+    // todo: employee position order to make the mangers at top and the rest at bottom
+    query.where('employee.role NOT IN (:...roles)', {
+      roles: [Role.ADMIN, Role.TEACHER],
+    });
 
-    query.leftJoinAndSelect('employee.archives', 'archive');
-    query.andWhere('archive.id = :archiveId', {
+    query.leftJoinAndSelect('employee.archives', 'archives');
+    query.andWhere('archives.id = :archiveId', {
       archiveId: args.archiveId,
     });
 

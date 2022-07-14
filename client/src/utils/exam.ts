@@ -1,15 +1,22 @@
+import {
+  FindExams_LevelQuery,
+  useFindExams_LevelQuery,
+} from "./../generated/generates";
+import { useUrlParams } from "src/context/auth-context";
 import { useAuthClient } from "src/context/auth-context";
-import { useFindExamsQuery, FindExamsQuery } from "src/generated/generates";
-
-function useExam(semesterId: string) {
+function useExamsList_level() {
   const { client } = useAuthClient();
-  const { data } = useFindExamsQuery<FindExamsQuery, Error>(client(), {
-    semesterId,
-  });
-
+  const { archiveId, levelId } = useUrlParams();
+  const { data } = useFindExams_LevelQuery<FindExams_LevelQuery, Error>(
+    client(),
+    {
+      archiveId,
+      levelId,
+    }
+  );
   return {
     exams: data?.findExams || [],
   };
 }
 
-export { useExam };
+export { useExamsList_level };

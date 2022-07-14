@@ -2,9 +2,11 @@ import { useParams } from "react-router-dom";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import {
   FindEmployeeQuery,
+  FindManagersQuery,
   FindTeachers_LevelsQuery,
   Role,
   useFindEmployeeQuery,
+  useFindManagersQuery,
   useFindTeachers_LevelsQuery,
 } from "./../generated/generates";
 
@@ -47,8 +49,20 @@ function useTeachersList_levels() {
     teachers: data?.findTeachers || [],
   };
 }
+
+function useMangersList() {
+  const { client } = useAuthClient();
+  const { archiveId } = useUrlParams();
+  const { data } = useFindManagersQuery<FindManagersQuery, Error>(client(), {
+    archiveId,
+  });
+  return {
+    managers: data?.findManagers || [],
+  };
+}
 export {
   // useEmployees,
   useEmployee,
   useTeachersList_levels,
+  useMangersList,
 };

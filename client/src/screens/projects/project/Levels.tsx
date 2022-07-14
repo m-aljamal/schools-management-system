@@ -21,6 +21,10 @@ const Levels = () => {
             <div className="bg-gray-300 p-2">
               <div>
                 <h2 className="text-cyan-800"> {name}</h2>
+                <h2>عدد الشعب</h2>
+                <h2>عدد الطلاب</h2>
+                <h2>عدد المدرسين</h2>
+
                 {/* <CreateDivision levelId={id} />
               {divisions?.map(({ id, name }) => (
                 <div key={id}>
@@ -56,4 +60,3 @@ const CreateLevel = () => {
     </form>
   );
 };
-
