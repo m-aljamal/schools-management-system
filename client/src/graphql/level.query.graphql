@@ -12,97 +12,113 @@ query findLevel($levelId: String!) {
   }
 }
 
-query find_levels_divisions($archiveId: String!, $projectId: String!) {
-  find_levels_divisions(archiveId: $archiveId, projectId: $projectId) {
-    id
+query findTechers_levels($archiveId: String!) {
+  findTechers_levels(archiveId: $archiveId) {
     name
-
-    archive {
-      name
-      id
-      projectId
-    }
-    divisions {
-      name
-      id
-    }
-  }
-}
-
-query find_levels_divisions_employees_students(
-  $archiveId: String!
-  $projectId: String!
-) {
-  find_levels_divisions_employees_students(
-    archiveId: $archiveId
-    projectId: $projectId
-  ) {
     id
-    name
-
-    archive {
-      name
-      id
-      projectId
-    }
-    divisions {
-      name
-      id
-      students {
-        id
-        name
-      }
-      employees {
-        id
-      }
-    }
-  }
-}
-
-query find_levels_divisions_students($archiveId: String!, $projectId: String!) {
-  find_levels_divisions_students(archiveId: $archiveId, projectId: $projectId) {
-    id
-    name
-
-    archive {
-      name
-      id
-      projectId
-    }
-    divisions {
-      name
-      id
-      students {
-        id
-        name
-      }
-    }
-  }
-}
-
-query find_levels_divisions_employees(
-  $archiveId: String!
-  $projectId: String!
-) {
-  find_levels_divisions_employees(
-    archiveId: $archiveId
-    projectId: $projectId
-  ) {
-    id
-    name
-
-    archive {
-      name
-      id
-      projectId
-    }
     divisions {
       name
       id
       employees {
         name
         id
+        role
       }
     }
   }
 }
+
+# query find_levels_divisions($archiveId: String!, $projectId: String!) {
+#   find_levels_divisions(archiveId: $archiveId, projectId: $projectId) {
+#     id
+#     name
+
+#     archive {
+#       name
+#       id
+#       projectId
+#     }
+#     divisions {
+#       name
+#       id
+#     }
+#   }
+# }
+
+# query find_levels_divisions_employees_students(
+#   $archiveId: String!
+#   $projectId: String!
+# ) {
+#   find_levels_divisions_employees_students(
+#     archiveId: $archiveId
+#     projectId: $projectId
+#   ) {
+#     id
+#     name
+
+#     archive {
+#       name
+#       id
+#       projectId
+#     }
+#     divisions {
+#       name
+#       id
+#       students {
+#         id
+#         name
+#       }
+#       employees {
+#         id
+#       }
+#     }
+#   }
+# }
+
+# query find_levels_divisions_students($archiveId: String!, $projectId: String!) {
+#   find_levels_divisions_students(archiveId: $archiveId, projectId: $projectId) {
+#     id
+#     name
+
+#     archive {
+#       name
+#       id
+#       projectId
+#     }
+#     divisions {
+#       name
+#       id
+#       students {
+#         id
+#         name
+#       }
+#     }
+#   }
+# }
+
+# query find_levels_divisions_employees(
+#   $archiveId: String!
+#   $projectId: String!
+# ) {
+#   find_levels_divisions_employees(
+#     archiveId: $archiveId
+#     projectId: $projectId
+#   ) {
+#     id
+#     name
+
+#     archive {
+#       name
+#       id
+#       projectId
+#     }
+#     divisions {
+#       name
+#       id
+#       employees {
+#         name
+#         id
+#       }
+#     }
+#   }
+# }

@@ -3,17 +3,11 @@ import {
   CreateLevelMutationVariables,
   FindLevelQuery,
   FindLevelsQuery,
-  Find_Levels_DivisionsQuery,
-  Find_Levels_Divisions_EmployeesQuery,
-  Find_Levels_Divisions_Employees_StudentsQuery,
-  Find_Levels_Divisions_StudentsQuery,
+  FindTechers_LevelsQuery,
   useCreateLevelMutation,
   useFindLevelQuery,
   useFindLevelsQuery,
-  useFind_Levels_DivisionsQuery,
-  useFind_Levels_Divisions_EmployeesQuery,
-  useFind_Levels_Divisions_Employees_StudentsQuery,
-  useFind_Levels_Divisions_StudentsQuery,
+  useFindTechers_LevelsQuery,
 } from "./../generated/generates";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import { useQueryClient } from "react-query";
@@ -40,68 +34,83 @@ function useFindLevel() {
   };
 }
 
-function useLevels() {
+function useTeachersList_levels() {
   const { client } = useAuthClient();
-  const { archiveId, projectId } = useUrlParams();
-  const { data } = useFind_Levels_DivisionsQuery<
-    Find_Levels_DivisionsQuery,
-    Error
-  >(client(), {
-    archiveId,
-    projectId,
-  });
+  const { archiveId } = useUrlParams();
+  const { data } = useFindTechers_LevelsQuery<FindTechers_LevelsQuery, Error>(
+    client(),
+    {
+      archiveId,
+    }
+  );
+
   return {
-    levels: data?.find_levels_divisions || [],
+    teachers: data?.findTechers_levels || [],
   };
 }
 
-function useLevelsForAll() {
-  const { client } = useAuthClient();
-  const { archiveId, projectId } = useUrlParams();
+// function useLevels() {
+//   const { client } = useAuthClient();
+//   const { archiveId, projectId } = useUrlParams();
+//   const { data } = useFind_Levels_DivisionsQuery<
+//     Find_Levels_DivisionsQuery,
+//     Error
+//   >(client(), {
+//     archiveId,
+//     projectId,
+//   });
+//   return {
+//     levels: data?.find_levels_divisions || [],
+//   };
+// }
 
-  const { data } = useFind_Levels_Divisions_Employees_StudentsQuery<
-    Find_Levels_Divisions_Employees_StudentsQuery,
-    Error
-  >(client(), {
-    archiveId,
-    projectId,
-  });
-  return {
-    levels: data?.find_levels_divisions_employees_students || [],
-  };
-}
+// function useLevelsForAll() {
+//   const { client } = useAuthClient();
+//   const { archiveId, projectId } = useUrlParams();
 
-function useLevelsForStudents() {
-  const { client } = useAuthClient();
-  const { archiveId, projectId } = useUrlParams();
+//   const { data } = useFind_Levels_Divisions_Employees_StudentsQuery<
+//     Find_Levels_Divisions_Employees_StudentsQuery,
+//     Error
+//   >(client(), {
+//     archiveId,
+//     projectId,
+//   });
+//   return {
+//     levels: data?.find_levels_divisions_employees_students || [],
+//   };
+// }
 
-  const { data } = useFind_Levels_Divisions_StudentsQuery<
-    Find_Levels_Divisions_StudentsQuery,
-    Error
-  >(client(), {
-    archiveId,
-    projectId,
-  });
-  return {
-    levels: data?.find_levels_divisions_students || [],
-  };
-}
+// function useLevelsForStudents() {
+//   const { client } = useAuthClient();
+//   const { archiveId, projectId } = useUrlParams();
 
-function useLevelsForEmployees() {
-  const { client } = useAuthClient();
-  const { archiveId, projectId } = useUrlParams();
+//   const { data } = useFind_Levels_Divisions_StudentsQuery<
+//     Find_Levels_Divisions_StudentsQuery,
+//     Error
+//   >(client(), {
+//     archiveId,
+//     projectId,
+//   });
+//   return {
+//     levels: data?.find_levels_divisions_students || [],
+//   };
+// }
 
-  const { data } = useFind_Levels_Divisions_EmployeesQuery<
-    Find_Levels_Divisions_EmployeesQuery,
-    Error
-  >(client(), {
-    archiveId,
-    projectId,
-  });
-  return {
-    levels: data?.find_levels_divisions_employees || [],
-  };
-}
+// function useLevelsForEmployees() {
+//   const { client } = useAuthClient();
+//   const { archiveId, projectId } = useUrlParams();
+
+//   const { data } = useFind_Levels_Divisions_EmployeesQuery<
+//     Find_Levels_Divisions_EmployeesQuery,
+//     Error
+//   >(client(), {
+//     archiveId,
+//     projectId,
+//   });
+//   return {
+//     levels: data?.find_levels_divisions_employees || [],
+//   };
+// }
 
 function useCreateLevel() {
   const { client } = useAuthClient();
@@ -124,11 +133,12 @@ function useCreateLevel() {
 }
 
 export {
-  useLevels,
-  useLevelsForAll,
-  useLevelsForStudents,
-  useLevelsForEmployees,
+  // useLevels,
+  // useLevelsForAll,
+  // useLevelsForStudents,
+  // useLevelsForEmployees,
   useCreateLevel,
   useLevelsList,
   useFindLevel,
+  useTeachersList_levels,
 };

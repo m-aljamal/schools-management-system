@@ -1,14 +1,12 @@
 import React from "react";
-import { useLevelsForStudents } from "src/utils/levels";
-
+ 
 const Students = () => {
-  const { levels } = useLevelsForStudents();
-
+ 
   return (
     <div>
       <h2>الطلاب:</h2>
       <div className="grid grid-cols-3 gap-5">
-        {levels.map(({ archive, id, name, divisions }) => (
+        {/* {levels.map(({ archive, id, name, divisions }) => (
           <div key={id} className="bg-gray-200">
             <p className=" text-red-400">الصف:{name}</p>
             {divisions?.map(({ name, students }) => (
@@ -22,7 +20,7 @@ const Students = () => {
               </div>
             ))}
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

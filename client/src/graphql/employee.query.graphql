@@ -13,7 +13,7 @@ query findEmployee($id: String!) {
   }
 }
 
-query findTeachers_levels($archiveId: String!, $levelId: String!) {
+query findTeachers_divisions($archiveId: String!, $levelId: String!) {
   findTeachers(archiveId: $archiveId, levelId: $levelId) {
     name
     id

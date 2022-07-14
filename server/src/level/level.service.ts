@@ -1,3 +1,4 @@
+import { Role } from 'utils/enum';
 import {
   BadRequestException,
   Injectable,
@@ -34,6 +35,21 @@ export class LevelService {
     return await this.levelRepository.find({
       where: { archiveId },
     });
+  }
+
+  async findTechers_levels(archiveId: string): Promise<Level[]> {
+    const query = this.levelRepository.createQueryBuilder('level');
+    query.leftJoinAndSelect('level.archive', 'archive');
+
+    query.andWhere('archive.id = :archiveId', {
+      archiveId,
+    });
+    query.leftJoinAndSelect('level.divisions', 'division');
+    query.innerJoinAndSelect('division.employees', 'employee');
+    query.andWhere('employee.role = :role', {
+      role: Role.TEACHER,
+    });
+    return await query.getMany();
   }
   // end new
 

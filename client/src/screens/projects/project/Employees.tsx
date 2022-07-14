@@ -1,13 +1,13 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useUrlParams } from "src/context/auth-context";
 import { useMangersList } from "src/utils/employees";
-import { useLevelsForEmployees } from "src/utils/levels";
+import { useTeachersList_levels } from "src/utils/levels";
 
 const Employees = () => {
   const { managers } = useMangersList();
-  const { levels } = useLevelsForEmployees();
-  const { archiveId, projectId } = useParams();
+  const { archiveId, projectId } = useUrlParams();
+  const { teachers } = useTeachersList_levels();
   return (
     <div className="p-4">
       <h1>الموظفين</h1>
@@ -21,7 +21,7 @@ const Employees = () => {
       </div>
       <p>المدرسين:</p>
       <div className="grid grid-cols-3 gap-5">
-        {levels.map(({ archive, id, name, divisions }) => (
+        {teachers.map(({ id, name, divisions }) => (
           <div key={id} className="bg-gray-200">
             <p className=" text-red-400">الصف:{name}</p>
             {divisions?.map(({ name, employees }) => (

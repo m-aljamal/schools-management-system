@@ -3,11 +3,10 @@ import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import {
   FindEmployeeQuery,
   FindManagersQuery,
-  FindTeachers_LevelsQuery,
-  Role,
+  FindTeachers_DivisionsQuery,
   useFindEmployeeQuery,
   useFindManagersQuery,
-  useFindTeachers_LevelsQuery,
+  useFindTeachers_DivisionsQuery,
 } from "./../generated/generates";
 
 // function useEmployees() {
@@ -35,16 +34,16 @@ function useEmployee() {
   };
 }
 
-function useTeachersList_levels() {
+function useTeachersList_divisions() {
   const { client } = useAuthClient();
   const { archiveId, levelId } = useUrlParams();
-  const { data } = useFindTeachers_LevelsQuery<FindTeachers_LevelsQuery, Error>(
-    client(),
-    {
-      archiveId,
-      levelId,
-    }
-  );
+  const { data } = useFindTeachers_DivisionsQuery<
+    FindTeachers_DivisionsQuery,
+    Error
+  >(client(), {
+    archiveId,
+    levelId,
+  });
   return {
     teachers: data?.findTeachers || [],
   };
@@ -63,6 +62,6 @@ function useMangersList() {
 export {
   // useEmployees,
   useEmployee,
-  useTeachersList_levels,
+  useTeachersList_divisions,
   useMangersList,
 };

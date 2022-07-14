@@ -1,7 +1,7 @@
 import React from "react";
 import CreateDivision from "src/components/CreateDivision";
 import { useDivisionsList, useDivision_students } from "src/utils/division";
-import { useTeachersList_levels } from "src/utils/employees";
+import { useTeachersList_divisions } from "src/utils/employees";
 import { useExamsList_level } from "src/utils/exam";
 import { useFindLevel } from "src/utils/levels";
 import { useSubjectsList } from "src/utils/subject";
@@ -78,7 +78,7 @@ const Students = () => {
 };
 
 const Teachers = () => {
-  const { teachers } = useTeachersList_levels();
+  const { teachers } = useTeachersList_divisions();
   return (
     <div className="p-2 ">
       <p>المدرسين:</p>
