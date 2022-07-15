@@ -89,12 +89,13 @@ function useAuthClient() {
 }
 
 function useUrlParams() {
-  const { projectId, archiveId, levelId } = useParams();
+  const { projectId, archiveId, levelId, employeeId } = useParams();
 
   return {
     projectId: projectId || "",
     archiveId: archiveId || "",
     levelId: levelId || "",
+    employeeId: employeeId || "",
   };
 }
 export { AuthProvider, useAuth, useAuthClient, useUrlParams };

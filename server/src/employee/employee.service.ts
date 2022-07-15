@@ -7,7 +7,7 @@ import { Employee } from './entity/employee';
 import { ArchiveService } from 'src/archive/archive.service';
 import { LevelService } from 'src/level/level.service';
 import { DivisionService } from 'src/division/division.service';
-import { FindEmployeeArgs } from './dto/findEmployee.args';
+import { FindEmployeesArgs, FindEmployeeArgs } from './dto/findEmployee.args';
 import { Role } from 'utils/enum';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class EmployeeService {
     private readonly divisionService: DivisionService,
   ) {}
 
-  async findManagers(args: FindEmployeeArgs) {
+  async findManagers(args: FindEmployeesArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
     // todo: employee position order to make the mangers at top and the rest at bottom
     query.where('employee.role NOT IN (:...roles)', {
@@ -35,7 +35,7 @@ export class EmployeeService {
     return await query.getMany();
   }
 
-  async findTeachers(args: FindEmployeeArgs) {
+  async findTeachers(args: FindEmployeesArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
     query.where('employee.role = :role', { role: Role.TEACHER });
     query.leftJoinAndSelect('employee.levels', 'level');
@@ -47,20 +47,19 @@ export class EmployeeService {
     return await query.getMany();
   }
 
-  async findOne(id: string) {
+  async findOne(args: FindEmployeeArgs) {
     const query = this.employeeRepo.createQueryBuilder('employee');
-    query.leftJoinAndSelect('employee.archives', 'archive');
-    query.leftJoinAndSelect('employee.levels', 'level');
-    query.leftJoinAndSelect('employee.divisions', 'division');
-
-    const employee = await this.employeeRepo.findOne({
-      where: { id },
-      relations: ['archives', 'levels', 'divisions'],
+    query.where('employee.id = :id', { id: args.id });
+    query.leftJoinAndSelect('employee.levels', 'levels');
+    query.andWhere('levels.archiveId = :archiveId', {
+      archiveId: args.archiveId,
     });
-    if (!employee) {
-      throw new BadRequestException('Employee not found');
-    }
-    return employee;
+    query.leftJoinAndSelect('employee.divisions', 'division');
+    query.leftJoinAndSelect('levels.divisions', 'divisions');
+    query.leftJoinAndSelect('employee.archives', 'archives');
+    query.andWhere('divisions.id IN (division.id)');
+    query.andWhere('archives.id = :archiveId', { archiveId: args.archiveId });
+    return await query.getOne();
   }
 
   async create(input: EmployeeInput) {

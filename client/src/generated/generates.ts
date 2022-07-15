@@ -329,10 +329,6 @@ export type Query = {
   findSubjects: Array<Subject>;
   findTeachers: Array<Employee>;
   findTechers_levels: Array<Level>;
-  find_levels_divisions: Array<Level>;
-  find_levels_divisions_employees: Array<Level>;
-  find_levels_divisions_employees_students: Array<Level>;
-  find_levels_divisions_students: Array<Level>;
 };
 
 
@@ -357,7 +353,9 @@ export type QueryFindDivisionsArgs = {
 
 
 export type QueryFindEmployeeArgs = {
+  archiveId: Scalars['String'];
   id: Scalars['String'];
+  levelId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -408,30 +406,6 @@ export type QueryFindTeachersArgs = {
 
 export type QueryFindTechers_LevelsArgs = {
   archiveId: Scalars['String'];
-};
-
-
-export type QueryFind_Levels_DivisionsArgs = {
-  archiveId: Scalars['String'];
-  projectId: Scalars['String'];
-};
-
-
-export type QueryFind_Levels_Divisions_EmployeesArgs = {
-  archiveId: Scalars['String'];
-  projectId: Scalars['String'];
-};
-
-
-export type QueryFind_Levels_Divisions_Employees_StudentsArgs = {
-  archiveId: Scalars['String'];
-  projectId: Scalars['String'];
-};
-
-
-export type QueryFind_Levels_Divisions_StudentsArgs = {
-  archiveId: Scalars['String'];
-  projectId: Scalars['String'];
 };
 
 export enum Role {
@@ -581,10 +555,11 @@ export type FindDivisionsStudentsQuery = { __typename?: 'Query', findDivisions: 
 
 export type FindEmployeeQueryVariables = Exact<{
   id: Scalars['String'];
+  archiveId: Scalars['String'];
 }>;
 
 
-export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', id: string, name: string, levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
+export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', name: string, id: string, archives?: Array<{ __typename?: 'Archive', name: string }> | null, levels: Array<{ __typename?: 'Level', archiveId: string, name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
 
 export type FindTeachers_DivisionsQueryVariables = Exact<{
   archiveId: Scalars['String'];
@@ -863,11 +838,15 @@ export const useFindDivisionsStudentsQuery = <
       options
     );
 export const FindEmployeeDocument = `
-    query findEmployee($id: String!) {
-  findEmployee(id: $id) {
-    id
+    query findEmployee($id: String!, $archiveId: String!) {
+  findEmployee(id: $id, archiveId: $archiveId) {
     name
+    id
+    archives {
+      name
+    }
     levels {
+      archiveId
       name
       id
       divisions {

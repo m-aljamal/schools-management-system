@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import {
   FindEmployeeQuery,
@@ -25,9 +24,10 @@ import {
 function useEmployee() {
   const { client } = useAuthClient();
 
-  const { employeeId } = useParams();
+  const { employeeId, archiveId } = useUrlParams();
   const { data } = useFindEmployeeQuery<FindEmployeeQuery, Error>(client(), {
-    id: employeeId as string,
+    id: employeeId,
+    archiveId,
   });
   return {
     employee: data?.findEmployee,

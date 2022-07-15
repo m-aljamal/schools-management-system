@@ -69,39 +69,39 @@ export class LevelService {
     }
   }
 
-  async find_levels_divisions(args: FindLevelArgs): Promise<Level[]> {
-    const query = this.levelRepository.createQueryBuilder('level');
+  // async find_levels_divisions(args: FindLevelArgs): Promise<Level[]> {
+  //   const query = this.levelRepository.createQueryBuilder('level');
 
-    findLevels(args, query);
+  //   findLevels(args, query);
 
-    return await query.getMany();
-  }
+  //   return await query.getMany();
+  // }
 
-  async find_levels_divisions_students(args: FindLevelArgs): Promise<Level[]> {
-    const query = this.levelRepository.createQueryBuilder('level');
+  // async find_levels_divisions_students(args: FindLevelArgs): Promise<Level[]> {
+  //   const query = this.levelRepository.createQueryBuilder('level');
 
-    findLevels(args, query);
-    query.leftJoinAndSelect('division.students', 'student');
-    return await query.getMany();
-  }
-  async find_levels_divisions_employees(args: FindLevelArgs): Promise<Level[]> {
-    const query = this.levelRepository.createQueryBuilder('level');
+  //   findLevels(args, query);
+  //   query.leftJoinAndSelect('division.students', 'student');
+  //   return await query.getMany();
+  // }
+  // async find_levels_divisions_employees(args: FindLevelArgs): Promise<Level[]> {
+  //   const query = this.levelRepository.createQueryBuilder('level');
 
-    findLevels(args, query);
-    query.innerJoinAndSelect('division.employees', 'employee');
-    return await query.getMany();
-  }
+  //   findLevels(args, query);
+  //   query.innerJoinAndSelect('division.employees', 'employee');
+  //   return await query.getMany();
+  // }
 
-  async find_levels_divisions_employees_students(
-    args: FindLevelArgs,
-  ): Promise<Level[]> {
-    const query = this.levelRepository.createQueryBuilder('level');
+  // async find_levels_divisions_employees_students(
+  //   args: FindLevelArgs,
+  // ): Promise<Level[]> {
+  //   const query = this.levelRepository.createQueryBuilder('level');
 
-    findLevels(args, query);
+  //   findLevels(args, query);
 
-    query.leftJoinAndSelect('division.employees', 'employee');
-    query.leftJoinAndSelect('division.students', 'student');
+  //   query.leftJoinAndSelect('division.employees', 'employee');
+  //   query.leftJoinAndSelect('division.students', 'student');
 
-    return await query.getMany();
-  }
+  //   return await query.getMany();
+  // }
 }

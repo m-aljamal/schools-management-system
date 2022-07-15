@@ -1,8 +1,12 @@
-query findEmployee($id: String!) {
-  findEmployee(id: $id) {
-    id
+query findEmployee($id: String!, $archiveId: String!) {
+  findEmployee(id: $id, archiveId: $archiveId) {
     name
+    id
+    archives {
+      name
+    }
     levels {
+      archiveId
       name
       id
       divisions {

@@ -11,7 +11,7 @@ import {
 import { EmployeeInput } from './dto/employee.input';
 import { Employee } from './entity/employee';
 import { EmployeeService } from './employee.service';
-import { FindEmployeeArgs } from './dto/findEmployee.args';
+import { FindEmployeesArgs, FindEmployeeArgs } from './dto/findEmployee.args';
 import { UseGuards } from '@nestjs/common';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from 'src/project/project.service';
@@ -24,18 +24,18 @@ export class TeacherResolver {
   ) {}
 
   @Query(() => [Employee], { name: 'findTeachers' })
-  async findTeachers(@Args() args: FindEmployeeArgs) {
+  async findTeachers(@Args() args: FindEmployeesArgs) {
     return this.employeeService.findTeachers(args);
   }
 
   @Query(() => [Employee], { name: 'findManagers' })
-  async findManagers(@Args() args: FindEmployeeArgs) {
+  async findManagers(@Args() args: FindEmployeesArgs) {
     return this.employeeService.findManagers(args);
   }
 
   @Query(() => Employee, { name: 'findEmployee' })
-  async findOne(@Args('id') id: string) {
-    return this.employeeService.findOne(id);
+  async findOne(@Args() args: FindEmployeeArgs) {
+    return this.employeeService.findOne(args);
   }
 
   @Mutation(() => Employee, { name: 'createEmployee' })
