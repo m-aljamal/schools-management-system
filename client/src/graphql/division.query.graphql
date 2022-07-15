@@ -1,12 +1,12 @@
-query findDivisions($levelId: String!) {
-  findDivisions(levelId: $levelId) {
+query findDivisions($levelId: String!, $students: Boolean) {
+  findDivisions(levelId: $levelId, students: $students) {
     name
     id
   }
 }
 
-query findDivisionsStudents($levelId: String!) {
-  findDivisions(levelId: $levelId) {
+query findDivisionsStudents($levelId: String!, $students: Boolean) {
+  findDivisions(levelId: $levelId, students: $students) {
     name
     id
     students {

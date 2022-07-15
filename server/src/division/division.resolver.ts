@@ -1,3 +1,4 @@
+import { FindDivisionArgs } from './dto/findDivision.args';
 import {
   Args,
   Mutation,
@@ -21,8 +22,8 @@ export class DivisionResolver {
   ) {}
 
   @Query(() => [Division], { name: 'findDivisions' })
-  async findDivisions(@Args('levelId') levelId: string): Promise<Division[]> {
-    return this.divisionService.findAll(levelId);
+  async findDivisions(@Args() args: FindDivisionArgs): Promise<Division[]> {
+    return this.divisionService.findAll(args);
   }
 
   @Mutation(() => Division, { name: 'createDivision' })

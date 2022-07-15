@@ -352,6 +352,7 @@ export type QueryFindArchivesArgs = {
 
 export type QueryFindDivisionsArgs = {
   levelId: Scalars['String'];
+  students?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -564,6 +565,7 @@ export type CreateDivisionMutation = { __typename?: 'Mutation', createDivision: 
 
 export type FindDivisionsQueryVariables = Exact<{
   levelId: Scalars['String'];
+  students?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -571,6 +573,7 @@ export type FindDivisionsQuery = { __typename?: 'Query', findDivisions: Array<{ 
 
 export type FindDivisionsStudentsQueryVariables = Exact<{
   levelId: Scalars['String'];
+  students?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -812,8 +815,8 @@ export const useCreateDivisionMutation = <
       options
     );
 export const FindDivisionsDocument = `
-    query findDivisions($levelId: String!) {
-  findDivisions(levelId: $levelId) {
+    query findDivisions($levelId: String!, $students: Boolean) {
+  findDivisions(levelId: $levelId, students: $students) {
     name
     id
   }
@@ -834,8 +837,8 @@ export const useFindDivisionsQuery = <
       options
     );
 export const FindDivisionsStudentsDocument = `
-    query findDivisionsStudents($levelId: String!) {
-  findDivisions(levelId: $levelId) {
+    query findDivisionsStudents($levelId: String!, $students: Boolean) {
+  findDivisions(levelId: $levelId, students: $students) {
     name
     id
     students {

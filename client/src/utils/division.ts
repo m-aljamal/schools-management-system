@@ -49,6 +49,7 @@ function useDivision_students() {
     Error
   >(client(), {
     levelId,
+    students: true,
   });
   return {
     divisions: data?.findDivisions || [],

@@ -1,3 +1,4 @@
+import { FindDivisionArgs } from './dto/findDivision.args';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Division } from './entity/division';
 import {
@@ -16,15 +17,13 @@ export class DivisionService {
     private readonly divisionRepository: Repository<Division>,
   ) {}
 
-  async findAll(levelId: string): Promise<Division[]> {
-    // return this.divisionRepository.find({
-    //   where: { levelId },
-    //   relations: ['students'],
-    // });
-    const query = await this.divisionRepository.createQueryBuilder('division');
-    query.where('division.levelId = :levelId', { levelId });
-    query.innerJoinAndSelect('division.students', 'student');
-    return query.getMany();
+  async findAll(args: FindDivisionArgs): Promise<Division[]> {
+    const query = this.divisionRepository.createQueryBuilder('division');
+    query.where('division.levelId = :levelId', { levelId: args.levelId });
+    if (args.students) {
+      query.innerJoinAndSelect('division.students', 'student');
+    }
+    return await query.getMany();
   }
 
   async create(divisionInput: DivisionInput): Promise<Division> {
