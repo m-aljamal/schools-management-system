@@ -30,7 +30,7 @@ const Employees = () => {
                 <div>
                   {employees?.map(({ id, name }) => (
                     <Link
-                      to={`/projects/${projectId}/${archiveId}/employee/${id}`}
+                      to={`/projects/${projectId}/${archiveId}/employees/${id}`}
                     >
                       <p key={id}>{name}</p>
                     </Link>
