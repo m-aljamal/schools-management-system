@@ -5,11 +5,14 @@ export class StudentInput {
   @Field()
   name: string;
 
-  @Field()
-  levelId: string;
+  @Field(() => [String])
+  levels: string[];
 
-  @Field()
-  divisionId: string;
+  @Field(() => [String])
+  divisions: string[];
+
+  @Field(() => [String])
+  archives: string[];
 
   @Field()
   username: string;

@@ -3,6 +3,7 @@ import { Employee } from 'src/employee/entity/employee';
 import { Level } from 'src/level/entity/level';
 import { Project } from 'src/project/entity/project';
 import { Semester } from 'src/semester/entity/semester';
+import { Student } from 'src/student/entity/student';
 import {
   Column,
   CreateDateColumn,
@@ -48,6 +49,10 @@ export class Archive {
   @ManyToMany(() => Employee, (employee) => employee.archives)
   @Field(() => [Employee])
   employees: Employee[];
+
+  @ManyToMany(() => Student, (student) => student.archives)
+  @Field(() => [Student])
+  students: Student[];
 
   @OneToMany(() => Semester, (semester) => semester.archive)
   @Field(() => [Semester])

@@ -8,9 +8,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  OneToMany,
   ManyToMany,
-  JoinTable,
 } from 'typeorm';
 
 @ObjectType()
@@ -32,18 +30,11 @@ export class Division {
   @Column()
   levelId: string;
 
-  @OneToMany(() => Student, (student) => student.division)
-  @Field(() => [Student])
+  @ManyToMany(() => Student, (student) => student.divisions)
+  @Field(() => [Student], { nullable: true })
   students: Student[];
 
-  // @ManyToMany(() => Archive, (archive) => archive.divisions, {
-  //   cascade: true,
-  // })
-  // @Field(() => [Archive])
-  // @JoinTable()
-  // archives: Archive[];
-
   @ManyToMany(() => Employee, (employee) => employee.divisions)
-  @Field(() => [Student], { nullable: true })
+  @Field(() => [Employee], { nullable: true })
   employees: Employee[];
 }

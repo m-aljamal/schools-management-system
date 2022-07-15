@@ -1,0 +1,18 @@
+query findStudents($archiveId: String!, $levelId: String) {
+  findStudents(archiveId: $archiveId, levelId: $levelId) {
+    name
+    id
+    archives {
+      name
+    }
+    levels {
+      archiveId
+      name
+      id
+      divisions {
+        name
+        id
+      }
+    }
+  }
+}

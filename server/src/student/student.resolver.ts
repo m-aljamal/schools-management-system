@@ -1,3 +1,4 @@
+import { FindStudentsArgs } from './dto/findStudents.args';
 import { Division } from './../division/entity/division';
 import {
   Args,
@@ -20,8 +21,8 @@ export class StudentResolver {
   ) {}
 
   @Query(() => [Student], { name: 'findStudents' })
-  async findAll(@Args('levelId') levelId: string): Promise<Student[]> {
-    return this.studentService.findAll(levelId);
+  async findAll(@Args() args: FindStudentsArgs) {
+    return this.studentService.findAll(args);
   }
 
   @Mutation(() => Student, { name: 'createStudent' })
@@ -29,8 +30,8 @@ export class StudentResolver {
     return this.studentService.create(input);
   }
 
-  @ResolveField(() => Student)
-  async division(@Parent() student: Student): Promise<Division> {
-    return this.divisionService.findOne(student.divisionId);
-  }
+  // @ResolveField(() => Student)
+  // async division(@Parent() student: Student): Promise<Division> {
+  //   return this.divisionService.findOne(student.divisionId);
+  // }
 }

@@ -21,7 +21,6 @@ export class LevelResolver {
     private readonly archiveService: ArchiveService,
   ) {}
 
-  // new
   @Query(() => [Level], { name: 'findLevels' })
   async findLevels(@Args('archiveId') archiveId: string): Promise<Level[]> {
     return this.levelService.findLevels(archiveId);
@@ -38,31 +37,13 @@ export class LevelResolver {
   ): Promise<Level[]> {
     return await this.levelService.findTechers_levels(archiveId);
   }
-  // end new
 
-  // @Query(() => [Level], { name: 'find_levels_divisions' })
-  // async find_levels_divisions(@Args() args: FindLevelArgs): Promise<Level[]> {
-  //   return this.levelService.find_levels_divisions(args);
-  // }
-
-  // @Query(() => [Level], { name: 'find_levels_divisions_students' })
-  // async find_levels_divisions_students(
-  //   @Args() args: FindLevelArgs,
-  // ): Promise<Level[]> {
-  //   return this.levelService.find_levels_divisions_students(args);
-  // }
-
-  // @Query(() => [Level], { name: 'find_levels_divisions_employees' })
-  // async find_levels_divisions_employees(@Args() args: FindLevelArgs) {
-  //   return this.levelService.find_levels_divisions_employees(args);
-  // }
-
-  // @Query(() => [Level], { name: 'find_levels_divisions_employees_students' })
-  // async find_levels_divisions_employees_students(
-  //   @Args() args: FindLevelArgs,
-  // ): Promise<Level[]> {
-  //   return this.levelService.find_levels_divisions_employees_students(args);
-  // }
+  @Query(() => [Level], { name: 'findStudents_levels' })
+  async findStudents_levels(
+    @Args('archiveId') archiveId: string,
+  ): Promise<Level[]> {
+    return await this.levelService.findStudents_levels(archiveId);
+  }
 
   @Mutation(() => Level, { name: 'createLevel' })
   async createLevel(@Args('input') levelInput: LevelInput) {

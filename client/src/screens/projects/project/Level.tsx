@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import CreateDivision from "src/components/CreateDivision";
-import { useDivisionsList, useDivision_students } from "src/utils/division";
+import { useUrlParams } from "src/context/auth-context";
+import { useDivisionsList } from "src/utils/division";
 import { useTeachersList_divisions } from "src/utils/employees";
 import { useExamsList_level } from "src/utils/exam";
 import { useFindLevel } from "src/utils/levels";
+import { useStudnetsList } from "src/utils/student";
 import { useSubjectsList } from "src/utils/subject";
 const Level = () => {
   const { level } = useFindLevel();
@@ -56,19 +59,19 @@ const Subjects = () => {
 };
 
 const Students = () => {
-  const { divisions } = useDivision_students();
+  const { students } = useStudnetsList(true);
 
   return (
     <div className="p-2 ">
       <p>الطلاب:</p>
       <div className="bg-gray-100 p-5">
-        {divisions.map(({ id, name, students }) => (
+        {students.map(({ id, name, levels }) => (
           <div key={id}>
             <p className="text-green-800">{name}</p>
             <div className="p-5">
-              {students.map(({ id, name }) => (
+              {/* {students.map(({ id, name }) => (
                 <p key={id}>{name}</p>
-              ))}
+              ))} */}
             </div>
           </div>
         ))}
@@ -79,13 +82,16 @@ const Students = () => {
 
 const Teachers = () => {
   const { teachers } = useTeachersList_divisions();
+  const { projectId, archiveId } = useUrlParams();
   return (
     <div className="p-2 ">
       <p>المدرسين:</p>
       <div className="bg-gray-100 p-5">
         {teachers.map(({ id, name, divisions }) => (
           <div key={id}>
-            <p className="text-green-800">{name}</p>
+            <Link to={`/projects/${projectId}/${archiveId}/employees/${id}`}>
+              <p className="text-green-800">{name}</p>
+            </Link>
             <div className="p-5">
               {divisions.map(({ id, name }) => (
                 <p key={id}>{name}</p>

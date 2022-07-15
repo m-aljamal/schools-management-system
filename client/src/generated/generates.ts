@@ -63,6 +63,7 @@ export type Archive = {
   project: Project;
   projectId: Scalars['String'];
   semesters: Array<Semester>;
+  students: Array<Student>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -73,12 +74,12 @@ export type ArchiveInput = {
 
 export type Division = {
   __typename?: 'Division';
-  employees?: Maybe<Array<Student>>;
+  employees?: Maybe<Array<Employee>>;
   id: Scalars['String'];
   level: Level;
   levelId: Scalars['String'];
   name: Scalars['String'];
-  students: Array<Student>;
+  students?: Maybe<Array<Student>>;
 };
 
 export type DivisionInput = {
@@ -159,7 +160,7 @@ export type Level = {
   archive: Archive;
   archiveId: Scalars['String'];
   divisions?: Maybe<Array<Division>>;
-  employees?: Maybe<Array<Student>>;
+  employees?: Maybe<Array<Employee>>;
   exams: Array<Exam>;
   id: Scalars['String'];
   name: Scalars['String'];
@@ -326,6 +327,7 @@ export type Query = {
   findProjects: Array<Project>;
   findSemesters: Array<Semester>;
   findStudents: Array<Student>;
+  findStudents_levels: Array<Level>;
   findSubjects: Array<Subject>;
   findTeachers: Array<Employee>;
   findTechers_levels: Array<Level>;
@@ -348,7 +350,6 @@ export type QueryFindArchivesArgs = {
 
 export type QueryFindDivisionsArgs = {
   levelId: Scalars['String'];
-  students?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -389,7 +390,13 @@ export type QueryFindSemestersArgs = {
 
 
 export type QueryFindStudentsArgs = {
-  levelId: Scalars['String'];
+  archiveId: Scalars['String'];
+  levelId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryFindStudents_LevelsArgs = {
+  archiveId: Scalars['String'];
 };
 
 
@@ -446,12 +453,11 @@ export enum Sort {
 export type Student = {
   __typename?: 'Student';
   absentStudents: Array<AbsentStudent>;
-  division: Division;
-  divisionId: Scalars['String'];
+  archives?: Maybe<Array<Archive>>;
+  divisions: Array<Division>;
   grades: Array<Grade>;
   id: Scalars['String'];
-  level: Level;
-  levelId: Scalars['String'];
+  levels: Array<Level>;
   name: Scalars['String'];
   password: Scalars['String'];
   project: Project;
@@ -461,8 +467,9 @@ export type Student = {
 };
 
 export type StudentInput = {
-  divisionId: Scalars['String'];
-  levelId: Scalars['String'];
+  archives: Array<Scalars['String']>;
+  divisions: Array<Scalars['String']>;
+  levels: Array<Scalars['String']>;
   name: Scalars['String'];
   password: Scalars['String'];
   projectId: Scalars['String'];
@@ -518,7 +525,7 @@ export type FindArchiveQueryVariables = Exact<{
 }>;
 
 
-export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename?: 'Archive', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', name: string, id: string }>, employees?: Array<{ __typename?: 'Student', name: string, id: string }> | null }> | null }> } };
+export type FindArchiveQuery = { __typename?: 'Query', findArchive: { __typename?: 'Archive', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students?: Array<{ __typename?: 'Student', name: string, id: string }> | null, employees?: Array<{ __typename?: 'Employee', name: string, id: string }> | null }> | null }> } };
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -539,19 +546,10 @@ export type CreateDivisionMutation = { __typename?: 'Mutation', createDivision: 
 
 export type FindDivisionsQueryVariables = Exact<{
   levelId: Scalars['String'];
-  students?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
 export type FindDivisionsQuery = { __typename?: 'Query', findDivisions: Array<{ __typename?: 'Division', name: string, id: string }> };
-
-export type FindDivisionsStudentsQueryVariables = Exact<{
-  levelId: Scalars['String'];
-  students?: InputMaybe<Scalars['Boolean']>;
-}>;
-
-
-export type FindDivisionsStudentsQuery = { __typename?: 'Query', findDivisions: Array<{ __typename?: 'Division', name: string, id: string, students: Array<{ __typename?: 'Student', name: string, id: string }> }> };
 
 export type FindEmployeeQueryVariables = Exact<{
   id: Scalars['String'];
@@ -611,7 +609,7 @@ export type FindTechers_LevelsQueryVariables = Exact<{
 }>;
 
 
-export type FindTechers_LevelsQuery = { __typename?: 'Query', findTechers_levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, employees?: Array<{ __typename?: 'Student', name: string, id: string, role: string }> | null }> | null }> };
+export type FindTechers_LevelsQuery = { __typename?: 'Query', findTechers_levels: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, employees?: Array<{ __typename?: 'Employee', name: string, id: string, role: Role }> | null }> | null }> };
 
 export type FindSemestersQueryVariables = Exact<{
   archiveId: Scalars['String'];
@@ -619,6 +617,14 @@ export type FindSemestersQueryVariables = Exact<{
 
 
 export type FindSemestersQuery = { __typename?: 'Query', findSemesters: Array<{ __typename?: 'Semester', id: string, name: string }> };
+
+export type FindStudentsQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+  levelId?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindStudentsQuery = { __typename?: 'Query', findStudents: Array<{ __typename?: 'Student', name: string, id: string, archives?: Array<{ __typename?: 'Archive', name: string }> | null, levels: Array<{ __typename?: 'Level', archiveId: string, name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> }> };
 
 export type FindSubjectsQueryVariables = Exact<{
   levelId: Scalars['String'];
@@ -790,8 +796,8 @@ export const useCreateDivisionMutation = <
       options
     );
 export const FindDivisionsDocument = `
-    query findDivisions($levelId: String!, $students: Boolean) {
-  findDivisions(levelId: $levelId, students: $students) {
+    query findDivisions($levelId: String!) {
+  findDivisions(levelId: $levelId) {
     name
     id
   }
@@ -809,32 +815,6 @@ export const useFindDivisionsQuery = <
     useQuery<FindDivisionsQuery, TError, TData>(
       ['findDivisions', variables],
       fetcher<FindDivisionsQuery, FindDivisionsQueryVariables>(client, FindDivisionsDocument, variables, headers),
-      options
-    );
-export const FindDivisionsStudentsDocument = `
-    query findDivisionsStudents($levelId: String!, $students: Boolean) {
-  findDivisions(levelId: $levelId, students: $students) {
-    name
-    id
-    students {
-      name
-      id
-    }
-  }
-}
-    `;
-export const useFindDivisionsStudentsQuery = <
-      TData = FindDivisionsStudentsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables: FindDivisionsStudentsQueryVariables,
-      options?: UseQueryOptions<FindDivisionsStudentsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<FindDivisionsStudentsQuery, TError, TData>(
-      ['findDivisionsStudents', variables],
-      fetcher<FindDivisionsStudentsQuery, FindDivisionsStudentsQueryVariables>(client, FindDivisionsStudentsDocument, variables, headers),
       options
     );
 export const FindEmployeeDocument = `
@@ -1085,6 +1065,40 @@ export const useFindSemestersQuery = <
     useQuery<FindSemestersQuery, TError, TData>(
       ['findSemesters', variables],
       fetcher<FindSemestersQuery, FindSemestersQueryVariables>(client, FindSemestersDocument, variables, headers),
+      options
+    );
+export const FindStudentsDocument = `
+    query findStudents($archiveId: String!, $levelId: String) {
+  findStudents(archiveId: $archiveId, levelId: $levelId) {
+    name
+    id
+    archives {
+      name
+    }
+    levels {
+      archiveId
+      name
+      id
+      divisions {
+        name
+        id
+      }
+    }
+  }
+}
+    `;
+export const useFindStudentsQuery = <
+      TData = FindStudentsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindStudentsQueryVariables,
+      options?: UseQueryOptions<FindStudentsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindStudentsQuery, TError, TData>(
+      ['findStudents', variables],
+      fetcher<FindStudentsQuery, FindStudentsQueryVariables>(client, FindStudentsDocument, variables, headers),
       options
     );
 export const FindSubjectsDocument = `

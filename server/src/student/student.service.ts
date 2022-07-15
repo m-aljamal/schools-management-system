@@ -1,5 +1,6 @@
+import { FindStudentsArgs } from './dto/findStudents.args';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Student } from './entity/student';
 import { Repository } from 'typeorm';
 import { StudentInput } from './dto/student.input';
@@ -15,19 +16,59 @@ export class StudentService {
     private readonly studentRepo: Repository<Student>,
     private readonly archiveService: ArchiveService,
     private readonly levelService: LevelService,
+    private readonly divisionService: DivisionService,
   ) {}
 
-  async findAll(levelId: string): Promise<Student[]> {
-    return await this.studentRepo.find({
-      where: { levelId },
-      relations: ['absentStudents', 'grades'],
-    });
+  async findAll(args: FindStudentsArgs) {
+    const query = this.studentRepo.createQueryBuilder('student');
+    query.leftJoinAndSelect('student.levels', 'level');
+    query.andWhere('level.archiveId = :archiveId', { archiveId: args.archiveId });
+    query.leftJoinAndSelect('student.divisions', 'division');
+    if (args.levelId) {
+      query.andWhere('level.id = :levelId', { levelId: args.levelId });
+    }
+    query.leftJoinAndSelect('level.divisions', 'divisions');
+    query.andWhere('divisions.id IN (division.id)');
+    return await query.getMany();
   }
-
   async create(input: StudentInput) {
+    let levels = [];
+    let divisions = [];
+    let archives = [];
+    levels = await Promise.all(
+      input.levels.map(async (id) => {
+        const level = await this.levelService.findOne(id);
+        if (!level) {
+          throw new BadRequestException('المرحلة غير موجودة');
+        }
+        return level;
+      }),
+    );
+    divisions = await Promise.all(
+      input.divisions.map(async (id) => {
+        const division = await this.divisionService.findOne(id);
+        if (!division) {
+          throw new BadRequestException('الشعبة غير موجود');
+        }
+        return division;
+      }),
+    );
+    archives = await Promise.all(
+      input.archives.map(async (id) => {
+        const archive = await this.archiveService.findById(id);
+        if (!archive) {
+          throw new BadRequestException('الارشيف غير موجود');
+        }
+        return archive;
+      }),
+    );
+
     const student = this.studentRepo.create({
       ...input,
       password: hashPassword(input.password),
+      levels,
+      divisions,
+      archives,
     });
     return await this.studentRepo.save(student);
   }

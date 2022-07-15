@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { AbsentStudent } from 'src/absent-student/entity/absent-student';
+import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Grade } from 'src/grade/entity/grade';
 import { Level } from 'src/level/entity/level';
@@ -8,6 +9,8 @@ import {
   Column,
   Entity,
   Index,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -26,21 +29,26 @@ export class Student {
   @Column()
   name: string;
 
-  @ManyToOne(() => Division, (division) => division.students)
-  @Field(() => Division)
-  division: Division;
+  @ManyToMany(() => Level, (level) => level.students, {
+    cascade: true,
+  })
+  @Field(() => [Level])
+  @JoinTable()
+  levels: Level[];
 
-  @Field()
-  @Column()
-  divisionId: string;
+  @ManyToMany(() => Division, (division) => division.students, {
+    cascade: true,
+  })
+  @Field(() => [Division])
+  @JoinTable()
+  divisions: Division[];
 
-  @ManyToOne(() => Level, (level) => level.students)
-  @Field(() => Level)
-  level: Level;
-
-  @Field()
-  @Column()
-  levelId: string;
+  @ManyToMany(() => Archive, (archive) => archive.students, {
+    cascade: true,
+  })
+  @Field(() => [Archive], { nullable: true })
+  @JoinTable()
+  archives: Archive[];
 
   @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.student)
   @Field(() => [AbsentStudent])
