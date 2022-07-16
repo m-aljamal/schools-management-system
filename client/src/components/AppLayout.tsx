@@ -46,8 +46,8 @@ const UserInfo = () => {
       <p> العام الدراسي: {user?.project?.current_archive_name}</p>
       <div className="w-24 h-24 mx-auto mt-8 mb-3">image</div>
       <div className="mb-8">
-        <p className=" text-white text-lg">Mohammad jamal</p>
-        <p className="text-sm">m-jamal</p>
+        <p className=" text-white text-lg">{user.name}</p>
+        <p className="text-sm">{user.username}</p>
       </div>
     </div>
   );

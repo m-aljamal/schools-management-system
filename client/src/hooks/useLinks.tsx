@@ -66,5 +66,29 @@ export const useProjectLinks = () => {
     },
   ];
 
-  return user.role === Role.Admin ? adminLinks : mangerLinks;
+  const teacherLinks = [
+    {
+      label: "الرئيسية",
+      to: `/project/${archiveId}`,
+      icon: <AiOutlinePieChart />,
+    },
+    {
+      label: "الطلاب ",
+      to: `/project/${archiveId}/students`,
+      icon: <AiOutlinePieChart />,
+    },
+  ];
+
+  switch (user.role) {
+    case Role.Admin:
+      return adminLinks;
+    case Role.DataEntry:
+    case Role.EducationSupervisor:
+    case Role.Principal:
+      return mangerLinks;
+    case Role.Teacher:
+      return teacherLinks;
+    default:
+      return [];
+  }
 };
