@@ -1,4 +1,4 @@
-import { FindStudentsArgs } from './dto/findStudents.args';
+import { FindStudentsArgs, FindStudentArgs } from './dto/findStudents.args';
 import { Division } from './../division/entity/division';
 import {
   Args,
@@ -25,6 +25,10 @@ export class StudentResolver {
     return this.studentService.findAll(args);
   }
 
+  @Query(() => Student, { name: 'findStudent' })
+  async findStudent(@Args() args: FindStudentArgs) {
+    return this.studentService.findStudent(args);
+  }
   @Mutation(() => Student, { name: 'createStudent' })
   async create(@Args('input') input: StudentInput) {
     return this.studentService.create(input);

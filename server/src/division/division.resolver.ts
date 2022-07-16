@@ -26,6 +26,11 @@ export class DivisionResolver {
     return this.divisionService.findAll(args);
   }
 
+  @Query(()=> [Division],{name: "findStudents_division"})
+  async findStudenst(@Args("levelId") levelId: string): Promise<Division[]> {
+    return await this.divisionService.findStudents(levelId);
+  }
+
   @Mutation(() => Division, { name: 'createDivision' })
   async createDivision(@Args('input') divisionInput: DivisionInput) {
     return this.divisionService.create(divisionInput);

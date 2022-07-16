@@ -27,3 +27,18 @@ query findTechers_levels($archiveId: String!) {
     }
   }
 }
+
+query findStudents_levels($archiveId: String!) {
+  findStudents_levels(archiveId: $archiveId) {
+    name
+    id
+    divisions {
+      name
+      id
+      students {
+        name
+        id
+      }
+    }
+  }
+}

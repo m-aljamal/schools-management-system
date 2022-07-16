@@ -1,4 +1,4 @@
-import { FindStudentsArgs } from './dto/findStudents.args';
+import { FindStudentsArgs, FindStudentArgs } from './dto/findStudents.args';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Student } from './entity/student';
@@ -22,14 +22,27 @@ export class StudentService {
   async findAll(args: FindStudentsArgs) {
     const query = this.studentRepo.createQueryBuilder('student');
     query.leftJoinAndSelect('student.levels', 'level');
-    query.andWhere('level.archiveId = :archiveId', { archiveId: args.archiveId });
+    query.andWhere('level.archiveId = :archiveId', {
+      archiveId: args.archiveId,
+    });
     query.leftJoinAndSelect('student.divisions', 'division');
-    if (args.levelId) {
-      query.andWhere('level.id = :levelId', { levelId: args.levelId });
-    }
     query.leftJoinAndSelect('level.divisions', 'divisions');
     query.andWhere('divisions.id IN (division.id)');
     return await query.getMany();
+  }
+
+  async findStudent(args: FindStudentArgs): Promise<Student> {
+    const query = this.studentRepo.createQueryBuilder('student');
+    query.where('student.id = :id', { id: args.id });
+    query.leftJoinAndSelect('student.levels', 'level');
+    query.andWhere('level.archiveId = :archiveId', {
+      archiveId: args.archiveId,
+    });
+    query.leftJoinAndSelect('level.divisions', 'divisions');
+    query.leftJoinAndSelect('student.divisions', 'division');
+    query.andWhere('divisions.id IN (division.id)');
+
+    return await query.getOne();
   }
   async create(input: StudentInput) {
     let levels = [];

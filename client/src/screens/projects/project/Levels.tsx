@@ -24,6 +24,7 @@ const Levels = () => {
                 <h2>عدد الشعب</h2>
                 <h2>عدد الطلاب</h2>
                 <h2>عدد المدرسين</h2>
+                <p>{id}</p>
 
                 {/* <CreateDivision levelId={id} />
               {divisions?.map(({ id, name }) => (

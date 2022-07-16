@@ -17,6 +17,13 @@ export class DivisionService {
     private readonly divisionRepository: Repository<Division>,
   ) {}
 
+  async findStudents(levelId: string): Promise<Division[]> {
+    const query = this.divisionRepository.createQueryBuilder('division');
+    query.where('division.levelId = :levelId', { levelId });
+    query.innerJoinAndSelect('division.students', 'student');
+    return await query.getMany();
+  }
+
   async findAll(args: FindDivisionArgs): Promise<Division[]> {
     const query = this.divisionRepository.createQueryBuilder('division');
     query.where('division.levelId = :levelId', { levelId: args.levelId });

@@ -1,17 +1,23 @@
-query findStudents($archiveId: String!, $levelId: String) {
-  findStudents(archiveId: $archiveId, levelId: $levelId) {
+query findStudents_divisionList_byLevel($levelId: String!) {
+  findStudents_division(levelId: $levelId) {
     name
     id
-    archives {
-      name
-    }
-    levels {
-      archiveId
+    students {
       name
       id
+    }
+  }
+}
+
+query findStudent($studentId: String!, $archiveId: String!) {
+  findStudent(archiveId: $archiveId, id: $studentId) {
+    name
+    id
+    levels {
+      name
+      archiveId
       divisions {
         name
-        id
       }
     }
   }

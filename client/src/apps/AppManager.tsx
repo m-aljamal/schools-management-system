@@ -8,6 +8,7 @@ import Exams from "src/screens/projects/project/Exams";
 import ProjectScreen from "src/screens/projects/project/index";
 import Level from "src/screens/projects/project/Level";
 import Levels from "src/screens/projects/project/Levels";
+import Student from "src/screens/projects/project/Student";
 import Students from "src/screens/projects/project/Students";
 const AppManager = () => {
   const { user }: any = useAuth();
@@ -20,6 +21,7 @@ const AppManager = () => {
         <Route path="employees" element={<Employees />} />
         <Route path="employees/:employeeId" element={<Employee />} />
         <Route path="students" element={<Students />} />
+        <Route path="students/:studentId" element={<Student />} />
         {/* <Route path="exams" element={<Exams />} /> */}
         <Route path="levels" element={<Levels />} />
         <Route path="levels/:levelId" element={<Level />} />

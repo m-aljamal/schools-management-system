@@ -6,7 +6,7 @@ import { useDivisionsList } from "src/utils/division";
 import { useTeachersList_divisions } from "src/utils/employees";
 import { useExamsList_level } from "src/utils/exam";
 import { useFindLevel } from "src/utils/levels";
-import { useStudnetsList } from "src/utils/student";
+import { useStudentsList_divisionList_byLevel } from "src/utils/student";
 import { useSubjectsList } from "src/utils/subject";
 const Level = () => {
   const { level } = useFindLevel();
@@ -35,6 +35,7 @@ const Divisions = () => {
         {divisions.map(({ id, name }) => (
           <div key={id}>
             <p>{name}</p>
+            <p>{id}</p>
           </div>
         ))}
       </div>
@@ -59,19 +60,25 @@ const Subjects = () => {
 };
 
 const Students = () => {
-  const { students } = useStudnetsList(true);
-
+  const { divisions } = useStudentsList_divisionList_byLevel();
+  const { projectId, archiveId } = useUrlParams();
   return (
     <div className="p-2 ">
       <p>الطلاب:</p>
       <div className="bg-gray-100 p-5">
-        {students.map(({ id, name, levels }) => (
+        {divisions.map(({ id, name, students }) => (
           <div key={id}>
             <p className="text-green-800">{name}</p>
             <div className="p-5">
-              {/* {students.map(({ id, name }) => (
-                <p key={id}>{name}</p>
-              ))} */}
+              {students?.map(({ name, id }) => (
+                <div key={id}>
+                  <Link
+                    to={`/projects/${projectId}/${archiveId}/students/${id}`}
+                  >
+                    <p>{name}</p>
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         ))}
