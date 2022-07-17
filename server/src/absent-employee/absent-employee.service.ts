@@ -24,6 +24,9 @@ export class AbsentEmployeeService {
     query.leftJoinAndSelect('absent_employee.employee', 'employee');
     query.leftJoinAndSelect('absent_employee.archive', 'archive');
     query.leftJoinAndSelect('employee.levels', 'level');
+    if (args.levelId) {
+      query.andWhere('level.id = :levelId', { levelId: args.levelId });
+    }
     query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
     filterByExactDate({
       date: args.date,

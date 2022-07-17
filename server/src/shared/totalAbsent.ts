@@ -17,5 +17,7 @@ export class TotalAbsent {
   approved: boolean;
 
   @Field()
-  levelName: string;
+  level: string;
+
+  
 }
