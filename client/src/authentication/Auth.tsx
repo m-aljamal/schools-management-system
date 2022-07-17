@@ -1,4 +1,5 @@
 import AppManager from "src/apps/AppManager";
+import StudentApp from "src/apps/StudentApp";
 import TeacherApp from "src/apps/TeacherApp";
 import { useAuth } from "src/context/auth-context";
 import { Role } from "src/generated/generates";
@@ -15,7 +16,7 @@ const Auth = () => {
     case Role.Teacher:
       return <TeacherApp />;
     case Role.Student:
-      return <p>Student App</p>;
+      return <StudentApp />;
     default:
       return <p>No Role found </p>;
   }

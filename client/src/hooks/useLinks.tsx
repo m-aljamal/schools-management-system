@@ -79,6 +79,18 @@ export const useProjectLinks = () => {
     },
   ];
 
+  const studentLinks = [
+    {
+      label: "الرئيسية",
+      to: `/project/${archiveId}`,
+      icon: <AiOutlinePieChart />,
+    },
+    {
+      label: "المواد",
+      to: `/project/${archiveId}/subjects`,
+      icon: <AiOutlinePieChart />,
+    },
+  ];
   switch (user.role) {
     case Role.Admin:
       return adminLinks;
@@ -88,6 +100,8 @@ export const useProjectLinks = () => {
       return mangerLinks;
     case Role.Teacher:
       return teacherLinks;
+    case Role.Student:
+      return studentLinks;
     default:
       return [];
   }

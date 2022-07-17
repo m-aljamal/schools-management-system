@@ -54,6 +54,9 @@ export class EmployeeService {
     query.andWhere('levels.archiveId = :archiveId', {
       archiveId: args.archiveId,
     });
+    if (args.levelId) {
+      query.andWhere('levels.id = :levelId', { levelId: args.levelId });
+    }
     query.leftJoinAndSelect('employee.divisions', 'division');
     query.leftJoinAndSelect('levels.divisions', 'divisions');
     query.leftJoinAndSelect('employee.archives', 'archives');
