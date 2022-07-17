@@ -57,11 +57,11 @@ export class AbsentEmployeeService {
     query.addSelect('COUNT(*)', 'count');
     query.addSelect('absent_employee.approved', 'approved');
     query.innerJoin(`absent_employee.employee`, 'employee');
-    // query.leftJoinAndSelect('absent_employee.archive', 'archive');
-    // query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
     query.groupBy(`employee.id`);
     query.addGroupBy('absent_employee.approved');
-    // query.addGroupBy('archive.id')
+    query.leftJoinAndSelect('absent_employee.archive', 'archive');
+    query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
+    query.addGroupBy('archive.id');
     filterByExactDate({
       date: args.date,
       query,
