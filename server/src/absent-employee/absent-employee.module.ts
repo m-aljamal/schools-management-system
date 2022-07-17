@@ -7,5 +7,6 @@ import { AbsentEmployee } from './entity/absent-employee';
 @Module({
   imports: [TypeOrmModule.forFeature([AbsentEmployee])],
   providers: [AbsentEmployeeService, AbsentEmployeeResolver],
+  
 })
 export class AbsentEmployeeModule {}

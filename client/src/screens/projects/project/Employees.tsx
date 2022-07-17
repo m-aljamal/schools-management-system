@@ -15,6 +15,7 @@ const Employees = () => {
         {managers.map(({ id, name, role }) => (
           <div key={id} className="bg-gray-200 p-5">
             <p>الاسم: {name}</p>
+            <p>{id}</p>
             <p>المسمى الوظيفي: {role}</p>
           </div>
         ))}
@@ -33,6 +34,7 @@ const Employees = () => {
                       to={`/projects/${projectId}/${archiveId}/employees/${id}`}
                     >
                       <p key={id}>{name}</p>
+                      <p>{id}</p>
                     </Link>
                   ))}
                 </div>

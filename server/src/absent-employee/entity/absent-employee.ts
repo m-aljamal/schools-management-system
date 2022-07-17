@@ -1,7 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Archive } from 'src/archive/entity/archive';
 import { Employee } from 'src/employee/entity/employee';
 import { Semester } from 'src/semester/entity/semester';
- import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -29,4 +30,20 @@ export class AbsentEmployee {
   @Field()
   @Column()
   semesterId: string;
+
+  @ManyToOne(() => Archive, (archive) => archive.semesters)
+  @Field(() => Archive)
+  archive: Archive;
+
+  @Field()
+  @Column()
+  archiveId: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  note: string;
+
+  @Field(() => Boolean)
+  @Column({ default: false })
+  approved: boolean;
 }

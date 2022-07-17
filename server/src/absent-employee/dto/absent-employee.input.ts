@@ -10,4 +10,13 @@ export class AbsentEmployeeInput {
 
   @Field()
   semesterId: string;
+
+  @Field()
+  archiveId: string;
+
+  @Field(() => Boolean, { defaultValue: false })
+  approved: boolean;
+
+  @Field({ nullable: true })
+  note: string;
 }
