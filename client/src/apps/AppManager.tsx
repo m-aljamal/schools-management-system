@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "src/components/AppLayout";
 import { useAuth } from "src/context/auth-context";
+import Absent from "src/screens/projects/project/Absent";
 import Archives from "src/screens/projects/project/Archives";
 import Employee from "src/screens/projects/project/Employee";
 import Employees from "src/screens/projects/project/Employees";
@@ -21,6 +22,7 @@ const AppManager = () => {
         <Route path="employees" element={<Employees />} />
         <Route path="employees/:employeeId" element={<Employee />} />
         <Route path="students" element={<Students />} />
+        <Route path="absent" element={<Absent />} />
         <Route path="students/:studentId" element={<Student />} />
         {/* <Route path="exams" element={<Exams />} /> */}
         <Route path="levels" element={<Levels />} />

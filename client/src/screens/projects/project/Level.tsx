@@ -166,6 +166,7 @@ const EmployeeAbsent = () => {
   return (
     <div>
       <p>الغياب اليوم</p>
+      المدرسين:
       {absentEmployees.map(({ approved, date, employee, id }) => (
         <div key={id}>
           <p> التاريخ :{new Date(date).toLocaleDateString()}</p>

@@ -50,6 +50,11 @@ export const useProjectLinks = () => {
       icon: <AiOutlinePieChart />,
     },
     {
+      label: "الغياب ",
+      to: `/projects/${projectId}/${archiveId}/absent`,
+      icon: <AiOutlinePieChart />,
+    },
+    {
       label: "الخصومات",
       to: `/projects/${projectId}/${archiveId}/discounts`,
       icon: <AiOutlinePieChart />,
