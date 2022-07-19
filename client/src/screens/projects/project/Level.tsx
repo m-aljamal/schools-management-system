@@ -1,7 +1,7 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import CreateDivision from "src/components/CreateDivision";
 import { useUrlParams } from "src/context/auth-context";
+import { useAbsentEmployeesByLevelId } from "src/utils/absentEmployee";
 import { useDivisionsList } from "src/utils/division";
 import { useTeachersList_divisions } from "src/utils/employees";
 import { useExamsList_level } from "src/utils/exam";
@@ -18,6 +18,7 @@ const Level = () => {
       <Students />
       <Teachers />
       <ExamsList />
+      <EmployeeAbsent />
     </div>
   );
 };
@@ -98,6 +99,7 @@ const Teachers = () => {
           <div key={id}>
             <Link to={`/projects/${projectId}/${archiveId}/employees/${id}`}>
               <p className="text-green-800">{name}</p>
+              <p>{id}</p>
             </Link>
             <div className="p-5">
               {divisions.map(({ id, name }) => (
@@ -148,6 +150,30 @@ const ExamsList = () => {
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+const EmployeeAbsent = () => {
+  const month = new Date().getMonth();
+  const day = new Date().getDate();
+  const year = new Date().getFullYear();
+
+  const { absentEmployees } = useAbsentEmployeesByLevelId(
+    `${month + 1}-${day}-${year}`
+  );
+
+  return (
+    <div>
+      <p>الغياب اليوم</p>
+      {absentEmployees.map(({ approved, date, employee, id }) => (
+        <div key={id}>
+          <p> التاريخ :{new Date(date).toLocaleDateString()}</p>
+          <p>الاسم: {employee.name}</p>
+          <p>الصف: {employee.levels[0].name}</p>
+          <p>مبرر: {approved ? "نعم" : "لا"}</p>
+        </div>
+      ))}
     </div>
   );
 };

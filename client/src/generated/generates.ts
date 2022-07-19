@@ -23,17 +23,24 @@ export type Scalars = {
 
 export type AbsentEmployee = {
   __typename?: 'AbsentEmployee';
+  approved: Scalars['Boolean'];
+  archive: Archive;
+  archiveId: Scalars['String'];
   date: Scalars['DateTime'];
   employee: Employee;
   employeeId: Scalars['String'];
   id: Scalars['String'];
+  note?: Maybe<Scalars['String']>;
   semester: Semester;
   semesterId: Scalars['String'];
 };
 
 export type AbsentEmployeeInput = {
+  approved?: InputMaybe<Scalars['Boolean']>;
+  archiveId: Scalars['String'];
   date: Scalars['DateTime'];
   employeeId: Scalars['String'];
+  note?: InputMaybe<Scalars['String']>;
   semesterId: Scalars['String'];
 };
 
@@ -333,6 +340,18 @@ export type Query = {
   findSubjects: Array<Subject>;
   findTeachers: Array<Employee>;
   findTechers_levels: Array<Level>;
+  findTotalAbsentEmployees: Array<TotalAbsent>;
+};
+
+
+export type QueryFindAbsentEmployeesArgs = {
+  approved?: InputMaybe<Scalars['Boolean']>;
+  archiveId: Scalars['String'];
+  date?: InputMaybe<Scalars['DateTime']>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  levelId?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
 };
 
 
@@ -427,6 +446,17 @@ export type QueryFindTechers_LevelsArgs = {
   archiveId: Scalars['String'];
 };
 
+
+export type QueryFindTotalAbsentEmployeesArgs = {
+  approved?: InputMaybe<Scalars['Boolean']>;
+  archiveId: Scalars['String'];
+  date?: InputMaybe<Scalars['DateTime']>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  levelId?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+};
+
 export enum Role {
   Admin = 'ADMIN',
   Cleaner = 'CLEANER',
@@ -502,6 +532,15 @@ export type SubjectInput = {
   name: Scalars['String'];
 };
 
+export type TotalAbsent = {
+  __typename?: 'TotalAbsent';
+  approved: Scalars['Boolean'];
+  count: Scalars['Float'];
+  id: Scalars['String'];
+  level: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type UpdateProject = {
   current_archive_id?: InputMaybe<Scalars['String']>;
   current_archive_name?: InputMaybe<Scalars['String']>;
@@ -520,6 +559,15 @@ export type FindProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FindProjectsQuery = { __typename?: 'Query', findProjects: Array<{ __typename?: 'Project', id: string, name_ar: string, updatedAt: any, createdAt: any, current_archive_name?: string | null, current_archive_id?: string | null }> };
+
+export type FindAbsentEmployeesByLevelQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+  levelId?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['DateTime']>;
+}>;
+
+
+export type FindAbsentEmployeesByLevelQuery = { __typename?: 'Query', findAbsentEmployees: Array<{ __typename?: 'AbsentEmployee', id: string, approved: boolean, date: any, employee: { __typename?: 'Employee', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, id: string }> } }> };
 
 export type FindArchivesQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -708,6 +756,37 @@ export const useFindProjectsQuery = <
     useQuery<FindProjectsQuery, TError, TData>(
       variables === undefined ? ['findProjects'] : ['findProjects', variables],
       fetcher<FindProjectsQuery, FindProjectsQueryVariables>(client, FindProjectsDocument, variables, headers),
+      options
+    );
+export const FindAbsentEmployeesByLevelDocument = `
+    query findAbsentEmployeesByLevel($archiveId: String!, $levelId: String, $date: DateTime) {
+  findAbsentEmployees(archiveId: $archiveId, levelId: $levelId, date: $date) {
+    id
+    approved
+    date
+    employee {
+      name
+      id
+      levels {
+        name
+        id
+      }
+    }
+  }
+}
+    `;
+export const useFindAbsentEmployeesByLevelQuery = <
+      TData = FindAbsentEmployeesByLevelQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindAbsentEmployeesByLevelQueryVariables,
+      options?: UseQueryOptions<FindAbsentEmployeesByLevelQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindAbsentEmployeesByLevelQuery, TError, TData>(
+      ['findAbsentEmployeesByLevel', variables],
+      fetcher<FindAbsentEmployeesByLevelQuery, FindAbsentEmployeesByLevelQueryVariables>(client, FindAbsentEmployeesByLevelDocument, variables, headers),
       options
     );
 export const FindArchivesDocument = `

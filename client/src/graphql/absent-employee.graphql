@@ -1,0 +1,19 @@
+query findAbsentEmployeesByLevel(
+  $archiveId: String!
+  $levelId: String
+  $date: DateTime
+) {
+  findAbsentEmployees(archiveId: $archiveId, levelId: $levelId, date: $date) {
+    id
+    approved
+    date
+    employee {
+      name
+      id
+      levels {
+        name
+        id
+      }
+    }
+  }
+}
