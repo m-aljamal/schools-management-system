@@ -5,8 +5,14 @@ import { useAbsentEmployees } from "src/utils/absentEmployee";
 const Absent = () => {
   const date = today();
   const [selectDate, setSelectDate] = useState(date)
-  const { absentEmployees } = useAbsentEmployees(selectDate);
-console.log(selectDate);
+  const d = new Date(selectDate);
+  const month = d.getMonth();
+  const day = d.getDate();
+  const year = d.getFullYear();
+  console.log(`${month + 1}-${day}-${year}`);
+  
+  const { absentEmployees } = useAbsentEmployees(  date);
+ 
 
   return (
     <div className="p-5">
