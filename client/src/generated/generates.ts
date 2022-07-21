@@ -351,6 +351,7 @@ export type QueryFindAbsentEmployeesArgs = {
   fromDate?: InputMaybe<Scalars['DateTime']>;
   levelId?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  semesterId?: InputMaybe<Scalars['String']>;
   toDate?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -454,6 +455,7 @@ export type QueryFindTotalAbsentEmployeesArgs = {
   fromDate?: InputMaybe<Scalars['DateTime']>;
   levelId?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  semesterId?: InputMaybe<Scalars['String']>;
   toDate?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -568,6 +570,14 @@ export type FindAbsentEmployeesByLevelQueryVariables = Exact<{
 
 
 export type FindAbsentEmployeesByLevelQuery = { __typename?: 'Query', findAbsentEmployees: Array<{ __typename?: 'AbsentEmployee', id: string, approved: boolean, date: any, employee: { __typename?: 'Employee', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, id: string }> } }> };
+
+export type FindTotalAbsentEmployeesQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+  semesterId?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindTotalAbsentEmployeesQuery = { __typename?: 'Query', findTotalAbsentEmployees: Array<{ __typename?: 'TotalAbsent', name: string, count: number, approved: boolean, id: string }> };
 
 export type FindArchivesQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -787,6 +797,30 @@ export const useFindAbsentEmployeesByLevelQuery = <
     useQuery<FindAbsentEmployeesByLevelQuery, TError, TData>(
       ['findAbsentEmployeesByLevel', variables],
       fetcher<FindAbsentEmployeesByLevelQuery, FindAbsentEmployeesByLevelQueryVariables>(client, FindAbsentEmployeesByLevelDocument, variables, headers),
+      options
+    );
+export const FindTotalAbsentEmployeesDocument = `
+    query findTotalAbsentEmployees($archiveId: String!, $semesterId: String) {
+  findTotalAbsentEmployees(archiveId: $archiveId, semesterId: $semesterId) {
+    name
+    count
+    approved
+    id
+  }
+}
+    `;
+export const useFindTotalAbsentEmployeesQuery = <
+      TData = FindTotalAbsentEmployeesQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindTotalAbsentEmployeesQueryVariables,
+      options?: UseQueryOptions<FindTotalAbsentEmployeesQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindTotalAbsentEmployeesQuery, TError, TData>(
+      ['findTotalAbsentEmployees', variables],
+      fetcher<FindTotalAbsentEmployeesQuery, FindTotalAbsentEmployeesQueryVariables>(client, FindTotalAbsentEmployeesDocument, variables, headers),
       options
     );
 export const FindArchivesDocument = `

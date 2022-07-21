@@ -22,4 +22,7 @@ export class AbsentArgs {
 
   @Field({ nullable: true })
   levelId: string;
+
+  @Field({ nullable: true })
+  semesterId: string;
 }

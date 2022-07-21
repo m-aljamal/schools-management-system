@@ -65,6 +65,11 @@ export class AbsentEmployeeService {
     query.leftJoinAndSelect('absent_employee.archive', 'archive');
     query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
     query.addGroupBy('archive.id');
+    if (args.semesterId) {
+      query.andWhere('absent_employee.semesterId = :semesterId', {
+        semesterId: args.semesterId,
+      });
+    }
     filterByExactDate({
       date: args.date,
       query,
