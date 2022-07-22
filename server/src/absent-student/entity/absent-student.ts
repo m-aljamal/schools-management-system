@@ -1,19 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Semester } from 'src/semester/entity/semester';
+ import { Field, ObjectType } from '@nestjs/graphql';
+  import { Absent } from 'src/shared/AbsentEntity';
 import { Student } from 'src/student/entity/student';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @ObjectType()
 @Entity()
-export class AbsentStudent {
-  @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Field()
-  @Column({ type: 'timestamp' })
-  date: Date;
-
+export class AbsentStudent extends Absent {
   @ManyToOne(() => Student, (student) => student.absentStudents)
   @Field(() => Student)
   student: Student;
@@ -21,12 +13,4 @@ export class AbsentStudent {
   @Field()
   @Column()
   studentId: string;
-
-  @ManyToOne(() => Semester, (semester) => semester.absentStudents)
-  @Field(() => Semester)
-  semester: Semester;
-
-  @Field()
-  @Column()
-  semesterId: string;
 }

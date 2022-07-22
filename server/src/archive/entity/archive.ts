@@ -1,3 +1,4 @@
+import { AbsentStudent } from 'src/absent-student/entity/absent-student';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Employee } from 'src/employee/entity/employee';
 import { Level } from 'src/level/entity/level';
@@ -14,6 +15,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { AbsentEmployee } from 'src/absent-employee/entity/absent-employee';
 
 @ObjectType()
 @Entity()
@@ -57,4 +59,12 @@ export class Archive {
   @OneToMany(() => Semester, (semester) => semester.archive)
   @Field(() => [Semester])
   semesters: Semester[];
+
+  @OneToMany(() => AbsentEmployee, (absentEmployee) => absentEmployee.archive)
+  @Field(() => [AbsentEmployee])
+  absentEmployees: AbsentEmployee[];
+
+  @OneToMany(() => AbsentStudent, (absentStudent) => absentStudent.archive)
+  @Field(() => [AbsentStudent])
+  absentStudents: AbsentStudent[];
 }

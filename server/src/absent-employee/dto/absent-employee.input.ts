@@ -1,22 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { AbsentInput } from 'src/shared/AbsentDto';
 
 @InputType()
-export class AbsentEmployeeInput {
-  @Field()
-  date: Date;
-
+export class AbsentEmployeeInput extends AbsentInput {
   @Field()
   employeeId: string;
-
-  @Field()
-  semesterId: string;
-
-  @Field()
-  archiveId: string;
-
-  @Field(() => Boolean, { defaultValue: false })
-  approved: boolean;
-
-  @Field({ nullable: true })
-  note: string;
 }
