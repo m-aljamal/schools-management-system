@@ -25,15 +25,16 @@ const Employees = () => {
         {teachers.map(({ id, name, divisions }) => (
           <div key={id} className="bg-gray-200">
             <p className=" text-red-400">الصف:{name}</p>
-            {divisions?.map(({ name, employees }) => (
-              <div key={name}>
+            {divisions?.map(({ name, employees, id }) => (
+              <div key={id}>
                 <p className="text-green-800"> الشعبة:{name}</p>
                 <div>
                   {employees?.map(({ id, name }) => (
                     <Link
+                      key={id}
                       to={`/projects/${projectId}/${archiveId}/employees/${id}`}
                     >
-                      <p key={id}>{name}</p>
+                      <p>{name}</p>
                       <p>{id}</p>
                     </Link>
                   ))}

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import CreateDivision from "src/components/CreateDivision";
 import { useUrlParams } from "src/context/auth-context";
-import { today } from "src/utils/absentDateFormat";
 import { useAbsentEmployeesByLevelId } from "src/utils/absentEmployee";
 import { useDivisionsList } from "src/utils/division";
 import { useTeachersList_divisions } from "src/utils/employees";
@@ -9,6 +8,7 @@ import { useExamsList_level } from "src/utils/exam";
 import { useFindLevel } from "src/utils/levels";
 import { useStudentsList_divisionList_byLevel } from "src/utils/student";
 import { useSubjectsList } from "src/utils/subject";
+import { useDate } from "src/hooks/useDate";
 const Level = () => {
   const { level } = useFindLevel();
   return (
@@ -156,9 +156,8 @@ const ExamsList = () => {
 };
 
 const EmployeeAbsent = () => {
-  const date = today();
-
-  const { absentEmployees } = useAbsentEmployeesByLevelId(date);
+  const { today } = useDate();
+  const { absentEmployees } = useAbsentEmployeesByLevelId(today);
 
   return (
     <div>

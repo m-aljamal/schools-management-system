@@ -18,6 +18,7 @@ const Students = () => {
                 <div>
                   {students?.map(({ id, name }) => (
                     <Link
+                      key={id}
                       to={`/projects/${projectId}/${archiveId}/students/${id}`}
                     >
                       <p key={id}>{name}</p>
