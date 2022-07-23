@@ -1,13 +1,44 @@
 import { useDate } from "src/hooks/useDate";
-import { useAbsentEmployees } from "src/utils/absentEmployee";
+import {
+  useAbsentEmployees,
+  useTotalAbsentEmployee,
+} from "src/utils/absentEmployee";
 import { useStudentsAbsentList_by_level } from "src/utils/absentStudents";
 
 const Absent = () => {
+  return (
+    <div className="px-4">
+      <AbsentByDate />
+      <TotalAbsent />
+    </div>
+  );
+};
+
+export default Absent;
+
+const TotalAbsent = () => {
+  const { totalAbsentEmployees } = useTotalAbsentEmployee();
+  return (
+    <div>
+      <h1 className="text-red-500 p-5">عدد الغياب:</h1>
+      <p>الموظفين: </p>
+      <div className="grid grid-cols-3 gap-4">
+        {totalAbsentEmployees.map(({ count, id, name }) => (
+          <div key={id} className="bg-gray-300 p-5">
+            <p> الاسم: {name}</p>
+            <p>عدد الغياب: {count}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const AbsentByDate = () => {
   const { defultDate, selectDate, setSelectDate, format } = useDate();
 
   const { absentEmployees } = useAbsentEmployees(selectDate);
   const { studentAbsent } = useStudentsAbsentList_by_level(selectDate);
-
   return (
     <div className="p-5">
       <input
@@ -39,8 +70,8 @@ const Absent = () => {
                   <div key={id} className="">
                     <p>الشعبة: {name}</p>
                     <div className="grid grid-cols-2 ">
-                      {students?.map(({ absentStudents, name }) => (
-                        <div key={name} className="py-5">
+                      {students?.map(({ absentStudents, name, id }) => (
+                        <div key={id} className="py-5">
                           <p>الاسم: {name}</p>
                           <p>
                             التاريخ:
@@ -61,5 +92,3 @@ const Absent = () => {
     </div>
   );
 };
-
-export default Absent;

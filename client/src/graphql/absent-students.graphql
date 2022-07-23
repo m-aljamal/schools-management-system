@@ -28,6 +28,7 @@ query findAbsentStudents_byLevel($archiveId: String!, $date: DateTime) {
 
       students {
         name
+        id
         absentStudents {
           date
           id

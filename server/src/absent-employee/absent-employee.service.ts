@@ -10,7 +10,7 @@ import {
 } from 'src/shared/filtersAbsentFunctions';
 import { Repository } from 'typeorm';
 import { AbsentEmployeeInput } from './dto/absent-employee.input';
- 
+
 @Injectable()
 export class AbsentEmployeeService {
   constructor(
@@ -58,10 +58,10 @@ export class AbsentEmployeeService {
     query.select(`employee.id`, 'id');
     query.addSelect(`employee.name`, 'name');
     query.addSelect('COUNT(*)', 'count');
-    query.addSelect('absent_employee.approved', 'approved');
+    // query.addSelect('absent_employee.approved', 'approved');
     query.innerJoin(`absent_employee.employee`, 'employee');
     query.groupBy(`employee.id`);
-    query.addGroupBy('absent_employee.approved');
+    // query.addGroupBy('absent_employee.approved');
     query.leftJoinAndSelect('absent_employee.archive', 'archive');
     query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
     query.addGroupBy('archive.id');
@@ -91,6 +91,7 @@ export class AbsentEmployeeService {
       query,
       sqlTable: 'absent_employee',
     });
+
     return await query.getRawMany();
   }
 

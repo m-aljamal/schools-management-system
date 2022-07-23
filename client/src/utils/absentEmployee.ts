@@ -1,6 +1,8 @@
 import {
   FindAbsentEmployeesByLevelQuery,
+  FindTotalAbsentEmployeesQuery,
   useFindAbsentEmployeesByLevelQuery,
+  useFindTotalAbsentEmployeesQuery,
 } from "./../generated/generates";
 import { useAuthClient } from "src/context/auth-context";
 import { useUrlParams } from "src/context/auth-context";
@@ -35,7 +37,20 @@ function useAbsentEmployees(date: string) {
     absentEmployees: data?.findAbsentEmployees || [],
   };
 }
-function useTotalAbsentEmployee() {}
+function useTotalAbsentEmployee() {
+  const { archiveId } = useUrlParams();
+  const { client } = useAuthClient();
+  const { data } = useFindTotalAbsentEmployeesQuery<
+    FindTotalAbsentEmployeesQuery,
+    Error
+  >(client(), {
+    archiveId,
+  });
+
+  return {
+    totalAbsentEmployees: data?.findTotalAbsentEmployees || [],
+  };
+}
 export {
   useAbsentEmployeesByLevelId,
   useTotalAbsentEmployee,

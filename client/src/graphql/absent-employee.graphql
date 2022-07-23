@@ -22,7 +22,6 @@ query findTotalAbsentEmployees($archiveId: String!, $semesterId: String) {
   findTotalAbsentEmployees(archiveId: $archiveId, semesterId: $semesterId) {
     name
     count
-    approved
     id
   }
 }

@@ -611,7 +611,7 @@ export type FindTotalAbsentEmployeesQueryVariables = Exact<{
 }>;
 
 
-export type FindTotalAbsentEmployeesQuery = { __typename?: 'Query', findTotalAbsentEmployees: Array<{ __typename?: 'TotalAbsent', name: string, count: number, approved: boolean, id: string }> };
+export type FindTotalAbsentEmployeesQuery = { __typename?: 'Query', findTotalAbsentEmployees: Array<{ __typename?: 'TotalAbsent', name: string, count: number, id: string }> };
 
 export type FindAbsentStudentsQueryVariables = Exact<{
   archiveId: Scalars['String'];
@@ -628,7 +628,7 @@ export type FindAbsentStudents_ByLevelQueryVariables = Exact<{
 }>;
 
 
-export type FindAbsentStudents_ByLevelQuery = { __typename?: 'Query', findAbsentStudents_byLevel: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students?: Array<{ __typename?: 'Student', name: string, absentStudents: Array<{ __typename?: 'AbsentStudent', date: any, id: string }> }> | null }> | null }> };
+export type FindAbsentStudents_ByLevelQuery = { __typename?: 'Query', findAbsentStudents_byLevel: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students?: Array<{ __typename?: 'Student', name: string, id: string, absentStudents: Array<{ __typename?: 'AbsentStudent', date: any, id: string }> }> | null }> | null }> };
 
 export type FindArchivesQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -855,7 +855,6 @@ export const FindTotalAbsentEmployeesDocument = `
   findTotalAbsentEmployees(archiveId: $archiveId, semesterId: $semesterId) {
     name
     count
-    approved
     id
   }
 }
@@ -915,6 +914,7 @@ export const FindAbsentStudents_ByLevelDocument = `
       id
       students {
         name
+        id
         absentStudents {
           date
           id
