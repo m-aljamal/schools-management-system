@@ -1,3 +1,4 @@
+import { AbsentArgs } from './../shared/absentArgs';
 import { FindLevelArgs } from './dto/FindLevel.args';
 import {
   Resolver,
@@ -43,6 +44,11 @@ export class LevelResolver {
     @Args('archiveId') archiveId: string,
   ): Promise<Level[]> {
     return await this.levelService.findStudents_levels(archiveId);
+  }
+
+  @Query(() => [Level], { name: 'findAbsentStudents_byLevel' })
+  async findAbsentStudents(@Args() args: AbsentArgs) {
+    return await this.levelService.findAbsentStudents(args);
   }
 
   @Mutation(() => Level, { name: 'createLevel' })

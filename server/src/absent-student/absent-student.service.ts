@@ -27,6 +27,9 @@ export class AbsentStudentService {
       query.andWhere('level.id = :levelId', { levelId: args.levelId });
     }
     query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
+    query.andWhere('level.archive.id = :archiveId', {
+      archiveId: args.archiveId,
+    });
     filterByExactDate({
       date: args.date,
       query,

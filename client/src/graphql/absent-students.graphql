@@ -1,0 +1,38 @@
+query findAbsentStudents(
+  $archiveId: String!
+  $levelId: String
+  $date: DateTime
+) {
+  findAbsentStudents(archiveId: $archiveId, levelId: $levelId, date: $date) {
+    id
+    approved
+    date
+    student {
+      name
+      id
+      levels {
+        name
+        id
+      }
+    }
+  }
+}
+
+query findAbsentStudents_byLevel($archiveId: String!, $date: DateTime) {
+  findAbsentStudents_byLevel(archiveId: $archiveId, date: $date) {
+    name
+    id
+    divisions {
+      name
+      id
+
+      students {
+        name
+        absentStudents {
+          date
+          id
+        }
+      }
+    }
+  }
+}

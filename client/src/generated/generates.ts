@@ -46,8 +46,12 @@ export type AbsentEmployeeInput = {
 
 export type AbsentStudent = {
   __typename?: 'AbsentStudent';
+  approved: Scalars['Boolean'];
+  archive: Archive;
+  archiveId: Scalars['String'];
   date: Scalars['DateTime'];
   id: Scalars['String'];
+  note?: Maybe<Scalars['String']>;
   semester: Semester;
   semesterId: Scalars['String'];
   student: Student;
@@ -55,13 +59,18 @@ export type AbsentStudent = {
 };
 
 export type AbsentStudentInput = {
+  approved?: InputMaybe<Scalars['Boolean']>;
+  archiveId: Scalars['String'];
   date: Scalars['DateTime'];
+  note?: InputMaybe<Scalars['String']>;
   semesterId: Scalars['String'];
   studentId: Scalars['String'];
 };
 
 export type Archive = {
   __typename?: 'Archive';
+  absentEmployees: Array<AbsentEmployee>;
+  absentStudents: Array<AbsentStudent>;
   createdAt: Scalars['DateTime'];
   employees: Array<Employee>;
   id: Scalars['String'];
@@ -319,9 +328,10 @@ export type ProjectInput = {
 
 export type Query = {
   __typename?: 'Query';
-  absentStudents: Array<AbsentStudent>;
   currentUser?: Maybe<Employee>;
   findAbsentEmployees: Array<AbsentEmployee>;
+  findAbsentStudents: Array<AbsentStudent>;
+  findAbsentStudents_byLevel: Array<Level>;
   findArchive: Archive;
   findArchives: Array<Archive>;
   findDivisions: Array<Division>;
@@ -345,6 +355,30 @@ export type Query = {
 
 
 export type QueryFindAbsentEmployeesArgs = {
+  approved?: InputMaybe<Scalars['Boolean']>;
+  archiveId: Scalars['String'];
+  date?: InputMaybe<Scalars['DateTime']>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  levelId?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  semesterId?: InputMaybe<Scalars['String']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+};
+
+
+export type QueryFindAbsentStudentsArgs = {
+  approved?: InputMaybe<Scalars['Boolean']>;
+  archiveId: Scalars['String'];
+  date?: InputMaybe<Scalars['DateTime']>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  levelId?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  semesterId?: InputMaybe<Scalars['String']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+};
+
+
+export type QueryFindAbsentStudents_ByLevelArgs = {
   approved?: InputMaybe<Scalars['Boolean']>;
   archiveId: Scalars['String'];
   date?: InputMaybe<Scalars['DateTime']>;
@@ -578,6 +612,23 @@ export type FindTotalAbsentEmployeesQueryVariables = Exact<{
 
 
 export type FindTotalAbsentEmployeesQuery = { __typename?: 'Query', findTotalAbsentEmployees: Array<{ __typename?: 'TotalAbsent', name: string, count: number, approved: boolean, id: string }> };
+
+export type FindAbsentStudentsQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+  levelId?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['DateTime']>;
+}>;
+
+
+export type FindAbsentStudentsQuery = { __typename?: 'Query', findAbsentStudents: Array<{ __typename?: 'AbsentStudent', id: string, approved: boolean, date: any, student: { __typename?: 'Student', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, id: string }> } }> };
+
+export type FindAbsentStudents_ByLevelQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+  date?: InputMaybe<Scalars['DateTime']>;
+}>;
+
+
+export type FindAbsentStudents_ByLevelQuery = { __typename?: 'Query', findAbsentStudents_byLevel: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students?: Array<{ __typename?: 'Student', name: string, absentStudents: Array<{ __typename?: 'AbsentStudent', date: any, id: string }> }> | null }> | null }> };
 
 export type FindArchivesQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -821,6 +872,70 @@ export const useFindTotalAbsentEmployeesQuery = <
     useQuery<FindTotalAbsentEmployeesQuery, TError, TData>(
       ['findTotalAbsentEmployees', variables],
       fetcher<FindTotalAbsentEmployeesQuery, FindTotalAbsentEmployeesQueryVariables>(client, FindTotalAbsentEmployeesDocument, variables, headers),
+      options
+    );
+export const FindAbsentStudentsDocument = `
+    query findAbsentStudents($archiveId: String!, $levelId: String, $date: DateTime) {
+  findAbsentStudents(archiveId: $archiveId, levelId: $levelId, date: $date) {
+    id
+    approved
+    date
+    student {
+      name
+      id
+      levels {
+        name
+        id
+      }
+    }
+  }
+}
+    `;
+export const useFindAbsentStudentsQuery = <
+      TData = FindAbsentStudentsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindAbsentStudentsQueryVariables,
+      options?: UseQueryOptions<FindAbsentStudentsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindAbsentStudentsQuery, TError, TData>(
+      ['findAbsentStudents', variables],
+      fetcher<FindAbsentStudentsQuery, FindAbsentStudentsQueryVariables>(client, FindAbsentStudentsDocument, variables, headers),
+      options
+    );
+export const FindAbsentStudents_ByLevelDocument = `
+    query findAbsentStudents_byLevel($archiveId: String!, $date: DateTime) {
+  findAbsentStudents_byLevel(archiveId: $archiveId, date: $date) {
+    name
+    id
+    divisions {
+      name
+      id
+      students {
+        name
+        absentStudents {
+          date
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+export const useFindAbsentStudents_ByLevelQuery = <
+      TData = FindAbsentStudents_ByLevelQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindAbsentStudents_ByLevelQueryVariables,
+      options?: UseQueryOptions<FindAbsentStudents_ByLevelQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindAbsentStudents_ByLevelQuery, TError, TData>(
+      ['findAbsentStudents_byLevel', variables],
+      fetcher<FindAbsentStudents_ByLevelQuery, FindAbsentStudents_ByLevelQueryVariables>(client, FindAbsentStudents_ByLevelDocument, variables, headers),
       options
     );
 export const FindArchivesDocument = `

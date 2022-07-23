@@ -9,6 +9,7 @@ import { useFindLevel } from "src/utils/levels";
 import { useStudentsList_divisionList_byLevel } from "src/utils/student";
 import { useSubjectsList } from "src/utils/subject";
 import { useDate } from "src/hooks/useDate";
+import { useStudentAbsentLevel } from "src/utils/absentStudents";
 const Level = () => {
   const { level } = useFindLevel();
   return (
@@ -20,6 +21,7 @@ const Level = () => {
       <Teachers />
       <ExamsList />
       <EmployeeAbsent />
+      <StudentAbsent />
     </div>
   );
 };
@@ -163,14 +165,35 @@ const EmployeeAbsent = () => {
     <div>
       <p>الغياب اليوم</p>
       المدرسين:
-      {absentEmployees.map(({ approved, date, employee, id }) => (
-        <div key={id}>
-          <p> التاريخ :{new Date(date).toLocaleDateString()}</p>
-          <p>الاسم: {employee.name}</p>
-          <p>الصف: {employee.levels[0].name}</p>
-          <p>مبرر: {approved ? "نعم" : "لا"}</p>
-        </div>
-      ))}
+      <div className="grid grid-cols-3 gap-4">
+        {absentEmployees.map(({ approved, date, employee, id }) => (
+          <div key={id} className="bg-gray-200 p-5 m-2">
+            <p> التاريخ :{new Date(date).toLocaleDateString()}</p>
+            <p>الاسم: {employee.name}</p>
+            <p>الصف: {employee.levels[0].name}</p>
+            <p>مبرر: {approved ? "نعم" : "لا"}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const StudentAbsent = () => {
+  const { today } = useDate();
+  const { studentAbsent } = useStudentAbsentLevel(today);
+  return (
+    <div>
+      <p>غياب الطلاب</p>
+      <div className="grid grid-cols-3 gap-4">
+        {studentAbsent.map(({ approved, id, student, date }) => (
+          <div key={id} className="bg-gray-200 p-5 m-2">
+            <p>الاسم: {student.name}</p>
+            <p>{approved ? "نعم" : "لا"}</p>
+            <p> التاريخ :{new Date(date).toLocaleDateString()}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
