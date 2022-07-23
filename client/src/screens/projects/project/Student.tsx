@@ -14,6 +14,7 @@ const Student = () => {
       <p>{student?.name}</p>
       <p>{levelName}</p>
       <p>{divisionName}</p>
+    
     </div>
   );
 };

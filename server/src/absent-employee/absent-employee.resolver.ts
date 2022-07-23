@@ -1,9 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { AbsentArgs } from 'src/shared/absentArgs';
+import { AbsentEmployee } from 'src/shared/AbsentEntity';
 import { TotalAbsent } from 'src/shared/totalAbsent';
 import { AbsentEmployeeService } from './absent-employee.service';
 import { AbsentEmployeeInput } from './dto/absent-employee.input';
-import { AbsentEmployee } from './entity/absent-employee';
 
 @Resolver(() => AbsentEmployee)
 export class AbsentEmployeeResolver {

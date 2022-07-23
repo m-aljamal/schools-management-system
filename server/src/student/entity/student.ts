@@ -1,10 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { AbsentStudent } from 'src/absent-student/entity/absent-student';
-import { Archive } from 'src/archive/entity/archive';
+ import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Grade } from 'src/grade/entity/grade';
 import { Level } from 'src/level/entity/level';
 import { Project } from 'src/project/entity/project';
+import { AbsentStudent } from 'src/shared/AbsentEntity';
 import {
   Column,
   Entity,

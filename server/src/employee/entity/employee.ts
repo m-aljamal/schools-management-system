@@ -1,6 +1,5 @@
 import { Project } from 'src/project/entity/project';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { AbsentEmployee } from 'src/absent-employee/entity/absent-employee';
 import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Level } from 'src/level/entity/level';
@@ -14,6 +13,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Role } from 'utils/enum';
+import { AbsentEmployee } from 'src/shared/AbsentEntity';
 
 @ObjectType()
 @Entity()

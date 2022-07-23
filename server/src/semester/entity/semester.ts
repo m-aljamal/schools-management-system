@@ -1,8 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { AbsentEmployee } from 'src/absent-employee/entity/absent-employee';
-import { AbsentStudent } from 'src/absent-student/entity/absent-student';
 import { Archive } from 'src/archive/entity/archive';
 import { Exam } from 'src/exam/entity/exam';
+import { AbsentEmployee, AbsentStudent } from 'src/shared/AbsentEntity';
 import {
   Column,
   Entity,

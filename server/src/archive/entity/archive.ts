@@ -1,9 +1,9 @@
-import { AbsentStudent } from 'src/absent-student/entity/absent-student';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Employee } from 'src/employee/entity/employee';
 import { Level } from 'src/level/entity/level';
 import { Project } from 'src/project/entity/project';
 import { Semester } from 'src/semester/entity/semester';
+import { AbsentEmployee, AbsentStudent } from 'src/shared/AbsentEntity';
 import { Student } from 'src/student/entity/student';
 import {
   Column,
@@ -15,7 +15,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { AbsentEmployee } from 'src/absent-employee/entity/absent-employee';
 
 @ObjectType()
 @Entity()

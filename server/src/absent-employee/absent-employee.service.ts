@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AbsentArgs } from 'src/shared/absentArgs';
+import { AbsentEmployee } from 'src/shared/AbsentEntity';
 import {
   filterByApproved,
   filterByDate,
@@ -9,8 +10,7 @@ import {
 } from 'src/shared/filtersAbsentFunctions';
 import { Repository } from 'typeorm';
 import { AbsentEmployeeInput } from './dto/absent-employee.input';
-import { AbsentEmployee } from './entity/absent-employee';
-
+ 
 @Injectable()
 export class AbsentEmployeeService {
   constructor(

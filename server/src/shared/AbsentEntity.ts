@@ -1,11 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Archive } from 'src/archive/entity/archive';
+import { Employee } from 'src/employee/entity/employee';
 import { Semester } from 'src/semester/entity/semester';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
+import { Student } from 'src/student/entity/student';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
-@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Absent {
   @Field()
   @PrimaryGeneratedColumn('uuid')
@@ -38,4 +39,28 @@ export class Absent {
   @Field(() => Boolean)
   @Column({ default: false })
   approved: boolean;
+}
+
+@ObjectType()
+@Entity()
+export class AbsentEmployee extends Absent {
+  @ManyToOne(() => Employee, (employee) => employee.absentEmployees)
+  @Field(() => Employee)
+  employee: Employee;
+
+  @Field()
+  @Column()
+  employeeId: string;
+}
+
+@ObjectType()
+@Entity()
+export class AbsentStudent extends Absent {
+  @ManyToOne(() => Student, (student) => student.absentStudents)
+  @Field(() => Student)
+  student: Student;
+
+  @Field()
+  @Column()
+  studentId: string;
 }

@@ -22,6 +22,7 @@ const Students = () => {
                       to={`/projects/${projectId}/${archiveId}/students/${id}`}
                     >
                       <p key={id}>{name}</p>
+                      <p>{id}</p>
                     </Link>
                   ))}
                 </div>
