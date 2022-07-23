@@ -1,10 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Archive } from 'src/archive/entity/archive';
 import { Semester } from 'src/semester/entity/semester';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
 
 @ObjectType()
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export class Absent {
   @Field()
   @PrimaryGeneratedColumn('uuid')
