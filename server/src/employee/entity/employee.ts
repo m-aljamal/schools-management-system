@@ -32,15 +32,16 @@ export class Employee {
 
   @ManyToMany(() => Level, (level) => level.employees, {
     cascade: true,
+    nullable: true,
   })
-  @Field(() => [Level])
+  @Field(() => [Level], { nullable: true })
   @JoinTable()
   levels: Level[];
 
   @ManyToMany(() => Division, (division) => division.employees, {
     cascade: true,
   })
-  @Field(() => [Division])
+  @Field(() => [Division], { nullable: true })
   @JoinTable()
   divisions: Division[];
 

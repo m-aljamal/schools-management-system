@@ -14,9 +14,11 @@ const Employees = () => {
       <div className="grid grid-cols-3 gap-5">
         {managers.map(({ id, name, role }) => (
           <div key={id} className="bg-gray-200 p-5">
-            <p>الاسم: {name}</p>
-            <p>{id}</p>
-            <p>المسمى الوظيفي: {role}</p>
+            <Link to={`/projects/${projectId}/${archiveId}/employees/${id}`}>
+              <p>الاسم: {name}</p>
+              <p>{id}</p>
+              <p>المسمى الوظيفي: {role}</p>
+            </Link>
           </div>
         ))}
       </div>

@@ -48,20 +48,27 @@ export class EmployeeService {
   }
 
   async findOne(args: FindEmployeeArgs) {
+    const employee = await this.employeeRepo.findOne({
+      where: { id: args.id },
+    });
+
     const query = this.employeeRepo.createQueryBuilder('employee');
     query.where('employee.id = :id', { id: args.id });
-    query.leftJoinAndSelect('employee.levels', 'levels');
-    query.andWhere('levels.archiveId = :archiveId', {
-      archiveId: args.archiveId,
-    });
-    if (args.levelId) {
-      query.andWhere('levels.id = :levelId', { levelId: args.levelId });
+    if (employee.role === Role.TEACHER) {
+      query.leftJoinAndSelect('employee.levels', 'levels');
+
+      query.andWhere('levels.archiveId = :archiveId', {
+        archiveId: args.archiveId,
+      });
+      if (args.levelId) {
+        query.andWhere('levels.id = :levelId', { levelId: args.levelId });
+      }
+      query.leftJoinAndSelect('employee.divisions', 'division');
+      query.leftJoinAndSelect('levels.divisions', 'divisions');
+      query.leftJoinAndSelect('employee.archives', 'archives');
+      query.andWhere('divisions.id IN (division.id)');
+      query.andWhere('archives.id = :archiveId', { archiveId: args.archiveId });
     }
-    query.leftJoinAndSelect('employee.divisions', 'division');
-    query.leftJoinAndSelect('levels.divisions', 'divisions');
-    query.leftJoinAndSelect('employee.archives', 'archives');
-    query.andWhere('divisions.id IN (division.id)');
-    query.andWhere('archives.id = :archiveId', { archiveId: args.archiveId });
     return await query.getOne();
   }
 

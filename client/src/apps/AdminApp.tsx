@@ -6,7 +6,7 @@ import Projects from "src/screens/projects";
 import Project from "src/screens/projects/project";
 import Archives from "src/screens/projects/project/Archives";
 import CreateProject from "src/screens/projects/project/CreateProject";
-import Employee from "src/screens/projects/project/Employee";
+import Employee from "src/screens/projects/project/EmployeePage";
 import Employees from "src/screens/projects/project/Employees";
 import Students from "src/screens/projects/project/Students";
 

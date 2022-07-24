@@ -1,8 +1,10 @@
 import {
   FindAbsentStudentsQuery,
   FindAbsentStudents_ByLevelQuery,
+  FindTotalAbsentStudentsQuery,
   useFindAbsentStudentsQuery,
   useFindAbsentStudents_ByLevelQuery,
+  useFindTotalAbsentStudentsQuery,
 } from "./../generated/generates";
 import { useUrlParams } from "src/context/auth-context";
 import { useAuthClient } from "src/context/auth-context";
@@ -37,4 +39,22 @@ function useStudentsAbsentList_by_level(date: string) {
     studentAbsent: data?.findAbsentStudents_byLevel || [],
   };
 }
-export { useStudentAbsentLevel, useStudentsAbsentList_by_level };
+
+function useTotalStudentAbsent() {
+  const { client } = useAuthClient();
+  const { archiveId } = useUrlParams();
+  const { data } = useFindTotalAbsentStudentsQuery<
+    FindTotalAbsentStudentsQuery,
+    Error
+  >(client(), {
+    archiveId,
+  });
+  return {
+    totalAbsentStudents: data?.findTotalAbsentStudents || [],
+  };
+}
+export {
+  useStudentAbsentLevel,
+  useStudentsAbsentList_by_level,
+  useTotalStudentAbsent,
+};

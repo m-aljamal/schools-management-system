@@ -107,9 +107,9 @@ export type Employee = {
   __typename?: 'Employee';
   absentEmployees: Array<AbsentEmployee>;
   archives?: Maybe<Array<Archive>>;
-  divisions: Array<Division>;
+  divisions?: Maybe<Array<Division>>;
   id: Scalars['String'];
-  levels: Array<Level>;
+  levels?: Maybe<Array<Level>>;
   name: Scalars['String'];
   password: Scalars['String'];
   project?: Maybe<Project>;
@@ -351,6 +351,7 @@ export type Query = {
   findTeachers: Array<Employee>;
   findTechers_levels: Array<Level>;
   findTotalAbsentEmployees: Array<TotalAbsent>;
+  findTotalAbsentStudents: Array<TotalAbsent>;
 };
 
 
@@ -493,6 +494,18 @@ export type QueryFindTotalAbsentEmployeesArgs = {
   toDate?: InputMaybe<Scalars['DateTime']>;
 };
 
+
+export type QueryFindTotalAbsentStudentsArgs = {
+  approved?: InputMaybe<Scalars['Boolean']>;
+  archiveId: Scalars['String'];
+  date?: InputMaybe<Scalars['DateTime']>;
+  fromDate?: InputMaybe<Scalars['DateTime']>;
+  levelId?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  semesterId?: InputMaybe<Scalars['String']>;
+  toDate?: InputMaybe<Scalars['DateTime']>;
+};
+
 export enum Role {
   Admin = 'ADMIN',
   Cleaner = 'CLEANER',
@@ -603,7 +616,7 @@ export type FindAbsentEmployeesByLevelQueryVariables = Exact<{
 }>;
 
 
-export type FindAbsentEmployeesByLevelQuery = { __typename?: 'Query', findAbsentEmployees: Array<{ __typename?: 'AbsentEmployee', id: string, approved: boolean, date: any, employee: { __typename?: 'Employee', name: string, id: string, levels: Array<{ __typename?: 'Level', name: string, id: string }> } }> };
+export type FindAbsentEmployeesByLevelQuery = { __typename?: 'Query', findAbsentEmployees: Array<{ __typename?: 'AbsentEmployee', id: string, approved: boolean, date: any, employee: { __typename?: 'Employee', name: string, id: string, levels?: Array<{ __typename?: 'Level', name: string, id: string }> | null } }> };
 
 export type FindTotalAbsentEmployeesQueryVariables = Exact<{
   archiveId: Scalars['String'];
@@ -629,6 +642,13 @@ export type FindAbsentStudents_ByLevelQueryVariables = Exact<{
 
 
 export type FindAbsentStudents_ByLevelQuery = { __typename?: 'Query', findAbsentStudents_byLevel: Array<{ __typename?: 'Level', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, students?: Array<{ __typename?: 'Student', name: string, id: string, absentStudents: Array<{ __typename?: 'AbsentStudent', date: any, id: string }> }> | null }> | null }> };
+
+export type FindTotalAbsentStudentsQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+}>;
+
+
+export type FindTotalAbsentStudentsQuery = { __typename?: 'Query', findTotalAbsentStudents: Array<{ __typename?: 'TotalAbsent', count: number, id: string, name: string }> };
 
 export type FindArchivesQueryVariables = Exact<{
   projectId: Scalars['String'];
@@ -678,7 +698,7 @@ export type FindEmployeeQueryVariables = Exact<{
 }>;
 
 
-export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', name: string, id: string, archives?: Array<{ __typename?: 'Archive', name: string }> | null, levels: Array<{ __typename?: 'Level', archiveId: string, name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> } };
+export type FindEmployeeQuery = { __typename?: 'Query', findEmployee: { __typename?: 'Employee', name: string, id: string, role: Role, archives?: Array<{ __typename?: 'Archive', name: string }> | null, levels?: Array<{ __typename?: 'Level', archiveId: string, name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string }> | null }> | null } };
 
 export type FindTeachers_DivisionsQueryVariables = Exact<{
   archiveId: Scalars['String'];
@@ -686,7 +706,7 @@ export type FindTeachers_DivisionsQueryVariables = Exact<{
 }>;
 
 
-export type FindTeachers_DivisionsQuery = { __typename?: 'Query', findTeachers: Array<{ __typename?: 'Employee', name: string, id: string, divisions: Array<{ __typename?: 'Division', name: string, id: string, level: { __typename?: 'Level', name: string, id: string } }> }> };
+export type FindTeachers_DivisionsQuery = { __typename?: 'Query', findTeachers: Array<{ __typename?: 'Employee', name: string, id: string, divisions?: Array<{ __typename?: 'Division', name: string, id: string, level: { __typename?: 'Level', name: string, id: string } }> | null }> };
 
 export type FindManagersQueryVariables = Exact<{
   archiveId: Scalars['String'];
@@ -938,6 +958,29 @@ export const useFindAbsentStudents_ByLevelQuery = <
       fetcher<FindAbsentStudents_ByLevelQuery, FindAbsentStudents_ByLevelQueryVariables>(client, FindAbsentStudents_ByLevelDocument, variables, headers),
       options
     );
+export const FindTotalAbsentStudentsDocument = `
+    query findTotalAbsentStudents($archiveId: String!) {
+  findTotalAbsentStudents(archiveId: $archiveId) {
+    count
+    id
+    name
+  }
+}
+    `;
+export const useFindTotalAbsentStudentsQuery = <
+      TData = FindTotalAbsentStudentsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindTotalAbsentStudentsQueryVariables,
+      options?: UseQueryOptions<FindTotalAbsentStudentsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindTotalAbsentStudentsQuery, TError, TData>(
+      ['findTotalAbsentStudents', variables],
+      fetcher<FindTotalAbsentStudentsQuery, FindTotalAbsentStudentsQueryVariables>(client, FindTotalAbsentStudentsDocument, variables, headers),
+      options
+    );
 export const FindArchivesDocument = `
     query findArchives($projectId: String!, $archiveId: String, $sortBy: Sort) {
   findArchives(projectId: $projectId, archiveId: $archiveId, sortBy: $sortBy) {
@@ -1076,6 +1119,7 @@ export const FindEmployeeDocument = `
   findEmployee(id: $id, archiveId: $archiveId) {
     name
     id
+    role
     archives {
       name
     }

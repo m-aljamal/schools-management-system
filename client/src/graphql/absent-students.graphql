@@ -37,3 +37,11 @@ query findAbsentStudents_byLevel($archiveId: String!, $date: DateTime) {
     }
   }
 }
+
+query findTotalAbsentStudents($archiveId: String!) {
+  findTotalAbsentStudents(archiveId: $archiveId) {
+    count
+    id
+    name
+  }
+}

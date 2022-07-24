@@ -2,6 +2,7 @@ query findEmployee($id: String!, $archiveId: String!) {
   findEmployee(id: $id, archiveId: $archiveId) {
     name
     id
+    role
     archives {
       name
     }

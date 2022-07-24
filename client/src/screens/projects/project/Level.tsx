@@ -105,7 +105,7 @@ const Teachers = () => {
               <p>{id}</p>
             </Link>
             <div className="p-5">
-              {divisions.map(({ id, name }) => (
+              {divisions?.map(({ id, name }) => (
                 <p key={id}>{name}</p>
               ))}
             </div>
@@ -170,7 +170,7 @@ const EmployeeAbsent = () => {
           <div key={id} className="bg-gray-200 p-5 m-2">
             <p> التاريخ :{new Date(date).toLocaleDateString()}</p>
             <p>الاسم: {employee.name}</p>
-            <p>الصف: {employee.levels[0].name}</p>
+            {/* <p>الصف: {employee.levels[0].name}</p> */}
             <p>مبرر: {approved ? "نعم" : "لا"}</p>
           </div>
         ))}

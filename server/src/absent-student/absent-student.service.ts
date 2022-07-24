@@ -54,6 +54,46 @@ export class AbsentStudentService {
     return await query.getMany();
   }
 
+  async getTotalAbsentStudents(args: AbsentArgs) {
+    const query =
+      this.absentStudentRepository.createQueryBuilder('absent_student');
+    query.select(`student.id`, 'id');
+    query.addSelect(`student.name`, 'name');
+    query.addSelect('COUNT(*)', 'count');
+    query.innerJoin(`absent_student.student`, 'student');
+    query.groupBy(`student.id`);
+    query.leftJoinAndSelect('absent_student.archive', 'archive');
+    query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
+    query.addGroupBy('archive.id');
+    if (args.semesterId) {
+      query.andWhere('absent_student.semesterId = :semesterId', {
+        semesterId: args.semesterId,
+      });
+    }
+    filterByExactDate({
+      date: args.date,
+      query,
+      sqlTable: 'absent_student',
+    });
+    filterByApproved({
+      approved: args.approved,
+      query,
+      sqlTable: 'absent_student',
+    });
+    filterByName({
+      name: args.name,
+      query,
+      type: 'employee',
+    });
+    filterByDate({
+      fromDate: args.fromDate,
+      toDate: args.toDate,
+      query,
+      sqlTable: 'absent_student',
+    });
+    return await query.getRawMany();
+  }
+
   async createAbsentStudent(input: AbsentStudentInput) {
     const absentStudent = this.absentStudentRepository.create(input);
     return await this.absentStudentRepository.save(absentStudent);

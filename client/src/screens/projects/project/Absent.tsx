@@ -1,9 +1,14 @@
+import { Link } from "react-router-dom";
+import { useUrlParams } from "src/context/auth-context";
 import { useDate } from "src/hooks/useDate";
 import {
   useAbsentEmployees,
   useTotalAbsentEmployee,
 } from "src/utils/absentEmployee";
-import { useStudentsAbsentList_by_level } from "src/utils/absentStudents";
+import {
+  useStudentsAbsentList_by_level,
+  useTotalStudentAbsent,
+} from "src/utils/absentStudents";
 
 const Absent = () => {
   return (
@@ -18,14 +23,29 @@ export default Absent;
 
 const TotalAbsent = () => {
   const { totalAbsentEmployees } = useTotalAbsentEmployee();
+  const { totalAbsentStudents } = useTotalStudentAbsent();
+  const { archiveId, projectId } = useUrlParams();
   return (
     <div>
       <h1 className="text-red-500 p-5">عدد الغياب:</h1>
-      <p>الموظفين: </p>
+      <p className="text-blue-700 mb-5">الموظفين: </p>
       <div className="grid grid-cols-3 gap-4">
         {totalAbsentEmployees.map(({ count, id, name }) => (
           <div key={id} className="bg-gray-300 p-5">
-            <p> الاسم: {name}</p>
+            <Link to={`/projects/${projectId}/${archiveId}/employees/${id}`}>
+              <p> الاسم: {name} </p>
+            </Link>
+            <p>عدد الغياب: {count}</p>
+          </div>
+        ))}
+      </div>
+      <p className="mt-8 mb-5 text-blue-700">الطلاب: </p>
+      <div className="grid grid-cols-3 gap-4">
+        {totalAbsentStudents.map(({ count, id, name }) => (
+          <div key={id} className="bg-gray-300 p-5">
+            <Link to={`/projects/${projectId}/${archiveId}/students/${id}`}>
+              <p> الاسم: {name}</p>
+            </Link>
             <p>عدد الغياب: {count}</p>
           </div>
         ))}
@@ -39,6 +59,7 @@ const AbsentByDate = () => {
 
   const { absentEmployees } = useAbsentEmployees(selectDate);
   const { studentAbsent } = useStudentsAbsentList_by_level(selectDate);
+  const { projectId, archiveId } = useUrlParams();
   return (
     <div className="p-5">
       <input
@@ -52,7 +73,11 @@ const AbsentByDate = () => {
         <div className="grid grid-cols-3 gap-5">
           {absentEmployees.map(({ approved, date, employee, id }) => (
             <div key={id} className="bg-gray-200 p-2 ">
-              <p>الاسم: {employee.name}</p>
+              <Link
+                to={`/projects/${projectId}/${archiveId}/employees/${employee.id}`}
+              >
+                <p>الاسم: {employee.name}</p>
+              </Link>
               <p> مبرر: {approved ? "نعم" : "لا"}</p>
               <p>التاريخ: {new Date(date).toDateString()}</p>
             </div>
