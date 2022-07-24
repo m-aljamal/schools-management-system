@@ -3,10 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AbsentArgs } from 'src/shared/absentArgs';
 import { AbsentEmployee } from 'src/shared/AbsentEntity';
 import {
-  filterByApproved,
-  filterByDate,
-  filterByExactDate,
-  filterByName,
+  findAllAbsent,
+  findTotalAbsent,
 } from 'src/shared/filtersAbsentFunctions';
 import { Repository } from 'typeorm';
 import { AbsentEmployeeInput } from './dto/absent-employee.input';
@@ -21,33 +19,12 @@ export class AbsentEmployeeService {
   async getAllAbsentEmployees(args: AbsentArgs): Promise<AbsentEmployee[]> {
     const query =
       this.absentEmployeeRepository.createQueryBuilder('absent_employee');
-    query.leftJoinAndSelect('absent_employee.employee', 'employee');
-    query.leftJoinAndSelect('absent_employee.archive', 'archive');
-    query.leftJoinAndSelect('employee.levels', 'level');
-    if (args.levelId) {
-      query.andWhere('level.id = :levelId', { levelId: args.levelId });
-    }
-    query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
-    filterByExactDate({
-      date: args.date,
+
+    findAllAbsent({
       query,
+      args,
       sqlTable: 'absent_employee',
-    });
-    filterByApproved({
-      approved: args.approved,
-      query,
-      sqlTable: 'absent_employee',
-    });
-    filterByName({
-      name: args.name,
-      query: query,
       type: 'employee',
-    });
-    filterByDate({
-      fromDate: args.fromDate,
-      toDate: args.toDate,
-      query,
-      sqlTable: 'absent_employee',
     });
     return await query.getMany();
   }
@@ -55,43 +32,13 @@ export class AbsentEmployeeService {
   async getTotalAbsentEmployees(args: AbsentArgs) {
     const query =
       this.absentEmployeeRepository.createQueryBuilder('absent_employee');
-    query.select(`employee.id`, 'id');
-    query.addSelect(`employee.name`, 'name');
-    query.addSelect('COUNT(*)', 'count');
-    // query.addSelect('absent_employee.approved', 'approved');
-    query.innerJoin(`absent_employee.employee`, 'employee');
-    query.groupBy(`employee.id`);
-    // query.addGroupBy('absent_employee.approved');
-    query.leftJoinAndSelect('absent_employee.archive', 'archive');
-    query.andWhere('archive.id = :archiveId', { archiveId: args.archiveId });
-    query.addGroupBy('archive.id');
-    if (args.semesterId) {
-      query.andWhere('absent_employee.semesterId = :semesterId', {
-        semesterId: args.semesterId,
-      });
-    }
-    filterByExactDate({
-      date: args.date,
+
+    findTotalAbsent({
+      args,
       query,
       sqlTable: 'absent_employee',
-    });
-    filterByApproved({
-      approved: args.approved,
-      query,
-      sqlTable: 'absent_employee',
-    });
-    filterByName({
-      name: args.name,
-      query,
       type: 'employee',
     });
-    filterByDate({
-      fromDate: args.fromDate,
-      toDate: args.toDate,
-      query,
-      sqlTable: 'absent_employee',
-    });
-
     return await query.getRawMany();
   }
 
