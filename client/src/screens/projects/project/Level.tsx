@@ -56,6 +56,7 @@ const Subjects = () => {
         {subjects.map(({ id, name }) => (
           <div key={id}>
             <p>{name}</p>
+            <p>{id}</p>
           </div>
         ))}
       </div>
@@ -80,6 +81,7 @@ const Students = () => {
                     to={`/projects/${projectId}/${archiveId}/students/${id}`}
                   >
                     <p>{name}</p>
+                    <p>{id}</p>
                   </Link>
                 </div>
               ))}

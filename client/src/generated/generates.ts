@@ -73,6 +73,7 @@ export type Archive = {
   absentStudents: Array<AbsentStudent>;
   createdAt: Scalars['DateTime'];
   employees: Array<Employee>;
+  exams: Array<Exam>;
   id: Scalars['String'];
   levels: Array<Level>;
   name: Scalars['String'];
@@ -131,6 +132,8 @@ export type EmployeeInput = {
 
 export type Exam = {
   __typename?: 'Exam';
+  archive: Archive;
+  archiveId: Scalars['String'];
   grades?: Maybe<Array<Grade>>;
   id: Scalars['String'];
   level: Level;
@@ -140,6 +143,7 @@ export type Exam = {
 };
 
 export type ExamInput = {
+  archiveId: Scalars['String'];
   levelId: Scalars['String'];
   semesterId: Scalars['String'];
 };
@@ -154,6 +158,8 @@ export type Grade = {
   id: Scalars['String'];
   oral_grade?: Maybe<Scalars['Float']>;
   second_quiz_grade?: Maybe<Scalars['Float']>;
+  semester: Semester;
+  semesterId: Scalars['String'];
   student: Student;
   studentId: Scalars['String'];
   subject: Subject;
@@ -167,6 +173,7 @@ export type GradeInput = {
   homework_grade?: InputMaybe<Scalars['Float']>;
   oral_grade?: InputMaybe<Scalars['Float']>;
   second_quiz_grade?: InputMaybe<Scalars['Float']>;
+  semesterId: Scalars['String'];
   studentId: Scalars['String'];
   subjectId: Scalars['String'];
 };
@@ -349,6 +356,7 @@ export type Query = {
   findStudents_levels: Array<Level>;
   findSubjects: Array<Subject>;
   findSubjects_byLevel: Array<Level>;
+  findSubjects_for_grades: Array<Subject>;
   findTeachers: Array<Employee>;
   findTechers_levels: Array<Level>;
   findTotalAbsentEmployees: Array<TotalAbsent>;
@@ -478,6 +486,12 @@ export type QueryFindSubjects_ByLevelArgs = {
 };
 
 
+export type QueryFindSubjects_For_GradesArgs = {
+  levelId: Scalars['String'];
+  semesterId: Scalars['String'];
+};
+
+
 export type QueryFindTeachersArgs = {
   archiveId: Scalars['String'];
   levelId?: InputMaybe<Scalars['String']>;
@@ -533,6 +547,7 @@ export type Semester = {
   archive: Archive;
   archiveId: Scalars['String'];
   exams: Array<Exam>;
+  grades: Array<Grade>;
   id: Scalars['String'];
   name: Scalars['String'];
 };
@@ -742,6 +757,14 @@ export type FindExams_LevelQueryVariables = Exact<{
 
 
 export type FindExams_LevelQuery = { __typename?: 'Query', findExams: Array<{ __typename?: 'Exam', id: string, level: { __typename?: 'Level', id: string, name: string }, semester: { __typename?: 'Semester', name: string, id: string }, grades?: Array<{ __typename?: 'Grade', final_grade?: number | null, first_quiz_grade?: number | null, homework_grade?: number | null, id: string, oral_grade?: number | null, second_quiz_grade?: number | null, subject: { __typename?: 'Subject', id: string, name: string }, student: { __typename?: 'Student', name: string } }> | null }> };
+
+export type FindSubjects_For_GradesQueryVariables = Exact<{
+  levelId: Scalars['String'];
+  semesterId: Scalars['String'];
+}>;
+
+
+export type FindSubjects_For_GradesQuery = { __typename?: 'Query', findSubjects_for_grades: Array<{ __typename?: 'Subject', id: string, name: string, grades: Array<{ __typename?: 'Grade', id: string, final_grade?: number | null, first_quiz_grade?: number | null, homework_grade?: number | null, oral_grade?: number | null, second_quiz_grade?: number | null, semester: { __typename?: 'Semester', id: string, name: string }, student: { __typename?: 'Student', id: string, name: string } }> }> };
 
 export type CreateLevelMutationVariables = Exact<{
   name: Scalars['String'];
@@ -1296,6 +1319,44 @@ export const useFindExams_LevelQuery = <
     useQuery<FindExams_LevelQuery, TError, TData>(
       ['findExams_level', variables],
       fetcher<FindExams_LevelQuery, FindExams_LevelQueryVariables>(client, FindExams_LevelDocument, variables, headers),
+      options
+    );
+export const FindSubjects_For_GradesDocument = `
+    query findSubjects_for_grades($levelId: String!, $semesterId: String!) {
+  findSubjects_for_grades(levelId: $levelId, semesterId: $semesterId) {
+    id
+    name
+    grades {
+      semester {
+        id
+        name
+      }
+      id
+      final_grade
+      first_quiz_grade
+      homework_grade
+      oral_grade
+      second_quiz_grade
+      student {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const useFindSubjects_For_GradesQuery = <
+      TData = FindSubjects_For_GradesQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindSubjects_For_GradesQueryVariables,
+      options?: UseQueryOptions<FindSubjects_For_GradesQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindSubjects_For_GradesQuery, TError, TData>(
+      ['findSubjects_for_grades', variables],
+      fetcher<FindSubjects_For_GradesQuery, FindSubjects_For_GradesQueryVariables>(client, FindSubjects_For_GradesDocument, variables, headers),
       options
     );
 export const CreateLevelDocument = `

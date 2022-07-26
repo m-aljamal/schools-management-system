@@ -1,3 +1,4 @@
+import { Archive } from 'src/archive/entity/archive';
 import { Level } from 'src/level/entity/level';
 import { Semester } from 'src/semester/entity/semester';
 import { Field, ObjectType } from '@nestjs/graphql';
@@ -38,4 +39,12 @@ export class Exam {
   @Field()
   @Column()
   levelId: string;
+
+  @ManyToOne(() => Archive, (archive) => archive.exams)
+  @Field(() => Archive)
+  archive: Archive;
+
+  @Field()
+  @Column()
+  archiveId: string;
 }

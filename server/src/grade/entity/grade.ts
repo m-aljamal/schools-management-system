@@ -1,3 +1,4 @@
+import { Semester } from './../../semester/entity/semester';
 import { Student } from 'src/student/entity/student';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Exam } from 'src/exam/entity/exam';
@@ -34,6 +35,14 @@ export class Grade {
   @Field()
   @Column()
   studentId: string;
+
+  @ManyToOne(() => Semester, (semester) => semester.grades)
+  @Field(() => Semester)
+  semester: Semester;
+
+  @Field()
+  @Column()
+  semesterId: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })

@@ -57,3 +57,27 @@ query findExams_level($levelId: String!, $archiveId: String!) {
     }
   }
 }
+
+query findSubjects_for_grades($levelId: String!, $semesterId: String!) {
+  findSubjects_for_grades(levelId: $levelId, semesterId: $semesterId) {
+    id
+    name
+
+    grades {
+      semester {
+        id
+        name
+      }
+      id
+      final_grade
+      first_quiz_grade
+      homework_grade
+      oral_grade
+      second_quiz_grade
+      student {
+        id
+        name
+      }
+    }
+  }
+}

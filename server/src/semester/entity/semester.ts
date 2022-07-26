@@ -9,6 +9,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Grade } from 'src/grade/entity/grade';
+import { Level } from 'src/level/entity/level';
 
 @ObjectType()
 @Entity()
@@ -40,4 +42,8 @@ export class Semester {
   @OneToMany(() => Exam, (exam) => exam.semester)
   @Field(() => [Exam])
   exams: Exam[];
+
+  @OneToMany(() => Grade, (grade) => grade.semester)
+  @Field(() => [Grade])
+  grades: Grade[];
 }

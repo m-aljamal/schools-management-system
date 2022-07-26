@@ -3,7 +3,7 @@ import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Employee } from 'src/employee/entity/employee';
 import { Exam } from 'src/exam/entity/exam';
-import { Student } from 'src/student/entity/student';
+ import { Student } from 'src/student/entity/student';
 import { Subject } from 'src/subject/entity/subject';
 import {
   Column,

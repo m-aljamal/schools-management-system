@@ -11,6 +11,9 @@ export class GradeInput {
   @Field()
   studentId: string;
 
+  @Field()
+  semesterId: string;
+
   @Field({ nullable: true })
   final_grade: number;
 

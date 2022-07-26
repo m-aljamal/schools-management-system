@@ -7,4 +7,7 @@ export class ExamInput {
 
   @Field()
   levelId: string;
+
+  @Field()
+  archiveId: string;
 }
