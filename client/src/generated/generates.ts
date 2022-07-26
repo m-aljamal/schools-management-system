@@ -698,6 +698,20 @@ export type FindDivisionsQueryVariables = Exact<{
 
 export type FindDivisionsQuery = { __typename?: 'Query', findDivisions: Array<{ __typename?: 'Division', name: string, id: string }> };
 
+export type CreateEmployeeMutationVariables = Exact<{
+  archives?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  divisions?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  levels?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  name: Scalars['String'];
+  password: Scalars['String'];
+  projectId?: InputMaybe<Scalars['String']>;
+  role: Role;
+  username: Scalars['String'];
+}>;
+
+
+export type CreateEmployeeMutation = { __typename?: 'Mutation', createEmployee: { __typename?: 'Employee', id: string, name: string, role: Role } };
+
 export type FindEmployeeQueryVariables = Exact<{
   id: Scalars['String'];
   archiveId: Scalars['String'];
@@ -1125,6 +1139,30 @@ export const useFindDivisionsQuery = <
     useQuery<FindDivisionsQuery, TError, TData>(
       ['findDivisions', variables],
       fetcher<FindDivisionsQuery, FindDivisionsQueryVariables>(client, FindDivisionsDocument, variables, headers),
+      options
+    );
+export const CreateEmployeeDocument = `
+    mutation createEmployee($archives: [String!], $divisions: [String!], $levels: [String!], $name: String!, $password: String!, $projectId: String, $role: Role!, $username: String!) {
+  createEmployee(
+    input: {archives: $archives, divisions: $divisions, levels: $levels, name: $name, password: $password, projectId: $projectId, role: $role, username: $username}
+  ) {
+    id
+    name
+    role
+  }
+}
+    `;
+export const useCreateEmployeeMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreateEmployeeMutation, TError, CreateEmployeeMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreateEmployeeMutation, TError, CreateEmployeeMutationVariables, TContext>(
+      ['createEmployee'],
+      (variables?: CreateEmployeeMutationVariables) => fetcher<CreateEmployeeMutation, CreateEmployeeMutationVariables>(client, CreateEmployeeDocument, variables, headers)(),
       options
     );
 export const FindEmployeeDocument = `

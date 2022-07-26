@@ -1,0 +1,25 @@
+mutation createEmployee(
+$archives: [String!]
+  $divisions: [String!]
+  $levels: [String!]
+  $name: String!
+  $password: String!
+  $projectId: String
+  $role: Role!
+  $username: String!
+){
+   createEmployee(input:{
+    archives: $archives,
+    divisions: $divisions,
+    levels: $levels,
+    name: $name,
+    password:$password,
+    projectId:$projectId,
+    role:$role,
+    username:$username
+  }){
+    id
+    name
+    role
+  }
+}

@@ -40,15 +40,17 @@ const UserInfo = () => {
 
   return (
     <div>
-      <div className="flex justify-around">
-        <button onClick={logout}>Logout</button>
+      <div className=" ">
+        <button onClick={logout} className="bg-gray-600 rounded-full p-2 mb-2 ">
+          Logout
+        </button>
       </div>
-      <p> العام الدراسي: {user?.project?.current_archive_name}</p>
+      {/* <p> العام الدراسي: {user?.project?.current_archive_name}</p>
       <div className="w-24 h-24 mx-auto mt-8 mb-3">image</div>
       <div className="mb-8">
         <p className=" text-white text-lg">{user.name}</p>
         <p className="text-sm">{user.username}</p>
-      </div>
+      </div> */}
     </div>
   );
 };

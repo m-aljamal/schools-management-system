@@ -1,8 +1,14 @@
+import { useQueryClient } from "react-query";
 import { useAuthClient, useUrlParams } from "src/context/auth-context";
 import {
+  CreateEmployeeMutation,
+  CreateEmployeeMutationVariables,
+  CreateProjectMutation,
   FindEmployeeQuery,
   FindManagersQuery,
   FindTeachers_DivisionsQuery,
+  Role,
+  useCreateEmployeeMutation,
   useFindEmployeeQuery,
   useFindManagersQuery,
   useFindTeachers_DivisionsQuery,
@@ -59,9 +65,37 @@ function useMangersList() {
     managers: data?.findManagers || [],
   };
 }
+
+function useCreateEmployee() {
+  const { client } = useAuthClient();
+  const queryClient = useQueryClient();
+
+  const { mutate } = useCreateEmployeeMutation<Error>(client(), {
+    onSuccess: (
+      data: CreateEmployeeMutation,
+      _varibles: CreateEmployeeMutationVariables,
+      _context: unknown
+    ) => {
+      queryClient.invalidateQueries(
+        `${
+          data.createEmployee.role === Role.Teacher
+            ? "findTechers_levels"
+            : "findManagers"
+        }`
+      );
+    },
+    onError: (error: Error) => {
+      console.error(error);
+    },
+    onSettled: () => queryClient.invalidateQueries("findTechers_levels"),
+  });
+}
+
 export {
   // useEmployees,
   useEmployee,
   useTeachersList_divisions,
   useMangersList,
+  useCreateEmployee,
+  useCreateEmployeeMutation,
 };

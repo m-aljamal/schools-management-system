@@ -51,3 +51,12 @@ const Employees = () => {
 };
 
 export default Employees;
+
+
+const CreateEmployee = () =>{
+  return(
+    <div>
+      
+    </div>
+  )
+}
