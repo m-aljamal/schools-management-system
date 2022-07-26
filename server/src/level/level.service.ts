@@ -30,9 +30,20 @@ export class LevelService {
     return await this.levelRepository.save(levelInput);
   }
 
+  async findSubjects(archiveId: string): Promise<Level[]> {
+    const query = this.levelRepository.createQueryBuilder('level');
+    query.leftJoinAndSelect('level.archive', 'archive');
+    query.andWhere('archive.id = :archiveId', {
+      archiveId,
+    });
+    query.innerJoinAndSelect('level.subjects', 'subjects');
+    return await query.getMany();
+  }
+
   async findLevels(archiveId: string): Promise<Level[]> {
     return await this.levelRepository.find({
       where: { archiveId },
+      relations: ['subjects'],
     });
   }
 

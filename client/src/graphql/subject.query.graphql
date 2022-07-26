@@ -4,3 +4,14 @@ query findSubjects($levelId: String!) {
     name
   }
 }
+
+query findSubjects_by_levels($archiveId: String!) {
+  findSubjects_byLevel(archiveId: $archiveId) {
+    name
+    id
+    subjects {
+      name
+      id
+    }
+  }
+}

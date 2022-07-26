@@ -27,6 +27,11 @@ export class LevelResolver {
     return this.levelService.findLevels(archiveId);
   }
 
+  @Query(() => [Level], { name: 'findSubjects_byLevel' })
+  async findSubjects(@Args('archiveId') archiveId: string): Promise<Level[]> {
+    return await this.levelService.findSubjects(archiveId);
+  }
+
   @Query(() => Level, { name: 'findLevel' })
   async findLevel(@Args('levelId') levelId: string): Promise<Level> {
     return await this.levelService.findOne(levelId);

@@ -11,6 +11,7 @@ const Archives = () => {
         <div key={id} className="py-4">
           <Link to={`/projects/${project.id}/${id}`}>
             <p>{name}</p>
+            <p>{id}</p>
           </Link>
         </div>
       ))}

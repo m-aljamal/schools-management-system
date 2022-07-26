@@ -348,6 +348,7 @@ export type Query = {
   findStudents_division: Array<Division>;
   findStudents_levels: Array<Level>;
   findSubjects: Array<Subject>;
+  findSubjects_byLevel: Array<Level>;
   findTeachers: Array<Employee>;
   findTechers_levels: Array<Level>;
   findTotalAbsentEmployees: Array<TotalAbsent>;
@@ -469,6 +470,11 @@ export type QueryFindStudents_LevelsArgs = {
 
 export type QueryFindSubjectsArgs = {
   levelId: Scalars['String'];
+};
+
+
+export type QueryFindSubjects_ByLevelArgs = {
+  archiveId: Scalars['String'];
 };
 
 
@@ -787,6 +793,13 @@ export type FindSubjectsQueryVariables = Exact<{
 
 
 export type FindSubjectsQuery = { __typename?: 'Query', findSubjects: Array<{ __typename?: 'Subject', id: string, name: string }> };
+
+export type FindSubjects_By_LevelsQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+}>;
+
+
+export type FindSubjects_By_LevelsQuery = { __typename?: 'Query', findSubjects_byLevel: Array<{ __typename?: 'Level', name: string, id: string, subjects: Array<{ __typename?: 'Subject', name: string, id: string }> }> };
 
 
 export const CreateProjectDocument = `
@@ -1470,5 +1483,31 @@ export const useFindSubjectsQuery = <
     useQuery<FindSubjectsQuery, TError, TData>(
       ['findSubjects', variables],
       fetcher<FindSubjectsQuery, FindSubjectsQueryVariables>(client, FindSubjectsDocument, variables, headers),
+      options
+    );
+export const FindSubjects_By_LevelsDocument = `
+    query findSubjects_by_levels($archiveId: String!) {
+  findSubjects_byLevel(archiveId: $archiveId) {
+    name
+    id
+    subjects {
+      name
+      id
+    }
+  }
+}
+    `;
+export const useFindSubjects_By_LevelsQuery = <
+      TData = FindSubjects_By_LevelsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindSubjects_By_LevelsQueryVariables,
+      options?: UseQueryOptions<FindSubjects_By_LevelsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindSubjects_By_LevelsQuery, TError, TData>(
+      ['findSubjects_by_levels', variables],
+      fetcher<FindSubjects_By_LevelsQuery, FindSubjects_By_LevelsQueryVariables>(client, FindSubjects_By_LevelsDocument, variables, headers),
       options
     );

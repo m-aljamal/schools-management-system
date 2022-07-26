@@ -34,14 +34,15 @@ export const useProjectLinks = () => {
       to: `/projects/${projectId}/${archiveId}/levels`,
       icon: <AiOutlinePieChart />,
     },
-    // {
-    //   label: "الامتحانات",
-    //   to: `/projects/${projectId}/${archiveId}/exams`,
-    //   icon: <AiOutlinePieChart />,
-    // },
+
     {
       label: "الموظفين ",
       to: `/projects/${projectId}/${archiveId}/employees`,
+      icon: <AiOutlinePieChart />,
+    },
+    {
+      label: "المواد",
+      to: `/projects/${projectId}/${archiveId}/subjects`,
       icon: <AiOutlinePieChart />,
     },
     {
@@ -52,6 +53,11 @@ export const useProjectLinks = () => {
     {
       label: "الغياب ",
       to: `/projects/${projectId}/${archiveId}/absent`,
+      icon: <AiOutlinePieChart />,
+    },
+    {
+      label: "الامتحانات",
+      to: `/projects/${projectId}/${archiveId}/exams`,
       icon: <AiOutlinePieChart />,
     },
     {

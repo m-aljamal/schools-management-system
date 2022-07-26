@@ -6,6 +6,7 @@ const Exams = () => {
 
   return (
     <div className="p-5">
+      exams
       {/* <h1>الامتحانات:</h1>
       <div>
         {semesters.map(({ id, name }) => (

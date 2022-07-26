@@ -11,6 +11,7 @@ import Level from "src/screens/projects/project/Level";
 import Levels from "src/screens/projects/project/Levels";
 import Student from "src/screens/projects/project/Student";
 import Students from "src/screens/projects/project/Students";
+import Subjects from "src/screens/projects/project/Subjects";
 const AppManager = () => {
   const { user }: any = useAuth();
 
@@ -22,9 +23,10 @@ const AppManager = () => {
         <Route path="employees" element={<Employees />} />
         <Route path="employees/:employeeId" element={<EmployeePage />} />
         <Route path="students" element={<Students />} />
+        <Route path="subjects" element={<Subjects />} />
         <Route path="absent" element={<Absent />} />
         <Route path="students/:studentId" element={<Student />} />
-        {/* <Route path="exams" element={<Exams />} /> */}
+        <Route path="exams" element={<Exams />} />
         <Route path="levels" element={<Levels />} />
         <Route path="levels/:levelId" element={<Level />} />
         <Route path="archives" element={<Archives />} />
