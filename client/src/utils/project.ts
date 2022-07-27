@@ -10,6 +10,7 @@ import {
 
 function useProjectList() {
   const { client } = useAuthClient();
+  
 
   const { data, error } = useFindProjectsQuery<FindProjectsQuery, Error>(
     client()

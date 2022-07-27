@@ -39,6 +39,14 @@ export class ExamService {
     return await query.getMany();
   }
 
+  async findExamsByArchiveId(archiveId: string): Promise<Exam[]> {
+    return await this.examRepo.find({
+      where: {
+        archiveId,
+      },
+    });
+  }
+
   async create(input: ExamInput): Promise<Exam> {
     return await this.examRepo.save(input);
   }

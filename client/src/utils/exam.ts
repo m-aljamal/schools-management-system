@@ -1,6 +1,8 @@
 import {
+  FindExamsByArchiveIdQuery,
   FindExams_LevelQuery,
   FindSubjects_For_GradesQuery,
+  useFindExamsByArchiveIdQuery,
   useFindExams_LevelQuery,
   useFindSubjects_For_GradesQuery,
 } from "./../generated/generates";
@@ -42,4 +44,18 @@ function useGradeList_by_subject({
   };
 }
 
-export { useExamsList_level, useGradeList_by_subject };
+function useExamsListByArchiveId() {
+  const { client } = useAuthClient();
+  const { archiveId } = useUrlParams();
+  const { data } = useFindExamsByArchiveIdQuery<
+    FindExamsByArchiveIdQuery,
+    Error
+  >(client(), {
+    archiveId,
+  });
+  return {
+    exams: data?.findExamsByArchiveId || [],
+  };
+}
+
+export { useExamsList_level, useGradeList_by_subject, useExamsListByArchiveId };

@@ -26,6 +26,16 @@
 #   }
 # }
 
+query findExamsByArchiveId($archiveId: String!) {
+  findExamsByArchiveId(archiveId: $archiveId) {
+    id
+    level {
+      name
+      id
+    }
+  }
+}
+
 query findExams_level($levelId: String!, $archiveId: String!) {
   findExams(archiveId: $archiveId, levelId: $levelId) {
     id

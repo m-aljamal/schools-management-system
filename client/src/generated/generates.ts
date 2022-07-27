@@ -344,6 +344,7 @@ export type Query = {
   findDivisions: Array<Division>;
   findEmployee: Employee;
   findExams: Array<Exam>;
+  findExamsByArchiveId: Array<Exam>;
   findGrades: Array<Grade>;
   findLevel: Level;
   findLevels: Array<Level>;
@@ -431,6 +432,11 @@ export type QueryFindExamsArgs = {
   levelId?: InputMaybe<Scalars['String']>;
   semesterId?: InputMaybe<Scalars['String']>;
   subjectId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryFindExamsByArchiveIdArgs = {
+  archiveId: Scalars['String'];
 };
 
 
@@ -749,6 +755,13 @@ export type FindManagersQueryVariables = Exact<{
 
 
 export type FindManagersQuery = { __typename?: 'Query', findManagers: Array<{ __typename?: 'Employee', name: string, id: string, role: Role }> };
+
+export type FindExamsByArchiveIdQueryVariables = Exact<{
+  archiveId: Scalars['String'];
+}>;
+
+
+export type FindExamsByArchiveIdQuery = { __typename?: 'Query', findExamsByArchiveId: Array<{ __typename?: 'Exam', id: string, level: { __typename?: 'Level', name: string, id: string } }> };
 
 export type FindExams_LevelQueryVariables = Exact<{
   levelId: Scalars['String'];
@@ -1274,6 +1287,31 @@ export const useFindManagersQuery = <
     useQuery<FindManagersQuery, TError, TData>(
       ['findManagers', variables],
       fetcher<FindManagersQuery, FindManagersQueryVariables>(client, FindManagersDocument, variables, headers),
+      options
+    );
+export const FindExamsByArchiveIdDocument = `
+    query findExamsByArchiveId($archiveId: String!) {
+  findExamsByArchiveId(archiveId: $archiveId) {
+    id
+    level {
+      name
+      id
+    }
+  }
+}
+    `;
+export const useFindExamsByArchiveIdQuery = <
+      TData = FindExamsByArchiveIdQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: FindExamsByArchiveIdQueryVariables,
+      options?: UseQueryOptions<FindExamsByArchiveIdQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<FindExamsByArchiveIdQuery, TError, TData>(
+      ['findExamsByArchiveId', variables],
+      fetcher<FindExamsByArchiveIdQuery, FindExamsByArchiveIdQueryVariables>(client, FindExamsByArchiveIdDocument, variables, headers),
       options
     );
 export const FindExams_LevelDocument = `

@@ -28,6 +28,13 @@ export class ExamResolver {
     return await this.examService.find(args);
   }
 
+  @Query(() => [Exam], { name: 'findExamsByArchiveId' })
+  async findExamsByArchiveId(
+    @Args('archiveId') archiveId: string,
+  ): Promise<Exam[]> {
+    return await this.examService.findExamsByArchiveId(archiveId);
+  }
+
   @Mutation(() => Exam, { name: 'createExam' })
   async createExam(@Args('input') input: ExamInput): Promise<Exam> {
     return await this.examService.create(input);

@@ -1,41 +1,30 @@
-import { useGradeList_by_subject } from "src/utils/exam";
-import { useSemesterList } from "src/utils/semester";
+import { Link } from "react-router-dom";
+import { useUrlParams } from "src/context/auth-context";
+import { useExamsListByArchiveId } from "src/utils/exam";
 
 const Exams = () => {
-  const { semesters } = useSemesterList();
- 
+  const { exams } = useExamsListByArchiveId();
+  const { archiveId, projectId } = useUrlParams();
   return (
-    <div className="p-5">
+    <div className="p-10">
       exams
       <h1>الامتحانات:</h1>
-      <div>
-        {semesters.map(({ id, name }) => (
-          <div key={id} className="bg-gray-100 my-5 p-5">
-            <h2>{name}</h2>
-           
-            <Result semesterId={id} />
+      <div className="grid grid-cols-3 gap-5 mt-5">
+        {exams.map(({ id, level: { id: levelId, name } }) => (
+          <div key={id} className="bg-gray-300 p-5">
+            <p>exam id </p>
+            <p>{id}</p>
+            <Link to={`/projects/${projectId}/${archiveId}/exams/${levelId}`}>
+              <h2>{name}</h2>
+              <p>البداية:</p>
+              <p>النهاية:</p>
+              <p>الطلاب:</p>
+            </Link>
           </div>
         ))}
       </div>
-     </div>
+    </div>
   );
 };
 
 export default Exams;
-
-const Result = ({ semesterId }: { semesterId: string }) => {
-   
-  const t = useGradeList_by_subject({ semesterId });
- 
-  return <div>ddd</div>;
-};
-
-// <div key={id} className="bg-green-200 my-4 p-5">
-//   <p>اسم الطالب: {student.name}</p>
-//   <p>المادة: {subject.name}</p>
-//   <p>مذاكرة اولى: {first_quiz_grade}</p>
-//   <p>مذاكرة ثانية: {second_quiz_grade}</p>
-//   <p>الوظائف: {homework_grade}</p>
-//   <p> شفهي: {oral_grade}</p>
-//   <p> الامتحان النهائي: {final_grade}</p>
-// </div>

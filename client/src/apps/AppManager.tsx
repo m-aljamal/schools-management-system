@@ -5,6 +5,7 @@ import Absent from "src/screens/projects/project/Absent";
 import Archives from "src/screens/projects/project/Archives";
 import EmployeePage from "src/screens/projects/project/EmployeePage";
 import Employees from "src/screens/projects/project/Employees";
+import Exam from "src/screens/projects/project/Exam";
 import Exams from "src/screens/projects/project/Exams";
 import ProjectScreen from "src/screens/projects/project/index";
 import Level from "src/screens/projects/project/Level";
@@ -27,6 +28,7 @@ const AppManager = () => {
         <Route path="absent" element={<Absent />} />
         <Route path="students/:studentId" element={<Student />} />
         <Route path="exams" element={<Exams />} />
+        <Route path="exams/:levelId" element={<Exam />} />
         <Route path="levels" element={<Levels />} />
         <Route path="levels/:levelId" element={<Level />} />
         <Route path="archives" element={<Archives />} />
