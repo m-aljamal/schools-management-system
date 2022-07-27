@@ -11,6 +11,7 @@ const Exam = () => {
       {semesters.map(({ id, name }) => (
         <div key={id}>
           <h2 className="bg-gray-300">{name}</h2>
+          <p>{id}</p>
           <MarkesList semesterId={id} />
         </div>
       ))}
@@ -33,7 +34,6 @@ const MarkesList = ({ semesterId }: { semesterId: string }) => {
             {grades.map(
               ({
                 id,
-                semester,
                 student,
                 final_grade,
                 first_quiz_grade,

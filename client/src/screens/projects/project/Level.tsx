@@ -124,10 +124,10 @@ const ExamsList = () => {
     <div className="p-2 ">
       <p>الامتحانات:</p>
       <div className="bg-gray-100 p-5">
-        {exams.map(({ id, level, semester, grades }) => (
+        {exams.map(({ id, level, grades }) => (
           <div key={id} className=" p-5">
             <p className="text-green-800">{level.name}</p>
-            <p>{semester.name}</p>
+
             <div className=" grid grid-cols-3 gap-5">
               {grades?.map(
                 ({

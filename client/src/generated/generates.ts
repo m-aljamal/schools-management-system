@@ -769,7 +769,7 @@ export type FindExams_LevelQueryVariables = Exact<{
 }>;
 
 
-export type FindExams_LevelQuery = { __typename?: 'Query', findExams: Array<{ __typename?: 'Exam', id: string, level: { __typename?: 'Level', id: string, name: string }, semester: { __typename?: 'Semester', name: string, id: string }, grades?: Array<{ __typename?: 'Grade', final_grade?: number | null, first_quiz_grade?: number | null, homework_grade?: number | null, id: string, oral_grade?: number | null, second_quiz_grade?: number | null, subject: { __typename?: 'Subject', id: string, name: string }, student: { __typename?: 'Student', name: string } }> | null }> };
+export type FindExams_LevelQuery = { __typename?: 'Query', findExams: Array<{ __typename?: 'Exam', id: string, level: { __typename?: 'Level', id: string, name: string }, grades?: Array<{ __typename?: 'Grade', final_grade?: number | null, first_quiz_grade?: number | null, homework_grade?: number | null, id: string, oral_grade?: number | null, second_quiz_grade?: number | null, subject: { __typename?: 'Subject', id: string, name: string }, student: { __typename?: 'Student', name: string } }> | null }> };
 
 export type FindSubjects_For_GradesQueryVariables = Exact<{
   levelId: Scalars['String'];
@@ -777,7 +777,7 @@ export type FindSubjects_For_GradesQueryVariables = Exact<{
 }>;
 
 
-export type FindSubjects_For_GradesQuery = { __typename?: 'Query', findSubjects_for_grades: Array<{ __typename?: 'Subject', id: string, name: string, grades: Array<{ __typename?: 'Grade', id: string, final_grade?: number | null, first_quiz_grade?: number | null, homework_grade?: number | null, oral_grade?: number | null, second_quiz_grade?: number | null, semester: { __typename?: 'Semester', id: string, name: string }, student: { __typename?: 'Student', id: string, name: string } }> }> };
+export type FindSubjects_For_GradesQuery = { __typename?: 'Query', findSubjects_for_grades: Array<{ __typename?: 'Subject', id: string, name: string, grades: Array<{ __typename?: 'Grade', id: string, final_grade?: number | null, first_quiz_grade?: number | null, homework_grade?: number | null, oral_grade?: number | null, second_quiz_grade?: number | null, student: { __typename?: 'Student', id: string, name: string } }> }> };
 
 export type CreateLevelMutationVariables = Exact<{
   name: Scalars['String'];
@@ -1322,10 +1322,6 @@ export const FindExams_LevelDocument = `
       id
       name
     }
-    semester {
-      name
-      id
-    }
     grades {
       final_grade
       first_quiz_grade
@@ -1365,10 +1361,6 @@ export const FindSubjects_For_GradesDocument = `
     id
     name
     grades {
-      semester {
-        id
-        name
-      }
       id
       final_grade
       first_quiz_grade

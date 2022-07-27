@@ -43,11 +43,6 @@ query findExams_level($levelId: String!, $archiveId: String!) {
       id
       name
     }
-    semester {
-      name
-      id
-    }
-
     grades {
       final_grade
       first_quiz_grade
@@ -72,12 +67,7 @@ query findSubjects_for_grades($levelId: String!, $semesterId: String!) {
   findSubjects_for_grades(levelId: $levelId, semesterId: $semesterId) {
     id
     name
-
     grades {
-      semester {
-        id
-        name
-      }
       id
       final_grade
       first_quiz_grade

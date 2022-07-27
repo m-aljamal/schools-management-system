@@ -20,13 +20,12 @@ export class SubjectService {
 
   async findSubjects_for_grades(args: FindSubject): Promise<Subject[]> {
     const query = this.subjectRepository.createQueryBuilder('subject');
-    // query.andWhere('subject.levelId = :levelId', { levelId: args.levelId });
-    query.leftJoinAndSelect('subject.level', 'level');
+    query.andWhere('subject.levelId = :levelId', { levelId: args.levelId });
     query.leftJoinAndSelect('subject.grades', 'grades');
     query.andWhere('grades.semesterId = :semesterId', {
       semesterId: args.semesterId,
     });
-    query.leftJoinAndSelect('grades.semester', 'semester');
+
     return query.getMany();
   }
 
@@ -39,7 +38,3 @@ export class SubjectService {
     });
   }
 }
-
-
-
- 
