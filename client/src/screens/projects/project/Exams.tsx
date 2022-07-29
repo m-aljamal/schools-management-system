@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Pdf from "src/components/Pdf";
 import { useUrlParams } from "src/context/auth-context";
 import { useExamsListByArchiveId } from "src/utils/exam";
 
@@ -23,6 +24,7 @@ const Exams = () => {
           </div>
         ))}
       </div>
+      <Pdf name="Mohammad Al"/>
     </div>
   );
 };

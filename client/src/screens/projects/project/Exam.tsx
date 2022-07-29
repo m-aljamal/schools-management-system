@@ -2,7 +2,7 @@ import Pdf from "src/components/Pdf";
 import { useUrlParams } from "src/context/auth-context";
 import { useGradeList_by_subject } from "src/utils/exam";
 import { useSemesterList } from "src/utils/semester";
-
+import logo from "../../../../public/logo192.png";
 const Exam = () => {
   const { semesters } = useSemesterList();
   return (
@@ -27,6 +27,7 @@ const MarkesList = ({ semesterId }: { semesterId: string }) => {
   return (
     <div>
       <h2>النتائج</h2>
+
       {subject.map(({ grades, id, name }) => (
         <div key={id}>
           <h3>{name}</h3>
@@ -49,7 +50,7 @@ const MarkesList = ({ semesterId }: { semesterId: string }) => {
                     <p>الوظائف: {homework_grade}</p>
                     <p> شفهي: {oral_grade}</p>
                     <p> الامتحان النهائي: {final_grade}</p>
-                    <Pdf name={student.name}/>
+                    {/* <Pdf name={student.name} /> */}
                   </div>
                 </div>
               )
