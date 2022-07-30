@@ -1,11 +1,13 @@
+import { LevelService } from './../level/level.service';
 import { Archive } from './entity/archive';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArchiveInput } from './dto/archive.input';
+import { ArchiveInput, OpenNewArchive } from './dto/archive.input';
 import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
 import { SemesterService } from 'src/semester/semester.service';
 import { semesters } from 'utils/constant';
+import { DivisionService } from 'src/division/division.service';
 
 @Injectable()
 export class ArchiveService {
@@ -13,6 +15,8 @@ export class ArchiveService {
     @InjectRepository(Archive)
     private readonly archiveRepository: Repository<Archive>,
     private readonly semesterService: SemesterService,
+    private readonly levelService: LevelService,
+    private readonly divisionSerive: DivisionService,
   ) {}
 
   async findAll(findArgs: FindArchivesArgs): Promise<Archive[]> {
@@ -51,12 +55,12 @@ export class ArchiveService {
 
     const archive = await this.archiveRepository.save(input);
 
-    for (const s of semesters) {
-      await this.semesterService.create({
-        name: s,
-        archiveId: archive.id,
-      });
-    }
+    // for (const s of semesters) {
+    //   await this.semesterService.create({
+    //     name: s,
+    //     archiveId: archive.id,
+    //   });
+    // }
     return archive;
   }
 
@@ -64,5 +68,33 @@ export class ArchiveService {
     return await this.archiveRepository.findOne({
       where: { id },
     });
+  }
+
+  async openNewArchive(input: OpenNewArchive) {
+    const newArchive = await this.create(input);
+
+    const previousLevels = await this.levelService.findAll(
+      input.currentArchiveId,
+    );
+
+    for (const level of previousLevels) {
+      const newLevel = await this.levelService.create({
+        name: level.name,
+        archiveId: newArchive.id,
+      });
+      for (const division of level.divisions) {
+        await this.divisionSerive.create({
+          name: division.name,
+          levelId: newLevel.id,
+        });
+      }
+    }
+return newArchive
+    // find all last archive levels and create new
+    // create new semesters
+    // find all divisions and create new
+    // find all employees and add the new archive to them
+    // find all students passed from exam and add the new levels and divisions to them
+    // find last subjects and create new them to new archive
   }
 }

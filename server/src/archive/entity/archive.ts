@@ -72,3 +72,4 @@ export class Archive {
   @Field(() => [Exam])
   exams: Exam[];
 }
+

@@ -50,7 +50,7 @@ const MarkesList = ({ semesterId }: { semesterId: string }) => {
                     <p>الوظائف: {homework_grade}</p>
                     <p> شفهي: {oral_grade}</p>
                     <p> الامتحان النهائي: {final_grade}</p>
-                    {/* <Pdf name={student.name} /> */}
+                    <Pdf name={student.name} />
                   </div>
                 </div>
               )

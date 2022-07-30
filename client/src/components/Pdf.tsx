@@ -34,52 +34,71 @@ const titleStyles = StyleSheet.create({
   },
   tesst: {
     fontSize: "16px",
-    //  move from top 100px 
+    //  move from top 100px
     // marginTop: "100px",
-    marginTop: "550px",
-    marginLeft: "250px",
-    transform:"rotate(-90deg)",
+    // marginTop: "50px",
+    // marginLeft: "20px",
+    bottom: "170px",
+    position: "absolute",
+    left: "120px",
     // transform:"translate(120%, px) rotate(-90deg)",
   },
+  tess: {
+    fontSize: "16px",
+    //  move from top 100px
+    // marginTop: "100px",
+    // marginTop: "50px",
+    // marginLeft: "20px",
+    top: "170px",
+    position: "absolute",
+    left: "120px",
+    // transform:"translate(120%, px) rotate(-90deg)",
+  },
+  // tesst: {
+  //   fontSize: "16px",
+  //   //  move from top 100px
+  //   // marginTop: "100px",
+  //   marginTop: "550px",
+  //   marginLeft: "250px",
+  //   transform:"rotate(-90deg)",
+  //   // transform:"translate(120%, px) rotate(-90deg)",
+  // },
   imgCon: {
     position: "relative",
-     
+  },
+  landImg: {
+    width: "100%",
+    height: "100%",
+    zIndex: -5,
+    position: "absolute",
   },
 });
 
 const PDF = ({ name }: any) => (
   <Document title="student grade">
-    {/* <Page size="A4">
-      <View>
-        <View style={titleStyles.title}>
-          <Text>{name}</Text>
-        </View>
-        <View style={titleStyles.no}>
-          <Text>No:</Text>
-          <Text style={{ marginTop: "5px" }}>Tarih:</Text>
-        </View>
-      </View>
-    </Page> */}
-    <Page size="A4" style={titleStyles.imgCon}>
+    <Page size="A4" style={titleStyles.imgCon} orientation="landscape">
       <Text style={titleStyles.tesst}>{name}</Text>
-      <Image src="/s1.jpg" style={titleStyles.img} />
+      <Text style={titleStyles.tess}>{name}</Text>
+      <Image src="/s1.jpg" style={titleStyles.landImg} />
+    </Page>
+    <Page size="A4" style={titleStyles.imgCon} orientation="landscape">
+      <Text style={titleStyles.tesst}>20</Text>
+      <Text style={titleStyles.tess}>30</Text>
+      <Image src="/ss1.jpg" style={titleStyles.landImg} />
     </Page>
   </Document>
 );
 
 const Pdf = ({ name }: any) => {
   return (
-    // <PDFDownloadLink
-    //   document={<PDF name={name} />}
-    //   fileName={"Quote" + new Date().getTime() + ".pdf"}
-    // >
-    //   {({ blob, url, loading, error }: any) =>
-    //     loading ? "Loading . . ." : "Download"
-    //   }
-    // </PDFDownloadLink>
-    <PDFViewer style={titleStyles.container}>
-      <PDF name={name} />
-    </PDFViewer>
+    <PDFDownloadLink
+      document={<PDF name={name} />}
+      fileName={"Quote" + new Date().getTime() + ".pdf"}
+    >
+      {({ blob, url, loading, error }: any) =>
+        loading ? "Loading . . ." : "Download"
+      }
+    </PDFDownloadLink>
   );
 };
 

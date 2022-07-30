@@ -10,7 +10,7 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { Archive } from './entity/archive';
-import { ArchiveInput } from './dto/archive.input';
+import { ArchiveInput, OpenNewArchive } from './dto/archive.input';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from 'src/project/project.service';
 import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
@@ -40,6 +40,11 @@ export class ArchiveResolver {
   @Mutation(() => Archive, { name: 'createArchive' })
   async create(@Args('input') input: ArchiveInput): Promise<Archive> {
     return this.archiveService.create(input);
+  }
+
+  @Mutation(() => Archive, { name: 'openNewArchive' })
+  async openNewArchive(@Args('input') input: OpenNewArchive) {
+    return this.archiveService.openNewArchive(input);
   }
 
   @ResolveField(() => Archive)

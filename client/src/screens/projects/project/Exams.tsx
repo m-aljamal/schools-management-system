@@ -24,7 +24,6 @@ const Exams = () => {
           </div>
         ))}
       </div>
-      <Pdf name="Mohammad Al"/>
     </div>
   );
 };

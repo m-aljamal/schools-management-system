@@ -108,4 +108,15 @@ export class LevelService {
       throw new NotFoundException('المستوى غير موجود');
     }
   }
+
+  // for OpenNewArchive
+
+  async findAll(archiveId: string) {
+    return await this.levelRepository.find({
+      where: {
+        archiveId,
+      },
+      relations: ['divisions'],
+    });
+  }
 }
