@@ -89,9 +89,12 @@ export class ArchiveService {
         });
       }
     }
+
+    // update project current archive to the new archive 
+   
+
 return newArchive
-    // find all last archive levels and create new
-    // create new semesters
+    
     // find all divisions and create new
     // find all employees and add the new archive to them
     // find all students passed from exam and add the new levels and divisions to them

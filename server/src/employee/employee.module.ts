@@ -1,20 +1,20 @@
+import { ProjectModule } from 'src/project/project.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { TeacherResolver } from './employee.resolver';
 import { Employee } from './entity/employee';
 import { ArchiveModule } from 'src/archive/archive.module';
 import { LevelModule } from 'src/level/level.module';
 import { DivisionModule } from 'src/division/division.module';
-import { ProjectModule } from 'src/project/project.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Employee]),
-    ArchiveModule,
     LevelModule,
     DivisionModule,
-    ProjectModule,
+    forwardRef(() => ProjectModule),
+    forwardRef(() => ArchiveModule),
   ],
   providers: [EmployeeService, TeacherResolver],
   exports: [EmployeeService],

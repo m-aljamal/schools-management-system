@@ -27,3 +27,12 @@ export class EmployeeInput {
   @Field({ nullable: true })
   projectId: string;
 }
+
+@InputType()
+export class AddNewArc {
+  @Field()
+  id: string;
+
+  @Field()
+  archId: string;
+}

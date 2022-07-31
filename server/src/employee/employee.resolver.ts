@@ -8,7 +8,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { EmployeeInput } from './dto/employee.input';
+import { AddNewArc, EmployeeInput } from './dto/employee.input';
 import { Employee } from './entity/employee';
 import { EmployeeService } from './employee.service';
 import { FindEmployeesArgs, FindEmployeeArgs } from './dto/findEmployee.args';
@@ -41,6 +41,11 @@ export class TeacherResolver {
   @Mutation(() => Employee, { name: 'createEmployee' })
   async create(@Args('input') input: EmployeeInput) {
     return this.employeeService.create(input);
+  }
+
+  @Mutation(() => Employee, { name: 'addNewArchiveToEmployee' })
+  async addNewArchive(@Args('input') input: AddNewArc) {
+    return this.employeeService.addNewEmployeeArchive(input.id, input.archId);
   }
 
   @ResolveField(() => Employee)

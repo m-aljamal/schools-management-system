@@ -128,4 +128,19 @@ export class EmployeeService {
       relations: ['archives'],
     });
   }
+
+  async addNewEmployeeArchive(employeeId: string, archiveId: string) {
+    const employee = await this.employeeRepo.findOne({
+      where: { id: employeeId },
+    })
+    if (!employee) {
+      throw new BadRequestException('الموظف غير موجود');
+    }
+    const archive = await this.archiveService.findById(archiveId);
+    if (!archive) {
+      throw new BadRequestException('الارشيف غير موجود');
+    }
+    employee.archives.push(archive);
+    return this.employeeRepo.save(employee);
+  }
 }
