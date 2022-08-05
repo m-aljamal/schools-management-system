@@ -21,8 +21,10 @@ export class ProjectService {
   }
 
   async create(input: ProjectInput) {
+    // create new project
     const project = await this.projectRepository.save(input);
 
+    // create archive for project
     const archive = await this.archiveService.create({
       projectId: project.id,
       name: input.current_archive_name,
@@ -33,6 +35,7 @@ export class ProjectService {
       current_archive_name: archive.name,
       current_archive_id: archive.id,
     });
+
     return project;
   }
   async findOne(id: string): Promise<Project> {

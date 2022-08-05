@@ -8,15 +8,14 @@ import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
 import { SemesterService } from 'src/semester/semester.service';
 import { semesters } from 'utils/constant';
 import { DivisionService } from 'src/division/division.service';
+import { EmployeeService } from 'src/employee/employee.service';
 
 @Injectable()
 export class ArchiveService {
   constructor(
     @InjectRepository(Archive)
     private readonly archiveRepository: Repository<Archive>,
-    private readonly semesterService: SemesterService,
-    private readonly levelService: LevelService,
-    private readonly divisionSerive: DivisionService,
+    // private readonly employeeService: EmployeeService,
   ) {}
 
   async findAll(findArgs: FindArchivesArgs): Promise<Archive[]> {
@@ -71,32 +70,16 @@ export class ArchiveService {
   }
 
   async openNewArchive(input: OpenNewArchive) {
-    const newArchive = await this.create(input);
+    // const newArchive = await this.create(input);
 
-    const previousLevels = await this.levelService.findAll(
-      input.currentArchiveId,
-    );
-
-    for (const level of previousLevels) {
-      const newLevel = await this.levelService.create({
-        name: level.name,
-        archiveId: newArchive.id,
-      });
-      for (const division of level.divisions) {
-        await this.divisionSerive.create({
-          name: division.name,
-          levelId: newLevel.id,
-        });
-      }
-    }
-
-    // update project current archive to the new archive 
-   
-
-return newArchive
-    
-    // find all divisions and create new
     // find all employees and add the new archive to them
+    // const employees = await this.employeeService.findAllByArchive(
+    //   input.currentArchiveId,
+    // );
+    // console.log(employees);
+    
+    // update project current archive to the new archive
+    // return newArchive
     // find all students passed from exam and add the new levels and divisions to them
     // find last subjects and create new them to new archive
   }

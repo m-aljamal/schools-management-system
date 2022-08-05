@@ -1,5 +1,5 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { forwardRef, Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { LevelService } from './level.service';
 import { LevelResolver } from './level.resolver';
 import { Level } from './entity/level';

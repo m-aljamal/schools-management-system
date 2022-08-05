@@ -28,11 +28,4 @@ export class EmployeeInput {
   projectId: string;
 }
 
-@InputType()
-export class AddNewArc {
-  @Field()
-  id: string;
-
-  @Field()
-  archId: string;
-}
+ 

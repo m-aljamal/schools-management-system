@@ -42,7 +42,6 @@ export class Project {
   @Column({ nullable: true })
   current_archive_name: string;
 
-
   @Field({ nullable: true })
   @Column({ nullable: true })
   current_archive_id: string;
@@ -54,4 +53,9 @@ export class Project {
   @OneToMany(() => Student, (student) => student.project)
   @Field(() => [Employee], { nullable: true })
   students: Employee[];
+
+  // project type (school or edu center)
+  @Field()
+  @Column()
+  type: string;
 }

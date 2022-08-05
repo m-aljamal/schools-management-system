@@ -1,5 +1,6 @@
+import { EmployeeModule } from 'src/employee/employee.module';
 import { LevelModule } from './../level/level.module';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { DivisionService } from './division.service';
 import { DivisionResolver } from './division.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';

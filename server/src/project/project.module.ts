@@ -1,3 +1,4 @@
+import { EmployeeModule } from './../employee/employee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module, forwardRef } from '@nestjs/common';
 import { ProjectService } from './project.service';
@@ -9,7 +10,7 @@ import { ArchiveModule } from 'src/archive/archive.module';
   imports: [
     TypeOrmModule.forFeature([Project]),
     forwardRef(() => ArchiveModule),
-  ],
+   ],
   providers: [ProjectService, ProjectResolver],
   exports: [ProjectService],
 })

@@ -43,8 +43,12 @@ export class Archive {
   @Field()
   @Column()
   projectId: string;
+  // ! old
+  // @OneToMany(() => Level, (level) => level.archive)
+  // @Field(() => [Level])
+  // levels: Level[];
 
-  @OneToMany(() => Level, (level) => level.archive)
+  @ManyToMany(() => Level, (level) => level.archives)
   @Field(() => [Level])
   levels: Level[];
 
@@ -72,4 +76,3 @@ export class Archive {
   @Field(() => [Exam])
   exams: Exam[];
 }
-

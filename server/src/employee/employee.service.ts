@@ -1,6 +1,11 @@
 import { hashPassword } from './../../utils/hashPassword';
 import { EmployeeInput } from './dto/employee.input';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
 import { Employee } from './entity/employee';
@@ -45,6 +50,17 @@ export class EmployeeService {
       query.andWhere('division.level.id = :levelId', { levelId: args.levelId });
     }
     return await query.getMany();
+  }
+
+  async findAllByArchive(archiveId: string) {
+    return await this.employeeRepo.find({
+      where: {
+        archives: {
+          id: archiveId,
+        },
+      },
+      relations: ['archives'],
+    });
   }
 
   async findOne(args: FindEmployeeArgs) {
@@ -132,7 +148,7 @@ export class EmployeeService {
   async addNewEmployeeArchive(employeeId: string, archiveId: string) {
     const employee = await this.employeeRepo.findOne({
       where: { id: employeeId },
-    })
+    });
     if (!employee) {
       throw new BadRequestException('الموظف غير موجود');
     }
