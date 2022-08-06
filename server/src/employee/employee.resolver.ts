@@ -17,7 +17,7 @@ import { Project } from 'src/project/entity/project';
 import { ProjectService } from 'src/project/project.service';
 
 @Resolver(() => Employee)
-export class TeacherResolver {
+export class EmployeeResolver {
   constructor(
     private readonly employeeService: EmployeeService,
     private readonly projectService: ProjectService,

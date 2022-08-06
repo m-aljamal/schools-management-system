@@ -1,13 +1,17 @@
-import { LevelService } from './../level/level.service';
 import { Archive } from './entity/archive';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArchiveInput, OpenNewArchive } from './dto/archive.input';
 import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
 import { SemesterService } from 'src/semester/semester.service';
 import { semesters } from 'utils/constant';
-import { DivisionService } from 'src/division/division.service';
+import { EmployeeService } from 'src/employee/employee.service';
 
 @Injectable()
 export class ArchiveService {
@@ -15,8 +19,8 @@ export class ArchiveService {
     @InjectRepository(Archive)
     private readonly archiveRepository: Repository<Archive>,
     private readonly semesterService: SemesterService,
-    private readonly levelService: LevelService,
-    private readonly divisionSerive: DivisionService,
+    @Inject(forwardRef(() => EmployeeService))
+    private readonly employeeService: EmployeeService,
   ) {}
 
   async findAll(findArgs: FindArchivesArgs): Promise<Archive[]> {
@@ -62,6 +66,7 @@ export class ArchiveService {
     //   });
     // }
     return archive;
+    
   }
 
   async findById(id: string): Promise<Archive> {
@@ -71,30 +76,24 @@ export class ArchiveService {
   }
 
   async openNewArchive(input: OpenNewArchive) {
-    const newArchive = await this.create(input);
-
-    const previousLevels = await this.levelService.findAll(
-      input.currentArchiveId,
-    );
-
-    for (const level of previousLevels) {
-      const newLevel = await this.levelService.create({
-        name: level.name,
-        archiveId: newArchive.id,
-      });
-      for (const division of level.divisions) {
-        await this.divisionSerive.create({
-          name: division.name,
-          levelId: newLevel.id,
-        });
-      }
-    }
-
-    // update project current archive to the new archive 
-   
-
-return newArchive
-    
+    // const newArchive = await this.create(input);
+    // const previousLevels = await this.levelService.findAll(
+    //   input.currentArchiveId,
+    // );
+    // for (const level of previousLevels) {
+    //   const newLevel = await this.levelService.create({
+    //     name: level.name,
+    //     archiveId: newArchive.id,
+    //   });
+    //   for (const division of level.divisions) {
+    //     await this.divisionSerive.create({
+    //       name: division.name,
+    //       levelId: newLevel.id,
+    //     });
+    //   }
+    // }
+    // // update project current archive to the new archive
+    // return newArchive;
     // find all divisions and create new
     // find all employees and add the new archive to them
     // find all students passed from exam and add the new levels and divisions to them
