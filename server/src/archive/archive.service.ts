@@ -66,7 +66,6 @@ export class ArchiveService {
     //   });
     // }
     return archive;
-    
   }
 
   async findById(id: string): Promise<Archive> {
