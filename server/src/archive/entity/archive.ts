@@ -44,7 +44,7 @@ export class Archive {
   @Column()
   projectId: string;
 
-  @OneToMany(() => Level, (level) => level.archive)
+  @ManyToMany(() => Level, (level) => level.archives)
   @Field(() => [Level])
   levels: Level[];
 

@@ -12,6 +12,7 @@ import { FindArchiveArgs, FindArchivesArgs } from './dto/findArchive.args';
 import { SemesterService } from 'src/semester/semester.service';
 import { semesters } from 'utils/constant';
 import { EmployeeService } from 'src/employee/employee.service';
+import { LevelService } from 'src/level/level.service';
 
 @Injectable()
 export class ArchiveService {
@@ -19,6 +20,8 @@ export class ArchiveService {
     @InjectRepository(Archive)
     private readonly archiveRepository: Repository<Archive>,
     private readonly semesterService: SemesterService,
+    @Inject(forwardRef(() => LevelService))
+    private readonly levelService: LevelService,
     @Inject(forwardRef(() => EmployeeService))
     private readonly employeeService: EmployeeService,
   ) {}
@@ -74,23 +77,16 @@ export class ArchiveService {
     });
   }
 
+  async remove(id: string): Promise<void> {
+    await this.archiveRepository.delete(id);
+  }
+
   async openNewArchive(input: OpenNewArchive) {
-    // const newArchive = await this.create(input);
-    // const previousLevels = await this.levelService.findAll(
-    //   input.currentArchiveId,
-    // );
-    // for (const level of previousLevels) {
-    //   const newLevel = await this.levelService.create({
-    //     name: level.name,
-    //     archiveId: newArchive.id,
-    //   });
-    //   for (const division of level.divisions) {
-    //     await this.divisionSerive.create({
-    //       name: division.name,
-    //       levelId: newLevel.id,
-    //     });
-    //   }
-    // }
+    const newArchive = await this.create(input);
+    // await this.
+    await this.levelService.addNewArchiveIdToLevel(newArchive.id);
+
+    return newArchive;
     // // update project current archive to the new archive
     // return newArchive;
     // find all divisions and create new

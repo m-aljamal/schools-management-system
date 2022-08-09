@@ -47,6 +47,11 @@ export class ArchiveResolver {
     return this.archiveService.openNewArchive(input);
   }
 
+  @Mutation(() => Archive, { name: 'removeArchive' })
+  async remove(@Args('id') id: string) {
+    return this.archiveService.remove(id);
+  }
+
   @ResolveField(() => Archive)
   async project(@Parent() archive: Archive): Promise<Project> {
     return this.projectService.findOne(archive.projectId);

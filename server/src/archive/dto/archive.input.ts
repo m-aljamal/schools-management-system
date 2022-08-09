@@ -12,6 +12,6 @@ export class ArchiveInput {
 
 @InputType()
 export class OpenNewArchive extends ArchiveInput {
-  @Field()
-  currentArchiveId: string;
+  // @Field()
+  // currentArchiveId: string;
 }

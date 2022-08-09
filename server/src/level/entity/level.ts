@@ -8,6 +8,7 @@ import { Subject } from 'src/subject/entity/subject';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -37,13 +38,20 @@ export class Level {
   @Field(() => [Employee], { nullable: true })
   employees: Employee[];
 
-  @ManyToOne(() => Archive, (archive) => archive.levels)
-  @Field(() => Archive)
-  archive: Archive;
+  // @ManyToOne(() => Archive, (archive) => archive.levels)
+  // @Field(() => Archive)
+  // archive: Archive;
 
-  @Field()
-  @Column()
-  archiveId: string;
+  // @Field()
+  // @Column()
+  // archiveId: string;
+
+  @ManyToMany(() => Archive, (archive) => archive.levels, {
+    cascade: true,
+  })
+  @Field(() => [Archive])
+  @JoinTable()
+  archives: Archive[];
 
   @OneToMany(() => Exam, (exam) => exam.level)
   @Field(() => [Exam])

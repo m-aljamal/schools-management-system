@@ -1,3 +1,4 @@
+import { LevelModule } from 'src/level/level.module';
 import { EmployeeModule } from 'src/employee/employee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module, forwardRef } from '@nestjs/common';
@@ -11,7 +12,8 @@ import { SemesterModule } from 'src/semester/semester.module';
   imports: [
     TypeOrmModule.forFeature([Archive]),
     forwardRef(() => ProjectModule),
-     forwardRef(() => EmployeeModule),
+    forwardRef(() => EmployeeModule),
+    forwardRef(() => LevelModule),
     // EmployeeModule,
     SemesterModule,
   ],

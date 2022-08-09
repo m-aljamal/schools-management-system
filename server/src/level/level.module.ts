@@ -6,7 +6,8 @@ import { Level } from './entity/level';
 import { ArchiveModule } from 'src/archive/archive.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Level]), forwardRef(() => ArchiveModule)],
+  imports: [TypeOrmModule.forFeature([Level]),
+   forwardRef(() => ArchiveModule)],
   providers: [LevelService, LevelResolver],
   exports: [LevelService],
 })

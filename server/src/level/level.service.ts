@@ -2,6 +2,8 @@ import { AbsentArgs } from './../shared/absentArgs';
 import { Role } from 'utils/enum';
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,22 +14,39 @@ import { LevelInput } from './dto/level.input';
 import { LevelUpdateInput } from './dto/level.update';
 import { Level } from './entity/level';
 import { filterByExactDate } from 'src/shared/filtersAbsentFunctions';
+import { ArchiveService } from 'src/archive/archive.service';
 
 @Injectable()
 export class LevelService {
   constructor(
     @InjectRepository(Level)
     private readonly levelRepository: Repository<Level>,
+    @Inject(forwardRef(() => ArchiveService))
+    private readonly archiveService: ArchiveService,
   ) {}
 
   async create(levelInput: LevelInput): Promise<Level> {
-    const findLevel = await this.levelRepository.findOne({
-      where: { name: levelInput.name, archiveId: levelInput.archiveId },
+    // const findLevel = await this.levelRepository.findOne({
+    //   where: { name: levelInput.name, archiveId: levelInput.archiveId },
+    // });
+    // if (findLevel) {
+    //   throw new BadRequestException('المستوى موجود مسبقا');
+    // }
+
+    const archives = await Promise.all(
+      levelInput.archives.map(async (id) => {
+        const archive = await this.archiveService.findById(id);
+        if (!archive) {
+          throw new BadRequestException('الأرشيف غير موجود');
+        }
+        return archive;
+      }),
+    );
+    const level = this.levelRepository.create({
+      ...levelInput,
+      archives,
     });
-    if (findLevel) {
-      throw new BadRequestException('المستوى موجود مسبقا');
-    }
-    return await this.levelRepository.save(levelInput);
+    return await this.levelRepository.save(level);
   }
 
   async findSubjects(archiveId: string): Promise<Level[]> {
@@ -41,15 +60,17 @@ export class LevelService {
   }
 
   async findLevels(archiveId: string): Promise<Level[]> {
-    return await this.levelRepository.find({
-      where: { archiveId },
-      relations: ['subjects'],
+    const query = this.levelRepository.createQueryBuilder('level');
+    query.leftJoinAndSelect('level.archives', 'archive');
+    query.andWhere('archive.id = :archiveId', {
+      archiveId,
     });
+    return await query.getMany();
   }
 
   async findTechers_levels(archiveId: string): Promise<Level[]> {
     const query = this.levelRepository.createQueryBuilder('level');
-    query.leftJoinAndSelect('level.archive', 'archive');
+    query.leftJoinAndSelect('level.archives', 'archive');
 
     query.andWhere('archive.id = :archiveId', {
       archiveId,
@@ -100,6 +121,22 @@ export class LevelService {
     return await query.getMany();
   }
 
+  async addNewArchiveIdToLevel(archiveId: string) {
+    const levelsQuery = this.levelRepository
+      .createQueryBuilder('level')
+      .leftJoinAndSelect('level.archives', 'archive');
+
+    const levels = await levelsQuery.getMany();
+
+    const archive = await this.archiveService.findById(archiveId);
+
+    for (let level of levels) {
+      level.archives = [...level.archives, archive];
+      await this.levelRepository.save(level);
+    }
+    return levels
+  }
+
   async update(id: string, levelInput: LevelUpdateInput) {
     const level = await this.levelRepository.findOne({
       where: { id },
@@ -107,16 +144,5 @@ export class LevelService {
     if (!level) {
       throw new NotFoundException('المستوى غير موجود');
     }
-  }
-
-  // for OpenNewArchive
-
-  async findAll(archiveId: string) {
-    return await this.levelRepository.find({
-      where: {
-        archiveId,
-      },
-      relations: ['divisions'],
-    });
   }
 }
