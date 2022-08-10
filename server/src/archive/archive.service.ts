@@ -13,6 +13,7 @@ import { SemesterService } from 'src/semester/semester.service';
 import { semesters } from 'utils/constant';
 import { EmployeeService } from 'src/employee/employee.service';
 import { LevelService } from 'src/level/level.service';
+import { StudentService } from 'src/student/student.service';
 
 @Injectable()
 export class ArchiveService {
@@ -24,6 +25,8 @@ export class ArchiveService {
     private readonly levelService: LevelService,
     @Inject(forwardRef(() => EmployeeService))
     private readonly employeeService: EmployeeService,
+    @Inject(forwardRef(() => StudentService))
+    private readonly studentService: StudentService,
   ) {}
 
   async findAll(findArgs: FindArchivesArgs): Promise<Archive[]> {
@@ -83,15 +86,18 @@ export class ArchiveService {
 
   async openNewArchive(input: OpenNewArchive) {
     const newArchive = await this.create(input);
-    // await this.
-    await this.levelService.addNewArchiveIdToLevel(newArchive.id);
+    // find all levels and add the new archive to them
+    await this.levelService.addNewArchiveIdToLevel(
+      newArchive.id,
+      input.currentArchiveId,
+    );
+    // find all employees and add the new archive to them
+    await this.employeeService.addNewArchiveToAllEmployees(
+      newArchive.id,
+      input.currentArchiveId,
+    );
+    // find all students and add the new archive to them
 
     return newArchive;
-    // // update project current archive to the new archive
-    // return newArchive;
-    // find all divisions and create new
-    // find all employees and add the new archive to them
-    // find all students passed from exam and add the new levels and divisions to them
-    // find last subjects and create new them to new archive
   }
 }

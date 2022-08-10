@@ -59,11 +59,6 @@ export class LevelResolver {
     return this.levelService.create(levelInput);
   }
 
-  @Mutation(()=> [Level],{name:"addNewArchiveIdToLevelAllLevels"})
-  async addNewArchiveIdTOLevel(@Args('archiveId') archiveId:string){
-    return await this.levelService.addNewArchiveIdToLevel(archiveId);
-  }
-
   @Mutation(() => Level, { name: 'updateLevel' })
   async updateLevel(
     @Args('id') id: string,

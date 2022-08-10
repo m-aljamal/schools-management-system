@@ -1,6 +1,11 @@
 import { FindStudentsArgs, FindStudentArgs } from './dto/findStudents.args';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { Student } from './entity/student';
 import { Repository } from 'typeorm';
 import { StudentInput } from './dto/student.input';
@@ -14,6 +19,7 @@ export class StudentService {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepo: Repository<Student>,
+    @Inject(forwardRef(() => ArchiveService))
     private readonly archiveService: ArchiveService,
     private readonly levelService: LevelService,
     private readonly divisionService: DivisionService,

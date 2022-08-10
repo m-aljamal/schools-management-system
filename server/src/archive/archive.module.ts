@@ -1,3 +1,4 @@
+import { StudentModule } from './../student/student.module';
 import { LevelModule } from 'src/level/level.module';
 import { EmployeeModule } from 'src/employee/employee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,6 +15,7 @@ import { SemesterModule } from 'src/semester/semester.module';
     forwardRef(() => ProjectModule),
     forwardRef(() => EmployeeModule),
     forwardRef(() => LevelModule),
+    forwardRef(() => StudentModule),
     // EmployeeModule,
     SemesterModule,
   ],

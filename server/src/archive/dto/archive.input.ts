@@ -9,9 +9,8 @@ export class ArchiveInput {
   projectId: string;
 }
 
-
 @InputType()
 export class OpenNewArchive extends ArchiveInput {
-  // @Field()
-  // currentArchiveId: string;
+  @Field()
+  currentArchiveId: string;
 }

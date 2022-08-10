@@ -5,6 +5,9 @@ export class LevelInput {
   @Field()
   name: string;
 
+  @Field(() => Number)
+  number: number;
+
   @Field(() => [String])
   archives: string[];
 }

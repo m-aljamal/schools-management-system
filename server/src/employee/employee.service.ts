@@ -58,22 +58,25 @@ export class EmployeeService {
       where: { id: args.id },
     });
 
+    console.log(args);
+
     const query = this.employeeRepo.createQueryBuilder('employee');
+
     query.where('employee.id = :id', { id: args.id });
     if (employee.role === Role.TEACHER) {
       query.leftJoinAndSelect('employee.levels', 'levels');
+      query.leftJoinAndSelect('levels.archives', 'archives');
 
-      query.andWhere('levels.archiveId = :archiveId', {
+      query.andWhere('archives.id = :archiveId', {
         archiveId: args.archiveId,
       });
-      if (args.levelId) {
-        query.andWhere('levels.id = :levelId', { levelId: args.levelId });
-      }
-      query.leftJoinAndSelect('employee.divisions', 'division');
-      query.leftJoinAndSelect('levels.divisions', 'divisions');
-      query.leftJoinAndSelect('employee.archives', 'archives');
-      query.andWhere('divisions.id IN (division.id)');
-      query.andWhere('archives.id = :archiveId', { archiveId: args.archiveId });
+      // if (args.levelId) {
+      //   query.andWhere('levels.id = :levelId', { levelId: args.levelId });
+      // }
+      // query.leftJoinAndSelect('employee.divisions', 'division');
+      // query.leftJoinAndSelect('levels.divisions', 'divisions');
+      // query.andWhere('divisions.id IN (division.id)');
+      // query.andWhere('archives.id = :archiveId', { archiveId: args.archiveId });
     }
     return await query.getOne();
   }
@@ -135,18 +138,19 @@ export class EmployeeService {
     });
   }
 
-  async addNewEmployeeArchive(employeeId: string, archiveId: string) {
-    const employee = await this.employeeRepo.findOne({
-      where: { id: employeeId },
-    });
-    if (!employee) {
-      throw new BadRequestException('الموظف غير موجود');
-    }
+  async addNewArchiveToAllEmployees(archiveId: string, currentArchiveId: string) {
+    const employeeQuery = this.employeeRepo
+      .createQueryBuilder('employee')
+      .leftJoinAndSelect('employee.archives', 'archives')
+      .where('archives.id = :currentArchiveId', { currentArchiveId });
+    const employees = await employeeQuery.getMany();
+    
     const archive = await this.archiveService.findById(archiveId);
-    if (!archive) {
-      throw new BadRequestException('الارشيف غير موجود');
+
+    for (let employee of employees) {
+      employee.archives = [...employee.archives, archive];
+      await this.employeeRepo.save(employee);
     }
-    employee.archives.push(archive);
-    return this.employeeRepo.save(employee);
+    return employees;
   }
 }

@@ -43,11 +43,6 @@ export class EmployeeResolver {
     return this.employeeService.create(input);
   }
 
-  @Mutation(() => Employee, { name: 'addNewArchiveToEmployee' })
-  async addNewArchive(@Args('input') input: AddNewArc) {
-    return this.employeeService.addNewEmployeeArchive(input.id, input.archId);
-  }
-
   @ResolveField(() => Employee)
   async project(@Parent() employee: Employee): Promise<Project> {
     return this.projectService.findOne(employee.projectId);
