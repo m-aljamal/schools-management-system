@@ -103,4 +103,22 @@ export class StudentService {
       relations: ['grades'],
     });
   }
+
+  async AddNewArchiveIdAndLevelId(archiveId: string) {
+    const query = this.studentRepo.createQueryBuilder('student');
+    query.leftJoinAndSelect('student.archives', 'archive');
+    query.andWhere('archive.id = :id', { id: archiveId });
+
+    query.leftJoinAndSelect('student.levels', 'level');
+    query.leftJoinAndSelect('level.archives', 'archives');
+    query.andWhere('archives.id = :archiveId', {
+      archiveId: archiveId,
+    });
+
+    const students = await query.getMany();
+
+    for (let student of students) {
+      console.log(student.levels);
+    }
+  }
 }

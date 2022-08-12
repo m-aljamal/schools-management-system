@@ -47,11 +47,13 @@ export class ArchiveService {
       projectId: findArgs.projectId,
     });
     query.andWhere('archive.id = :id', { id: findArgs.archiveId });
+
     query.leftJoinAndSelect('archive.levels', 'level');
     query.leftJoinAndSelect('level.divisions', 'division');
     query.leftJoinAndSelect('division.employees', 'employee');
     query.leftJoinAndSelect('division.students', 'student');
     query.leftJoinAndSelect('archive.semesters', 'semester');
+    query.leftJoinAndSelect('level.subjects', 'subjects');
     return await query.getOne();
   }
 
@@ -85,19 +87,22 @@ export class ArchiveService {
   }
 
   async openNewArchive(input: OpenNewArchive) {
-    const newArchive = await this.create(input);
+    // const newArchive = await this.create(input);
     // find all levels and add the new archive to them
-    await this.levelService.addNewArchiveIdToLevel(
-      newArchive.id,
-      input.currentArchiveId,
-    );
-    // find all employees and add the new archive to them
-    await this.employeeService.addNewArchiveToAllEmployees(
-      newArchive.id,
-      input.currentArchiveId,
-    );
-    // find all students and add the new archive to them
+    // await this.levelService.addNewArchiveIdToLevel(
+    //   newArchive.id,
+    //   input.currentArchiveId,
+    // );
+    // // find all employees and add the new archive to them
+    // await this.employeeService.addNewArchiveToAllEmployees(
+    //   newArchive.id,
+    //   input.currentArchiveId,
+    // );
+    // // find all students and add the new archive to them
 
-    return newArchive;
+    // return newArchive;
+
+    await this.studentService.AddNewArchiveIdAndLevelId(
+      "d761486a-b6c2-435a-8897-8c9f4201c079")
   }
 }

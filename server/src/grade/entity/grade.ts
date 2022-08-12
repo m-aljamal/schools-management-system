@@ -63,4 +63,8 @@ export class Grade {
   @Field(() => Number, { nullable: true })
   @Column({ nullable: true })
   homework_grade: number;
+
+  @Field({ defaultValue: false })
+  @Column({ default: false })
+  passTheExam: boolean;
 }

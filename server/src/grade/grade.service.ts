@@ -16,6 +16,14 @@ export class GradeService {
   }
 
   async createGrade(grade: GradeInput): Promise<Grade> {
-    return this.gradeRepository.save(grade);
+    let passTheExam = false;
+    if (grade.final_grade > 50) {
+      passTheExam = true;
+    }
+    const newGrade = this.gradeRepository.create({
+      ...grade,
+      passTheExam,
+    });
+    return this.gradeRepository.save(newGrade);
   }
 }

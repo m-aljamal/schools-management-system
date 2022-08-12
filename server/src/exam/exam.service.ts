@@ -28,7 +28,7 @@ export class ExamService {
         levelId: args.levelId,
       });
     }
-    query.innerJoinAndSelect('exam.grades', 'grade');
+    // query.innerJoinAndSelect('exam.grades', 'grade');
 
     if (args.subjectId) {
       query.andWhere('grade.subjectId = :subjectId', {
