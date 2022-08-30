@@ -15,6 +15,7 @@ export class ExamService {
   async find(args: FindExamArgs): Promise<Exam[]> {
     const query = this.examRepo.createQueryBuilder('exam');
     query.leftJoinAndSelect('exam.semester', 'semester');
+    query.leftJoinAndSelect('exam.archive', 'archive');
     query.where('semester.archiveId = :archiveId', {
       archiveId: args.archiveId,
     });

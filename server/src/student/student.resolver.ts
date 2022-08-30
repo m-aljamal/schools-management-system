@@ -34,6 +34,11 @@ export class StudentResolver {
     return this.studentService.create(input);
   }
 
+  @Mutation(() => [Student], { name: 'addArchiveToStudent' })
+  async addArchiveToStudent(@Args('archiveId') archiveId: string) {
+    return this.studentService.AddNewArchiveIdAndLevelId(archiveId);
+  }
+
   // @ResolveField(() => Student)
   // async division(@Parent() student: Student): Promise<Division> {
   //   return this.divisionService.findOne(student.divisionId);

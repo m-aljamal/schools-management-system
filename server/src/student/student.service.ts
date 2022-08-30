@@ -104,21 +104,26 @@ export class StudentService {
     });
   }
 
-  async AddNewArchiveIdAndLevelId(archiveId: string) {
+  async AddNewArchiveIdAndLevelId(
+    currentArchiveId: string,
+    // newArchiveId: string,
+  ) {
     const query = this.studentRepo.createQueryBuilder('student');
     query.leftJoinAndSelect('student.archives', 'archive');
-    query.andWhere('archive.id = :id', { id: archiveId });
-
+    query.andWhere('archive.id = :id', { id: currentArchiveId });
     query.leftJoinAndSelect('student.levels', 'level');
     query.leftJoinAndSelect('level.archives', 'archives');
-    query.andWhere('archives.id = :archiveId', {
-      archiveId: archiveId,
-    });
-
+    query.leftJoinAndSelect('student.grades', 'grade');
     const students = await query.getMany();
 
+
+
     for (let student of students) {
-      console.log(student.levels);
+      // add new archive id to student
+
+      // if student pass the exam update the level id
     }
+
+    return students;
   }
 }
