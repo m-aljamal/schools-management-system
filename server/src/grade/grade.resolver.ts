@@ -31,6 +31,10 @@ export class GradeResolver {
   async createGrade(@Args('input') input: GradeInput) {
     return this.gradeService.createGrade(input);
   }
+  @Mutation(() => Grade, { name: 'seedGrade' })
+  async seedGrade(@Args('input') input: GradeInput) {
+    return this.gradeService.seedGrade(input);
+  }
   @ResolveField(() => Grade)
   async student(@Parent() grade: Grade): Promise<Student> {
     return this.studentService.findOne(grade.studentId);

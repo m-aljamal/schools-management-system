@@ -135,7 +135,7 @@ export class LevelService {
 
     const archive = await this.archiveService.findById(archiveId);
 
-    for (let level of levels) {
+    for (const level of levels) {
       level.archives = [...level.archives, archive];
       await this.levelRepository.save(level);
     }
@@ -149,5 +149,13 @@ export class LevelService {
     if (!level) {
       throw new NotFoundException('المستوى غير موجود');
     }
+  }
+
+  async findTheNextLevel(previousLevelNumber: number) {
+    const query = this.levelRepository.createQueryBuilder('level');
+    query.where('level.number = :number', {
+      number: previousLevelNumber + 1,
+    });
+    return await query.getOne();
   }
 }

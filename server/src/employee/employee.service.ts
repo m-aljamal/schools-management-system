@@ -81,6 +81,30 @@ export class EmployeeService {
     return await query.getOne();
   }
 
+  async seed(input: EmployeeInput) {
+    const archive = await this.archiveService.findById(input.archives[0]);
+    const levels = await this.levelService.findLevels(input.archives[0]);
+
+    for (let i = 0; i < 25; i++) {
+      const employee = this.employeeRepo.create({
+        name: `مدرس ${i}`,
+        username: `teacher${i}`,
+        password: hashPassword('123456'),
+        role: Role.TEACHER,
+        projectId: input.projectId,
+        archives: [archive],
+        levels: [levels[i % levels.length]],
+        divisions: [
+          levels[i % levels.length].divisions[
+            i % levels[i % levels.length].divisions.length
+          ],
+        ],
+      });
+
+      await this.employeeRepo.save(employee);
+    }
+  }
+
   async create(input: EmployeeInput) {
     if (input.role !== Role.ADMIN && input.projectId === undefined)
       return new BadRequestException('projectId should be provided');
@@ -138,16 +162,19 @@ export class EmployeeService {
     });
   }
 
-  async addNewArchiveToAllEmployees(archiveId: string, currentArchiveId: string) {
+  async addNewArchiveToAllEmployees(
+    archiveId: string,
+    currentArchiveId: string,
+  ) {
     const employeeQuery = this.employeeRepo
       .createQueryBuilder('employee')
       .leftJoinAndSelect('employee.archives', 'archives')
       .where('archives.id = :currentArchiveId', { currentArchiveId });
     const employees = await employeeQuery.getMany();
-    
+
     const archive = await this.archiveService.findById(archiveId);
 
-    for (let employee of employees) {
+    for (const employee of employees) {
       employee.archives = [...employee.archives, archive];
       await this.employeeRepo.save(employee);
     }

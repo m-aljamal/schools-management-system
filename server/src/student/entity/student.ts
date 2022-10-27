@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
- import { Archive } from 'src/archive/entity/archive';
+import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
 import { Grade } from 'src/grade/entity/grade';
 import { Level } from 'src/level/entity/level';

@@ -50,6 +50,28 @@ export class StudentService {
 
     return await query.getOne();
   }
+
+  async seedStudents(input: StudentInput) {
+    const archive = await this.archiveService.findById(input.archives[0]);
+    const levels = await this.levelService.findLevels(input.archives[0]);
+    for (let i = 0; i < 25; i++) {
+      const student = await this.studentRepo.create({
+        password: hashPassword('123456'),
+        username: `student${i}`,
+        name: `student${i}`,
+        projectId: input.projectId,
+        archives: [archive],
+        levels: [levels[i % levels.length]],
+        divisions: [
+          levels[i % levels.length].divisions[
+            i % levels[i % levels.length].divisions.length
+          ],
+        ],
+      });
+      await this.studentRepo.save(student);
+    }
+  }
+
   async create(input: StudentInput) {
     let levels = [];
     let divisions = [];
@@ -104,9 +126,9 @@ export class StudentService {
     });
   }
 
-  async AddNewArchiveIdAndLevelId(
+  async AddNewArchiveToStudents(
     currentArchiveId: string,
-    // newArchiveId: string,
+    newArchiveId: string,
   ) {
     const query = this.studentRepo.createQueryBuilder('student');
     query.leftJoinAndSelect('student.archives', 'archive');
@@ -116,12 +138,31 @@ export class StudentService {
     query.leftJoinAndSelect('student.grades', 'grade');
     const students = await query.getMany();
 
+    // add new archive id to students
+    const archive = await this.archiveService.findById(newArchiveId);
+    for (const student of students) {
+      student.archives = [...student.archives, archive];
+      await this.studentRepo.save(student);
+    }
 
+    // find the passed grades students
+    const passedStudents = students.filter((student) => {
+      return student.grades.every((grade) => grade.passTheExam);
+    });
 
-    for (let student of students) {
-      // add new archive id to student
+    for (const student of passedStudents) {
+      // find the last student level
+      const lastStudentLevel = Math.max(
+        ...student.levels.map((level) => level.number),
+      );
+      // find the next student level
+      const nextStudentLevel = await this.levelService.findTheNextLevel(
+        lastStudentLevel,
+      );
+      student.levels = [...student.levels, nextStudentLevel];
+      await this.studentRepo.save(student);
 
-      // if student pass the exam update the level id
+      // find the next level id by the last level number
     }
 
     return students;

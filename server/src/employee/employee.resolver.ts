@@ -43,6 +43,11 @@ export class EmployeeResolver {
     return this.employeeService.create(input);
   }
 
+  @Mutation(() => Employee, { name: 'employeeSeed' })
+  async seed(@Args('input') input: EmployeeInput) {
+    return this.employeeService.seed(input);
+  }
+
   @ResolveField(() => Employee)
   async project(@Parent() employee: Employee): Promise<Project> {
     return this.projectService.findOne(employee.projectId);

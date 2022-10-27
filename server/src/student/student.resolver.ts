@@ -34,9 +34,9 @@ export class StudentResolver {
     return this.studentService.create(input);
   }
 
-  @Mutation(() => [Student], { name: 'addArchiveToStudent' })
-  async addArchiveToStudent(@Args('archiveId') archiveId: string) {
-    return this.studentService.AddNewArchiveIdAndLevelId(archiveId);
+  @Mutation(() => Student, { name: 'seedStudents' })
+  async seedStudents(@Args('input') input: StudentInput) {
+    return this.studentService.seedStudents(input);
   }
 
   // @ResolveField(() => Student)

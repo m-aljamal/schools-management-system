@@ -87,22 +87,23 @@ export class ArchiveService {
   }
 
   async openNewArchive(input: OpenNewArchive) {
-    // const newArchive = await this.create(input);
+    const newArchive = await this.create(input);
     // find all levels and add the new archive to them
-    // await this.levelService.addNewArchiveIdToLevel(
-    //   newArchive.id,
-    //   input.currentArchiveId,
-    // );
-    // // find all employees and add the new archive to them
-    // await this.employeeService.addNewArchiveToAllEmployees(
-    //   newArchive.id,
-    //   input.currentArchiveId,
-    // );
-    // // find all students and add the new archive to them
+    await this.levelService.addNewArchiveIdToLevel(
+      newArchive.id,
+      input.currentArchiveId,
+    );
+    // find all employees and add the new archive to them
+    await this.employeeService.addNewArchiveToAllEmployees(
+      newArchive.id,
+      input.currentArchiveId,
+    );
 
-    // return newArchive;
-
-    await this.studentService.AddNewArchiveIdAndLevelId(
-      "d761486a-b6c2-435a-8897-8c9f4201c079")
+    // find all students and add the new archive to them
+    await this.studentService.AddNewArchiveToStudents(
+      input.currentArchiveId,
+      newArchive.id,
+    );
+    return newArchive;
   }
 }
