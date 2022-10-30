@@ -9,5 +9,6 @@ import { SemesterModule } from 'src/semester/semester.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Exam]), LevelModule, SemesterModule],
   providers: [ExamService, ExamResolver],
+  exports: [ExamService],
 })
 export class ExamModule {}

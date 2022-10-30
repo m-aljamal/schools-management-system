@@ -28,9 +28,9 @@ export class StudentService {
   async findAll(args: FindStudentsArgs) {
     const query = this.studentRepo.createQueryBuilder('student');
     query.leftJoinAndSelect('student.levels', 'level');
-    query.andWhere('level.archiveId = :archiveId', {
-      archiveId: args.archiveId,
-    });
+    // query.andWhere('level.archiveId = :archiveId', {
+    //   archiveId: args.archiveId,
+    // });
     query.leftJoinAndSelect('student.divisions', 'division');
     query.leftJoinAndSelect('level.divisions', 'divisions');
     query.andWhere('divisions.id IN (division.id)');

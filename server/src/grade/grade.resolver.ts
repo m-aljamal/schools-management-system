@@ -44,4 +44,9 @@ export class GradeResolver {
   async subject(@Parent() grade: Grade): Promise<Subject> {
     return this.subjectService.findOne(grade.subjectId);
   }
+
+  @Query(() => [Grade], { name: 'findThePassingGrade' })
+  async findThePassingGrade() {
+    return this.gradeService.findThePassingGrade();
+  }
 }
