@@ -31,4 +31,6 @@ export class Subject {
   @Field()
   @Column()
   levelId: string;
+
+  // is this subject is make student pass or not
 }

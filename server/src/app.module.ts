@@ -16,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
 import { ExamModule } from './exam/exam.module';
 import { SubjectModule } from './subject/subject.module';
 import { GradeModule } from './grade/grade.module';
+import { StudentPassLevelModule } from './student-pass-level/student-pass-level.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -64,6 +65,7 @@ import { GradeModule } from './grade/grade.module';
     ExamModule,
     SubjectModule,
     GradeModule,
+    StudentPassLevelModule,
   ],
 })
 export class AppModule {}

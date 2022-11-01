@@ -122,7 +122,7 @@ export class StudentService {
   async findOne(id: string) {
     return await this.studentRepo.findOne({
       where: { id },
-      relations: ['grades'],
+      relations: ['grades', 'levels'],
     });
   }
 

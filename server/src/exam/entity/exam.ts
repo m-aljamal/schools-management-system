@@ -1,3 +1,4 @@
+import { Student } from 'src/student/entity/student';
 import { Archive } from 'src/archive/entity/archive';
 import { Level } from 'src/level/entity/level';
 import { Semester } from 'src/semester/entity/semester';

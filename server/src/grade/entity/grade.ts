@@ -67,4 +67,8 @@ export class Grade {
   @Field({ defaultValue: false })
   @Column({ default: false })
   passTheExam: boolean;
+
+  @Field({ defaultValue: false })
+  @Column({ default: false })
+  passAllExams: boolean;
 }

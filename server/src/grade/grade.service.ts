@@ -28,15 +28,15 @@ export class GradeService {
     const exams = await this.examService.findExamsByArchiveId(
       '7c005db8-090b-4ccd-b6b8-3cc3aa98c3e9',
     );
-
     for (const student of students) {
-      const subject = await this.subjectService.findAll(student.levels[0].id);
-      for (const sub of subject) {
+      const subjects = await this.subjectService.findAll(student.levels[0].id);
+      for (const sub of subjects) {
         const final_grade = Math.floor(Math.random() * 100);
         let passTheExam = false;
         if (final_grade > 50) {
           passTheExam = true;
         }
+
         const newGrade = this.gradeRepository.create({
           subjectId: sub.id,
           examId: exams.find((exam) => exam.levelId === student.levels[0].id)
@@ -48,8 +48,19 @@ export class GradeService {
           homework_grade: Math.floor(Math.random() * 100),
           passTheExam,
         });
-        console.log(newGrade);
+
         await this.gradeRepository.save(newGrade);
+      }
+      // if the student passed every subject in the semester, he will pass the semester
+      const passedSubjects = await this.gradeRepository.find({
+        where: {
+          studentId: student.id,
+          passTheExam: true,
+        },
+      });
+      if (passedSubjects.length === subjects.length) {
+        // pass the semester
+        console.log('stu passed');
       }
     }
   }
@@ -67,15 +78,36 @@ export class GradeService {
     return query.getMany();
   }
 
-  async createGrade(grade: GradeInput): Promise<Grade> {
+  async createGrade(
+    grade: GradeInput, // : Promise<Grade>
+  ) {
+    const student = await this.studentService.findOne(grade.studentId);
     let passTheExam = false;
     if (grade.final_grade > 50) {
       passTheExam = true;
     }
+
     const newGrade = this.gradeRepository.create({
       ...grade,
       passTheExam,
     });
-    return this.gradeRepository.save(newGrade);
+    await this.gradeRepository.save(newGrade);
+    //todo  currnet student level
+    const subjects = await this.subjectService.findAll(student.levels[0].id);
+    const passedSubjects = await this.gradeRepository.find({
+      where: {
+        studentId: student.id,
+        passTheExam: true,
+      },
+    });
+
+    if (passedSubjects.length === subjects.length) {
+      // pass the semester
+      newGrade.passAllExams = true;
+      console.log('pass newGrade', newGrade);
+    }
+
+    console.log(' newGrade', newGrade);
+    return newGrade;
   }
 }

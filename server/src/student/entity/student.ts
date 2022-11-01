@@ -81,4 +81,5 @@ export class Student {
   @OneToMany(() => Grade, (grade) => grade.student)
   @Field(() => [Grade])
   grades: Grade[];
+  //todo create current student level
 }
