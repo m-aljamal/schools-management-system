@@ -1,0 +1,382 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AbsentEmployee {
+  approved: Boolean!
+  archive: Archive!
+  archiveId: String!
+  date: DateTime!
+  employee: Employee!
+  employeeId: String!
+  id: String!
+  note: String
+  semester: Semester!
+  semesterId: String!
+}
+
+input AbsentEmployeeInput {
+  approved: Boolean = false
+  archiveId: String!
+  date: DateTime!
+  employeeId: String!
+  note: String
+  semesterId: String!
+}
+
+type AbsentStudent {
+  approved: Boolean!
+  archive: Archive!
+  archiveId: String!
+  date: DateTime!
+  id: String!
+  note: String
+  semester: Semester!
+  semesterId: String!
+  student: Student!
+  studentId: String!
+}
+
+input AbsentStudentInput {
+  approved: Boolean = false
+  archiveId: String!
+  date: DateTime!
+  note: String
+  semesterId: String!
+  studentId: String!
+}
+
+type Archive {
+  absentEmployees: [AbsentEmployee!]!
+  absentStudents: [AbsentStudent!]!
+  createdAt: DateTime!
+  employees: [Employee!]!
+  exams: [Exam!]!
+  id: String!
+  levels: [Level!]!
+  name: String!
+  project: Project!
+  projectId: String!
+  semesters: [Semester!]!
+  students: [Student!]!
+  updatedAt: DateTime!
+}
+
+input ArchiveInput {
+  name: String!
+  projectId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Division {
+  employees: [Employee!]
+  id: String!
+  level: Level!
+  levelId: String!
+  name: String!
+  students: [Student!]
+}
+
+input DivisionInput {
+  levelId: String!
+  name: String!
+}
+
+type Employee {
+  absentEmployees: [AbsentEmployee!]!
+  archives: [Archive!]
+  divisions: [Division!]
+  id: String!
+  levels: [Level!]
+  name: String!
+  password: String!
+  project: Project
+  projectId: String
+  role: Role!
+  username: String!
+}
+
+input EmployeeInput {
+  archives: [String!]
+  divisions: [String!]
+  levels: [String!]
+  name: String!
+  password: String!
+  projectId: String
+  role: Role!
+  username: String!
+}
+
+type Exam {
+  archive: Archive!
+  archiveId: String!
+  examResults: [ExamResult!]
+  grades: [Grade!]
+  id: String!
+  level: Level!
+  levelId: String!
+  semester: Semester!
+  semesterId: String!
+}
+
+input ExamInput {
+  archiveId: String!
+  levelId: String!
+  semesterId: String!
+}
+
+type ExamResult {
+  exam: Exam!
+  examId: String!
+  id: String!
+  passTheExam: Boolean!
+  student: Student!
+  studentId: String!
+}
+
+input ExamResultInput {
+  examId: String!
+  passTheExam: Boolean
+  studentId: String!
+}
+
+type Grade {
+  exam: Exam!
+  examId: String!
+  final_grade: Float
+  first_quiz_grade: Float
+  homework_grade: Float
+  id: String!
+  oral_grade: Float
+  passTheSubject: Boolean!
+  second_quiz_grade: Float
+  semester: Semester!
+  semesterId: String!
+  student: Student!
+  studentId: String!
+  subject: Subject!
+  subjectId: String!
+}
+
+input GradeInput {
+  examId: String!
+  final_grade: Float
+  first_quiz_grade: Float
+  homework_grade: Float
+  oral_grade: Float
+  second_quiz_grade: Float
+  semesterId: String!
+  studentId: String!
+  subjectId: String!
+}
+
+type Level {
+  archives: [Archive!]!
+  divisions: [Division!]
+  employees: [Employee!]
+  exams: [Exam!]!
+  id: String!
+  name: String!
+  number: Float!
+  students: [Student!]
+  subjects: [Subject!]!
+}
+
+input LevelInput {
+  archives: [String!]!
+  name: String!
+  number: Float!
+}
+
+input LevelUpdateInput {
+  archives: [String!]
+  name: String
+  number: Float
+}
+
+type LoginResponse {
+  accessToken: String!
+  user: Employee!
+}
+
+enum LoginRole {
+  EMPLOYEE
+  STUDENT
+}
+
+input LoginUserInput {
+  loginRole: LoginRole!
+  password: String!
+  username: String!
+}
+
+type Mutation {
+  createAbsentEmployee(input: AbsentEmployeeInput!): AbsentEmployee!
+  createAbsentStudent(input: AbsentStudentInput!): AbsentStudent!
+  createArchive(input: ArchiveInput!): Archive!
+  createDivision(input: DivisionInput!): Division!
+  createEmployee(input: EmployeeInput!): Employee!
+  createExam(input: ExamInput!): Exam!
+  createExamResult(input: ExamResultInput!): ExamResult!
+  createGrade(input: GradeInput!): Grade!
+  createLevel(input: LevelInput!): Level!
+  createProject(input: ProjectInput!): Project!
+  createSemester(input: SemesterInput!): Semester!
+  createStudent(input: StudentInput!): Student!
+  createSubject(input: SubjectInput!): Subject!
+  employeeSeed(input: EmployeeInput!): Employee!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  openNewArchive(input: OpenNewArchive!): Archive!
+  removeArchive(id: String!): Archive!
+  seedGrade(input: GradeInput!): Grade!
+  seedStudents(input: StudentInput!): Student!
+  updateLevel(id: String!, input: LevelUpdateInput!): Level!
+  updateProject(id: String!, updateProjectInput: UpdateProject!): Project!
+}
+
+input OpenNewArchive {
+  currentArchiveId: String!
+  name: String!
+  projectId: String!
+}
+
+type Project {
+  archives: [Archive!]
+  createdAt: DateTime!
+  current_archive_id: String
+  current_archive_name: String
+  employees: [Employee!]
+  id: String!
+  name_ar: String!
+  students: [Employee!]
+  updatedAt: DateTime!
+}
+
+input ProjectInput {
+  current_archive_id: String
+  current_archive_name: String!
+  name_ar: String!
+}
+
+type Query {
+  currentUser: Employee
+  findAbsentEmployees(approved: Boolean, archiveId: String!, date: DateTime, fromDate: DateTime, levelId: String, name: String, semesterId: String, toDate: DateTime): [AbsentEmployee!]!
+  findAbsentStudents(approved: Boolean, archiveId: String!, date: DateTime, fromDate: DateTime, levelId: String, name: String, semesterId: String, toDate: DateTime): [AbsentStudent!]!
+  findAbsentStudents_byLevel(approved: Boolean, archiveId: String!, date: DateTime, fromDate: DateTime, levelId: String, name: String, semesterId: String, toDate: DateTime): [Level!]!
+  findArchive(archiveId: String!, projectId: String!, sortBy: Sort): Archive!
+  findArchives(archiveId: String, projectId: String!, sortBy: Sort): [Archive!]!
+  findDivisions(levelId: String!): [Division!]!
+  findEmployee(archiveId: String!, id: String!, levelId: String): Employee!
+  findExams(archiveId: String!, levelId: String, semesterId: String, subjectId: String): [Exam!]!
+  findExamsByArchiveId(archiveId: String!): [Exam!]!
+  findGrades: [Grade!]!
+  findLevel(levelId: String!): Level!
+  findLevels(archiveId: String!): [Level!]!
+  findManagers(archiveId: String!, levelId: String): [Employee!]!
+  findProjects: [Project!]!
+  findSemesters(archiveId: String!): [Semester!]!
+  findStudent(archiveId: String!, id: String!): Student!
+  findStudents(archiveId: String!): [Student!]!
+  findStudents_division(levelId: String!): [Division!]!
+  findStudents_levels(archiveId: String!): [Level!]!
+  findSubjects(levelId: String!): [Subject!]!
+  findSubjects_byLevel(archiveId: String!): [Level!]!
+  findSubjects_for_grades(levelId: String!, semesterId: String!): [Subject!]!
+  findTeachers(archiveId: String!, levelId: String): [Employee!]!
+  findTechers_levels(archiveId: String!): [Level!]!
+  findThePassingGrade: [Grade!]!
+  findTotalAbsentEmployees(approved: Boolean, archiveId: String!, date: DateTime, fromDate: DateTime, levelId: String, name: String, semesterId: String, toDate: DateTime): [TotalAbsent!]!
+  findTotalAbsentStudents(approved: Boolean, archiveId: String!, date: DateTime, fromDate: DateTime, levelId: String, name: String, semesterId: String, toDate: DateTime): [TotalAbsent!]!
+}
+
+enum Role {
+  ADMIN
+  CLEANER
+  COUNSELOR
+  DATA_ENTRY
+  EDUCATION_SUPERVISOR
+  GUARD
+  MEDIA_Fotographer
+  PRINCIPAL
+  SECRETARY
+  STUDENT
+  TEACHER
+}
+
+type Semester {
+  absentEmployees: [AbsentEmployee!]!
+  absentStudents: [AbsentStudent!]!
+  archive: Archive!
+  archiveId: String!
+  exams: [Exam!]!
+  grades: [Grade!]!
+  id: String!
+  name: String!
+}
+
+input SemesterInput {
+  archiveId: String!
+  name: String!
+}
+
+enum Sort {
+  ASC
+  DESC
+}
+
+type Student {
+  absentStudents: [AbsentStudent!]!
+  archives: [Archive!]
+  divisions: [Division!]!
+  examResults: [ExamResult!]
+  grades: [Grade!]!
+  id: String!
+  levels: [Level!]!
+  name: String!
+  password: String!
+  project: Project!
+  projectId: String!
+  role: String!
+  username: String!
+}
+
+input StudentInput {
+  archives: [String!]!
+  divisions: [String!]!
+  levels: [String!]!
+  name: String!
+  password: String!
+  projectId: String!
+  username: String!
+}
+
+type Subject {
+  grades: [Grade!]!
+  id: String!
+  level: Level!
+  levelId: String!
+  name: String!
+}
+
+input SubjectInput {
+  levelId: String!
+  name: String!
+}
+
+type TotalAbsent {
+  approved: Boolean!
+  count: Float!
+  id: String!
+  level: String!
+  name: String!
+}
+
+input UpdateProject {
+  current_archive_id: String
+  current_archive_name: String
+  name_ar: String
+}

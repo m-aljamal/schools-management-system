@@ -8,6 +8,7 @@ import { ArchiveService } from './archive.service';
 import { Archive } from './entity/archive';
 import { ProjectModule } from 'src/project/project.module';
 import { SemesterModule } from 'src/semester/semester.module';
+import { SubjectModule } from 'src/subject/subject.module';
 
 @Module({
   imports: [

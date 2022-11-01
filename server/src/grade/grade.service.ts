@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ExamResultService } from 'src/exam-result/exam-result.service';
 import { ExamService } from 'src/exam/exam.service';
 import { StudentService } from 'src/student/student.service';
 import { SubjectService } from 'src/subject/subject.service';
@@ -15,6 +16,7 @@ export class GradeService {
     private readonly studentService: StudentService,
     private readonly subjectService: SubjectService,
     private readonly examService: ExamService,
+    private readonly examResultService: ExamResultService,
   ) {}
 
   async findAll(): Promise<Grade[]> {
@@ -32,9 +34,9 @@ export class GradeService {
       const subjects = await this.subjectService.findAll(student.levels[0].id);
       for (const sub of subjects) {
         const final_grade = Math.floor(Math.random() * 100);
-        let passTheExam = false;
+        let passTheSubject = false;
         if (final_grade > 50) {
-          passTheExam = true;
+          passTheSubject = true;
         }
 
         const newGrade = this.gradeRepository.create({
@@ -46,7 +48,7 @@ export class GradeService {
           final_grade,
           first_quiz_grade: Math.floor(Math.random() * 100),
           homework_grade: Math.floor(Math.random() * 100),
-          passTheExam,
+          passTheSubject,
         });
 
         await this.gradeRepository.save(newGrade);
@@ -55,7 +57,7 @@ export class GradeService {
       const passedSubjects = await this.gradeRepository.find({
         where: {
           studentId: student.id,
-          passTheExam: true,
+          passTheSubject: true,
         },
       });
       if (passedSubjects.length === subjects.length) {
@@ -82,14 +84,14 @@ export class GradeService {
     grade: GradeInput, // : Promise<Grade>
   ) {
     const student = await this.studentService.findOne(grade.studentId);
-    let passTheExam = false;
+    let passTheSubject = false;
     if (grade.final_grade > 50) {
-      passTheExam = true;
+      passTheSubject = true;
     }
 
     const newGrade = this.gradeRepository.create({
       ...grade,
-      passTheExam,
+      passTheSubject,
     });
     await this.gradeRepository.save(newGrade);
     //todo  currnet student level
@@ -97,13 +99,18 @@ export class GradeService {
     const passedSubjects = await this.gradeRepository.find({
       where: {
         studentId: student.id,
-        passTheExam: true,
+        passTheSubject: true,
       },
     });
 
     if (passedSubjects.length === subjects.length) {
       // pass the semester
-      newGrade.passAllExams = true;
+      const result = await this.examResultService.create({
+        studentId: student.id,
+        examId: grade.examId,
+        passTheExam: true,
+      });
+
       console.log('pass newGrade', newGrade);
     }
 

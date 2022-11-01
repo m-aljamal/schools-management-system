@@ -6,6 +6,7 @@ import { GradeService } from './grade.service';
 import { GradeResolver } from './grade.resolver';
 import { Grade } from './entity/grade';
 import { ExamModule } from 'src/exam/exam.module';
+import { ExamResultModule } from 'src/exam-result/exam-result.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ExamModule } from 'src/exam/exam.module';
     StudentModule,
     SubjectModule,
     ExamModule,
+    ExamResultModule,
   ],
   providers: [GradeService, GradeResolver],
 })

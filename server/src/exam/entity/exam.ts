@@ -1,3 +1,4 @@
+import { ExamResult } from './../../exam-result/entity/exam-result';
 import { Student } from 'src/student/entity/student';
 import { Archive } from 'src/archive/entity/archive';
 import { Level } from 'src/level/entity/level';
@@ -48,4 +49,8 @@ export class Exam {
   @Field()
   @Column()
   archiveId: string;
+
+  @OneToMany(() => ExamResult, (examResult) => examResult.exam)
+  @Field(() => [ExamResult], { nullable: true })
+  examResults: ExamResult[];
 }

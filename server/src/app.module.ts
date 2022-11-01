@@ -16,7 +16,8 @@ import { AuthModule } from './auth/auth.module';
 import { ExamModule } from './exam/exam.module';
 import { SubjectModule } from './subject/subject.module';
 import { GradeModule } from './grade/grade.module';
-import { StudentPassLevelModule } from './student-pass-level/student-pass-level.module';
+import { ExamResultModule } from './exam-result/exam-result.module';
+import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,16 +29,16 @@ import { StudentPassLevelModule } from './student-pass-level/student-pass-level.
       useFactory: (config: ConfigService) => {
         return {
           type: 'postgres',
-          host: config.get('DB_HOST_LOC'),
-          port: config.get('DB_PORT_LOC'),
-          username: config.get('DB_USER_LOC'),
-          password: config.get('DB_PASSWORD_LOC'),
-          database: config.get('DB_DATABASE_LOC'),
-          // host: config.get('DB_HOST'),
-          // port: config.get('DB_PORT'),
-          // username: config.get('DB_USER'),
-          // password: config.get('DB_PASSWORD'),
-          // database: config.get('DB_DATABASE'),
+          // host: config.get('DB_HOST_LOC'),
+          // port: config.get('DB_PORT_LOC'),
+          // username: config.get('DB_USER_LOC'),
+          // password: config.get('DB_PASSWORD_LOC'),
+          // database: config.get('DB_DATABASE_LOC'),
+          host: config.get('DB_HOST'),
+          port: config.get('DB_PORT'),
+          username: config.get('DB_USER'),
+          password: config.get('DB_PASSWORD'),
+          database: config.get('DB_DATABASE'),
           autoLoadEntities: true,
           synchronize: true,
         };
@@ -45,7 +46,7 @@ import { StudentPassLevelModule } from './student-pass-level/student-pass-level.
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       cors: {
         origin: 'http://localhost:3000',
@@ -65,7 +66,7 @@ import { StudentPassLevelModule } from './student-pass-level/student-pass-level.
     ExamModule,
     SubjectModule,
     GradeModule,
-    StudentPassLevelModule,
+    ExamResultModule,
   ],
 })
 export class AppModule {}

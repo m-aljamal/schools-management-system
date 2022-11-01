@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Archive } from 'src/archive/entity/archive';
 import { Division } from 'src/division/entity/division';
+import { ExamResult } from 'src/exam-result/entity/exam-result';
 import { Grade } from 'src/grade/entity/grade';
 import { Level } from 'src/level/entity/level';
 import { Project } from 'src/project/entity/project';
@@ -82,4 +83,8 @@ export class Student {
   @Field(() => [Grade])
   grades: Grade[];
   //todo create current student level
+
+  @OneToMany(() => ExamResult, (examResult) => examResult.student)
+  @Field(() => [ExamResult], { nullable: true })
+  examResults: ExamResult[];
 }
