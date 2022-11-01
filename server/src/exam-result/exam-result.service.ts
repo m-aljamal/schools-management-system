@@ -14,4 +14,12 @@ export class ExamResultService {
   async create(input: ExamResultInput): Promise<ExamResult> {
     return await this.examResultRepo.save(input);
   }
+
+  async findStudentExamResult(studentId: string): Promise<ExamResult> {
+    return await this.examResultRepo.findOne({
+      where: {
+        studentId,
+      },
+    });
+  }
 }

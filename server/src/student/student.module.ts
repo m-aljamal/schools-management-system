@@ -7,6 +7,7 @@ import { Student } from './entity/student';
 import { ArchiveModule } from 'src/archive/archive.module';
 import { LevelModule } from 'src/level/level.module';
 import { SubjectModule } from 'src/subject/subject.module';
+import { ExamResultModule } from 'src/exam-result/exam-result.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SubjectModule } from 'src/subject/subject.module';
     LevelModule,
     DivisionModule,
     SubjectModule,
+    ExamResultModule,
   ],
   providers: [StudentService, StudentResolver],
   exports: [StudentService],

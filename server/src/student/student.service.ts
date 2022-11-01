@@ -14,6 +14,7 @@ import { LevelService } from 'src/level/level.service';
 import { hashPassword } from 'utils/hashPassword';
 import { DivisionService } from 'src/division/division.service';
 import { SubjectService } from 'src/subject/subject.service';
+import { ExamResultService } from 'src/exam-result/exam-result.service';
 
 @Injectable()
 export class StudentService {
@@ -25,6 +26,7 @@ export class StudentService {
     private readonly levelService: LevelService,
     private readonly divisionService: DivisionService,
     private readonly subjectService: SubjectService,
+    private readonly examResultService: ExamResultService,
   ) {}
 
   async findAll(args: FindStudentsArgs) {
@@ -43,9 +45,9 @@ export class StudentService {
     const query = this.studentRepo.createQueryBuilder('student');
     query.where('student.id = :id', { id: args.id });
     query.leftJoinAndSelect('student.levels', 'level');
-    query.andWhere('level.archiveId = :archiveId', {
-      archiveId: args.archiveId,
-    });
+    // query.andWhere('level.archiveId = :archiveId', {
+    //   archiveId: args.archiveId,
+    // });
     query.leftJoinAndSelect('level.divisions', 'divisions');
     query.leftJoinAndSelect('student.divisions', 'division');
     query.andWhere('divisions.id IN (division.id)');
@@ -130,7 +132,7 @@ export class StudentService {
 
   async AddNewArchiveToStudents(
     currentArchiveId: string,
-    // newArchiveId: string,
+    newArchiveId: string,
   ) {
     const query = this.studentRepo.createQueryBuilder('student');
     query.leftJoinAndSelect('student.archives', 'archive');
@@ -139,40 +141,35 @@ export class StudentService {
     query.leftJoinAndSelect('level.archives', 'archives');
     query.leftJoinAndSelect('level.subjects', 'subjects');
     query.leftJoinAndSelect('student.grades', 'grade');
+
     const students = await query.getMany();
 
+    const archive = await this.archiveService.findById(newArchiveId);
     for (const student of students) {
-      console.log(student.levels[0].subjects);
-      
+      // add new archive id to students
+      student.archives = [...student.archives, archive];
+      await this.studentRepo.save(student);
+      // todo also find the archive id of exam result
+      const examResult = await this.examResultService.findStudentExamResult(
+        student.id,
+      );
+      // if student passed the exam
+      if (examResult.passTheExam) {
+        // find the last student level
+        const lastStudentLevel = Math.max(
+          ...student.levels.map((level) => level.number),
+        );
+        // find the next student level
+        const nextStudentLevel = await this.levelService.findTheNextLevel(
+          lastStudentLevel,
+        );
+        student.levels = [...student.levels, nextStudentLevel];
+
+        await this.studentRepo.save(student);
+      }
     }
+    console.log(students);
 
-    // // add new archive id to students
-    // const archive = await this.archiveService.findById(newArchiveId);
-    // for (const student of students) {
-    //   student.archives = [...student.archives, archive];
-    //   await this.studentRepo.save(student);
-    // }
-
-    // // find the passed grades students
-    // const passedStudents = students.filter((student) => {
-    //   return student.grades.every((grade) => grade.passTheExam);
-    // });
-
-    // for (const student of passedStudents) {
-    //   // find the last student level
-    //   const lastStudentLevel = Math.max(
-    //     ...student.levels.map((level) => level.number),
-    //   );
-    //   // find the next student level
-    //   const nextStudentLevel = await this.levelService.findTheNextLevel(
-    //     lastStudentLevel,
-    //   );
-    //   student.levels = [...student.levels, nextStudentLevel];
-    //   await this.studentRepo.save(student);
-
-    //   // find the next level id by the last level number
-    // }
-
-    // return students;
-   }
+    return students;
+  }
 }

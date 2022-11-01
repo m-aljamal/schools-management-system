@@ -280,6 +280,7 @@ type Query {
   findProjects: [Project!]!
   findSemesters(archiveId: String!): [Semester!]!
   findStudent(archiveId: String!, id: String!): Student!
+  findStudentExamResult(studentId: String!): ExamResult!
   findStudents(archiveId: String!): [Student!]!
   findStudents_division(levelId: String!): [Division!]!
   findStudents_levels(archiveId: String!): [Level!]!

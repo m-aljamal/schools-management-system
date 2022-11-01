@@ -90,12 +90,19 @@ export class LevelService {
 
   async findStudents_levels(archiveId: string): Promise<Level[]> {
     const query = this.levelRepository.createQueryBuilder('level');
-    query.leftJoinAndSelect('level.divisions', 'division');
-    query.innerJoinAndSelect('division.students', 'students');
-    query.leftJoinAndSelect('students.archives', 'archives');
+    query.leftJoinAndSelect('level.archives', 'archives');
+
     query.andWhere('archives.id = :archiveId', {
       archiveId,
     });
+    query.leftJoinAndSelect('level.students', 'students');
+    query.innerJoinAndSelect('students.archives', 'archive');
+    query.andWhere('archive.id = :archiveId', {
+      archiveId,
+    });
+    // query.leftJoinAndSelect('level.divisions', 'division');
+
+    // query.leftJoinAndSelect('division.students', 'students');
 
     return await query.getMany();
   }

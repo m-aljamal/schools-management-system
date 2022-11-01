@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ExamResultInput } from './dto/exam-result.input';
 import { ExamResult } from './entity/exam-result';
 import { ExamResultService } from './exam-result.service';
@@ -12,5 +12,12 @@ export class ExamResultResolver {
     @Args('input') input: ExamResultInput,
   ): Promise<ExamResult> {
     return await this.examResultService.create(input);
+  }
+
+  @Query(() => ExamResult, { name: 'findStudentExamResult' })
+  async findExamResult(
+    @Args('studentId') studentId: string,
+  ): Promise<ExamResult> {
+    return await this.examResultService.findStudentExamResult(studentId);
   }
 }

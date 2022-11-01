@@ -94,24 +94,37 @@ export class GradeService {
       passTheSubject,
     });
     await this.gradeRepository.save(newGrade);
-    //todo  currnet student level
+    //todo  currnet student level or use exam.levelId
     const subjects = await this.subjectService.findAll(student.levels[0].id);
-    const passedSubjects = await this.gradeRepository.find({
+    const studentGrades = await this.gradeRepository.find({
       where: {
         studentId: student.id,
-        passTheSubject: true,
       },
     });
 
-    if (passedSubjects.length === subjects.length) {
-      // pass the semester
+    if (
+      studentGrades.length === subjects.length &&
+      studentGrades.every((grade) => grade.passTheSubject)
+    ) {
+      // student passed the semester
       const result = await this.examResultService.create({
         studentId: student.id,
         examId: grade.examId,
         passTheExam: true,
       });
 
-      console.log('pass newGrade', newGrade);
+      console.log('pass newGrade', newGrade, { result });
+    } else if (
+      // if the student failed in one subject, he will fail the semester
+      studentGrades.length === subjects.length &&
+      studentGrades.some((grade) => !grade.passTheSubject)
+    ) {
+      const result = await this.examResultService.create({
+        studentId: student.id,
+        examId: grade.examId,
+        passTheExam: false,
+      });
+      console.log('fail newGrade', { newGrade, result });
     }
 
     console.log(' newGrade', newGrade);
